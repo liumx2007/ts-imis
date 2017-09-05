@@ -9,15 +9,15 @@
 
     <select id="getAttenceToday" parameterType="com.trasen.imis.model.AttenceVo" resultType="com.trasen.imis.model.AttenceVo">
         select work_num as workNum,
-         tag_id as tagId,
-         tag_name as tagName,
-         `name`,`position`,
-         attence_date as attenceDate,
-         signin_time as signinTime,
-         signout_time as signoutTime,
-         work_hours as workHours,
-         `type`,remark,week
-         from tb_attence where work_num=#{workNum} and attence_date=#{attenceDate}
+        tag_id as tagId,
+        tag_name as tagName,
+        `name`,`position`,
+        attence_date as attenceDate,
+        signin_time as signinTime,
+        signout_time as signoutTime,
+        work_hours as workHours,
+        `type`,remark,week
+        from tb_attence where work_num=#{workNum} and attence_date=#{attenceDate}
     </select>
 
     <insert id="insertAttence" parameterType="com.trasen.imis.model.AttenceVo">
@@ -32,7 +32,7 @@
 
     <select id="searchAttList" parameterType="com.trasen.imis.model.AttenceVo" resultType="com.trasen.imis.model.AttenceVo">
         select *
-         from tb_attence where  1 =1
+        from tb_attence where  1 =1
         <if test="tagName!='' and tagName != null">
             AND tag_name LIKE CONCAT('%',#{tagName},'%')
         </if>
@@ -89,7 +89,10 @@
     </insert>
 
     <select id="searchActualLackAttList" parameterType="com.trasen.imis.model.AttenceVo" resultType="com.trasen.imis.model.AttenceVo">
-        select pkid,open_id as openId,work_num as workNum,tag_id as tagId,tag_name as tagName,`name`,position,DATE_FORMAT(#{attenceDate},'%W') as week,#{attenceDate} as attenceDate from tb_weixin_user where is_vaild=1 and work_num not in (select work_num from tb_attence where attence_date=#{attenceDate})
+        select pkid,open_id as openId,work_num as workNum,tag_id as tagId,tag_name as tagName,`name`,position,DATE_FORMAT(#{attenceDate},'%W') as week,#{attenceDate} as attenceDate
+        from tb_weixin_user where is_vaild=1
+        and work_num not in (select work_num from tb_attence where attence_date=#{attenceDate})
+        and work_num not in (select work_num from tb_attence_leave where attence_date=#{attenceDate})
         <if test="tagName!='' and tagName != null">
             AND tag_name LIKE CONCAT('%',#{tagName},'%')
         </if>
@@ -99,7 +102,10 @@
     </select>
 
     <select id="lateActualNum" resultType="Integer" parameterType="com.trasen.imis.model.AttenceVo">
-        select count(*) from tb_weixin_user where is_vaild=1 and work_num not in (select work_num from tb_attence where attence_date=#{attenceDate})
+        select count(*)
+        from tb_weixin_user where is_vaild=1
+        and work_num not in (select work_num from tb_attence where attence_date=#{attenceDate})
+        and work_num not in (select work_num from tb_attence_leave where attence_date=#{attenceDate})
         <if test="tagName!='' and tagName != null">
             AND tag_name LIKE CONCAT('%',#{tagName},'%')
         </if>
@@ -137,6 +143,9 @@
         </if>
         <if test="name!='' and name != null">
             AND name LIKE CONCAT('%',#{name},'%')
+        </if>
+        <if test="createUser!='' and createUser != null">
+            AND create_user LIKE CONCAT('%',#{createUser},'%')
         </if>
         <if test="attenceDate!='' and attenceDate != null">
             AND attence_date = #{attenceDate}
@@ -278,6 +287,9 @@
         </if>
         <if test="name!='' and name != null">
             AND name LIKE CONCAT('%',#{name},'%')
+        </if>
+        <if test="createUser!='' and createUser != null">
+            AND create_user LIKE CONCAT('%',#{createUser},'%')
         </if>
         <if test="attenceDate!='' and attenceDate != null">
             AND attence_date = #{attenceDate}

@@ -54,7 +54,7 @@ public class ExcelController {
     @RequestMapping(value = "/excelExport", method = RequestMethod.GET)
     public void excelExport(HttpServletResponse response, HttpServletRequest request) throws IOException, WriteException {
 
-       String tagName=request.getParameter("tagName");
+        String tagName=request.getParameter("tagName");
         String name=request.getParameter("name");
         String attenceDate=request.getParameter("attenceDate");
         String export=request.getParameter("export");
@@ -65,19 +65,20 @@ public class ExcelController {
         String startDate=request.getParameter("startDate");
         String endDate=request.getParameter("endDate");
         String signinType =request.getParameter("signinType");
+        String createUser = request.getParameter("createUser");
 
         //Page page = new Page(1,10);
         AttenceVo attenceVo = new AttenceVo();
-        if(!name.equals("undefined")){
+        if(name!=null&&!name.equals("undefined")){
             attenceVo.setName(name);
         }
-        if(!attenceDate.equals("undefined")){
+        if(attenceDate!=null&&!attenceDate.equals("undefined")){
             attenceVo.setAttenceDate(attenceDate.substring(0,10));
         }
-        if(!tagName.equals("undefined")){
+        if(tagName!=null&&!tagName.equals("undefined")){
             attenceVo.setTagName(tagName);
         }
-        if(!type.equals("undefined")){
+        if(type!=null&&!type.equals("undefined")){
             attenceVo.setType(Integer.valueOf(type));
         }
         if(lateTime!=null){
@@ -86,23 +87,26 @@ public class ExcelController {
         if(backTime!=null){
             attenceVo.setBackTime(Long.valueOf(backTime));
         }
-        if(!startDate.equals("undefined")){
-        attenceVo.setStartTime(startDate);
+        if(startDate!=null&&!startDate.equals("undefined")){
+            attenceVo.setStartTime(startDate);
         }
-        if(!endDate.equals("undefined")){
-        attenceVo.setEndTime(endDate);
+        if(endDate!=null&&!endDate.equals("undefined")){
+            attenceVo.setEndTime(endDate);
         }
-        if(!signinType.equals("undefined")){
+        if(signinType!=null&&!signinType.equals("undefined")){
             attenceVo.setSigninType(signinType);
         }
-            List<AttenceVo> list = new ArrayList<>();
-            if(!StringUtil.isEmpty(lackAtt)&&"lack".equals(lackAtt)){
-                list = attenceService.excelExprotLackAttList(attenceVo);
-            }else if(!StringUtil.isEmpty(lackAtt)&&"leave".equals(lackAtt)){
-                list = attenceService.excelExprotLeaveAttList(attenceVo);
-            }else{
-                list = attenceService.excelExprotAttList(attenceVo);
-            }
+        if(createUser!=null&&!createUser.equals("undefined")){
+            attenceVo.setCreateUser(createUser);
+        }
+        List<AttenceVo> list = new ArrayList<>();
+        if(!StringUtil.isEmpty(lackAtt)&&"lack".equals(lackAtt)){
+            list = attenceService.excelExprotLackAttList(attenceVo);
+        }else if(!StringUtil.isEmpty(lackAtt)&&"leave".equals(lackAtt)){
+            list = attenceService.excelExprotLeaveAttList(attenceVo);
+        }else{
+            list = attenceService.excelExprotAttList(attenceVo);
+        }
         String fileName=export+".xls";
         DownloadExcelUtil downloadExcelUtil=new DownloadExcelUtil(response,fileName,export);
         DateFormat dateFormat=new DateFormat("yyyy-mm-dd");
@@ -147,7 +151,8 @@ public class ExcelController {
         }else if(export.equals("请假")){
             downloadExcelUtil.addCell(4,0,"请假类型",CellType.LABEL,dateFormat,false,false);
             downloadExcelUtil.addCell(5,0,"请假时间",CellType.LABEL,dateFormat,false,false);
-            downloadExcelUtil.addCell(6,0,"请假事由",CellType.LABEL,dateFormat,false,false);
+            downloadExcelUtil.addCell(6,0,"操作人",CellType.LABEL,dateFormat,false,false);
+            downloadExcelUtil.addCell(7,0,"请假事由",CellType.LABEL,dateFormat,false,false);
         }
         for(int i=0;i<list.size();i++){
             if(list.get(i).getTagName()==null){
@@ -289,10 +294,15 @@ public class ExcelController {
                 }else{
                     downloadExcelUtil.addCell(5,i+1,list.get(i).getStartTime()+"~"+list.get(i).getEndTime(),CellType.LABEL,dateFormat,false,false);
                 }
-                if(list.get(i).getRemark()==null){
+                if(list.get(i).getCreateUser()==null){
                     downloadExcelUtil.addCell(6,i+1,"",CellType.LABEL,dateFormat,false,false);
                 }else{
-                    downloadExcelUtil.addCell(6,i+1,list.get(i).getRemark(),CellType.LABEL,dateFormat,false,false);
+                    downloadExcelUtil.addCell(6,i+1,list.get(i).getCreateUser(),CellType.LABEL,dateFormat,false,false);
+                }
+                if(list.get(i).getRemark()==null){
+                    downloadExcelUtil.addCell(7,i+1,"",CellType.LABEL,dateFormat,false,false);
+                }else{
+                    downloadExcelUtil.addCell(7,i+1,list.get(i).getRemark(),CellType.LABEL,dateFormat,false,false);
                 }
 
             }
@@ -607,7 +617,7 @@ public class ExcelController {
 
     @RequestMapping(value = "/excelPersonAddressExprot",method = RequestMethod.GET)
     private void  excelPersonAddressExprot(HttpServletRequest request,HttpServletResponse response){
-       // TbPersonnel tbPersonnel = new TbPersonnel();
+        // TbPersonnel tbPersonnel = new TbPersonnel();
         Map<String,Object> param=new HashMap<String,Object>();
         List<TbPersonnel> list = personnelService.searchAddressPersonnelList(param);
         String tagName=request.getParameter("tagName");
@@ -654,67 +664,67 @@ public class ExcelController {
             String sex_name=null;
             for(int i=0;i<list.size();i++){
                 int cl=0;
-                    if(columnList.contains("workNum")){
-                        if(list.get(i).getWorkNum()==null){
-                            downloadExcelUtil.addCell(cl++,i+3,"",CellType.LABEL,dateFormat,false,false);
-                        }else{
-                            downloadExcelUtil.addCell(cl++,i+3,list.get(i).getWorkNum(),CellType.LABEL,dateFormat,false,false);
-                        }
+                if(columnList.contains("workNum")){
+                    if(list.get(i).getWorkNum()==null){
+                        downloadExcelUtil.addCell(cl++,i+3,"",CellType.LABEL,dateFormat,false,false);
+                    }else{
+                        downloadExcelUtil.addCell(cl++,i+3,list.get(i).getWorkNum(),CellType.LABEL,dateFormat,false,false);
                     }
-                    if(columnList.contains("name")){
-                        if(list.get(i).getName()==null){
-                            downloadExcelUtil.addCell(cl++,i+3,"",CellType.LABEL,dateFormat,false,false);
-                        }else{
-                            downloadExcelUtil.addCell(cl++,i+3,list.get(i).getName(),CellType.LABEL,dateFormat,false,false);
-                        }
+                }
+                if(columnList.contains("name")){
+                    if(list.get(i).getName()==null){
+                        downloadExcelUtil.addCell(cl++,i+3,"",CellType.LABEL,dateFormat,false,false);
+                    }else{
+                        downloadExcelUtil.addCell(cl++,i+3,list.get(i).getName(),CellType.LABEL,dateFormat,false,false);
                     }
-                    if(columnList.contains("sex")){
-                        if(list.get(i).getSex()==null){
-                            downloadExcelUtil.addCell(cl++,i+3,"",CellType.LABEL,dateFormat,false,false);
-                        }else{
-                            if(list.get(i).getSex()==1)sex_name="男";
-                            if(list.get(i).getSex()==2)sex_name="女";
-                            downloadExcelUtil.addCell(cl++,i+3,sex_name,CellType.LABEL,dateFormat,false,false);
-                        }
+                }
+                if(columnList.contains("sex")){
+                    if(list.get(i).getSex()==null){
+                        downloadExcelUtil.addCell(cl++,i+3,"",CellType.LABEL,dateFormat,false,false);
+                    }else{
+                        if(list.get(i).getSex()==1)sex_name="男";
+                        if(list.get(i).getSex()==2)sex_name="女";
+                        downloadExcelUtil.addCell(cl++,i+3,sex_name,CellType.LABEL,dateFormat,false,false);
                     }
+                }
 
-                    if(columnList.contains("dpet")){
-                        if(list.get(i).getDepName()==null){
-                            downloadExcelUtil.addCell(cl++,i+3,"",CellType.LABEL,dateFormat,false,false);
-                        }else{
-                            downloadExcelUtil.addCell(cl++,i+3,list.get(i).getDepName(),CellType.LABEL,dateFormat,false,false);
-                        }
+                if(columnList.contains("dpet")){
+                    if(list.get(i).getDepName()==null){
+                        downloadExcelUtil.addCell(cl++,i+3,"",CellType.LABEL,dateFormat,false,false);
+                    }else{
+                        downloadExcelUtil.addCell(cl++,i+3,list.get(i).getDepName(),CellType.LABEL,dateFormat,false,false);
                     }
+                }
 
-                    if(columnList.contains("position")){
-                        if(list.get(i).getPosition()==null){
-                            downloadExcelUtil.addCell(cl++,i+3,"",CellType.LABEL,dateFormat,false,false);
-                        }else{
-                            downloadExcelUtil.addCell(cl++,i+3,list.get(i).getPosition(),CellType.LABEL,dateFormat,false,false);
-                        }
+                if(columnList.contains("position")){
+                    if(list.get(i).getPosition()==null){
+                        downloadExcelUtil.addCell(cl++,i+3,"",CellType.LABEL,dateFormat,false,false);
+                    }else{
+                        downloadExcelUtil.addCell(cl++,i+3,list.get(i).getPosition(),CellType.LABEL,dateFormat,false,false);
                     }
-                    if(columnList.contains("phone")){
-                        if(list.get(i).getPhone()==null){
-                            downloadExcelUtil.addCell(cl++,i+3,"",CellType.LABEL,dateFormat,false,false);
-                        }else{
-                            downloadExcelUtil.addCell(cl++,i+3,list.get(i).getPhone(),CellType.LABEL,dateFormat,false,false);
-                        }
+                }
+                if(columnList.contains("phone")){
+                    if(list.get(i).getPhone()==null){
+                        downloadExcelUtil.addCell(cl++,i+3,"",CellType.LABEL,dateFormat,false,false);
+                    }else{
+                        downloadExcelUtil.addCell(cl++,i+3,list.get(i).getPhone(),CellType.LABEL,dateFormat,false,false);
                     }
-                    if(columnList.contains("szz")){
-                        tag_g_Name=tbTagPersonnelService.getTagNameforWorNum(list.get(i).getWorkNum());
-                        if(tag_g_Name==null){
-                            downloadExcelUtil.addCell(cl++,i+3,"",CellType.LABEL,dateFormat,false,false);
-                        }else{
-                            downloadExcelUtil.addCell(cl++,i+3,tag_g_Name,CellType.LABEL,dateFormat,false,false);
-                        }
+                }
+                if(columnList.contains("szz")){
+                    tag_g_Name=tbTagPersonnelService.getTagNameforWorNum(list.get(i).getWorkNum());
+                    if(tag_g_Name==null){
+                        downloadExcelUtil.addCell(cl++,i+3,"",CellType.LABEL,dateFormat,false,false);
+                    }else{
+                        downloadExcelUtil.addCell(cl++,i+3,tag_g_Name,CellType.LABEL,dateFormat,false,false);
                     }
-                    if(columnList.contains("remark")){
-                        if(list.get(i).getRemark()==null){
-                            downloadExcelUtil.addCell(cl++,i+3,"",CellType.LABEL,dateFormat,false,false);
-                        }else{
-                            downloadExcelUtil.addCell(cl++,i+3,list.get(i).getRemark(),CellType.LABEL,dateFormat,false,false);
-                        }
+                }
+                if(columnList.contains("remark")){
+                    if(list.get(i).getRemark()==null){
+                        downloadExcelUtil.addCell(cl++,i+3,"",CellType.LABEL,dateFormat,false,false);
+                    }else{
+                        downloadExcelUtil.addCell(cl++,i+3,list.get(i).getRemark(),CellType.LABEL,dateFormat,false,false);
                     }
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

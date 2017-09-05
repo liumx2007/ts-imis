@@ -55,6 +55,7 @@ public class AttenceController {
             String startDate = MapUtils.getString(params, "startDate");
             String endDate = MapUtils.getString(params, "endDate");
             String signinType = MapUtils.getString(params, "signinType");
+            String createUser = MapUtils.getString(params, "createUser");
 
 
             Integer pageNo = MapUtils.getInteger(params, "pageNo");
@@ -91,6 +92,9 @@ public class AttenceController {
             }
             if(!StringUtil.isEmpty(signinType)){
                 attenceVo.setSigninType(signinType);
+            }
+            if(!StringUtil.isEmpty(createUser)){
+                attenceVo.setCreateUser(createUser);
             }
 
 

@@ -18,6 +18,7 @@ public class AttenceLeave {
     private String name; //姓名
     private String tagName; //部门
     private String tagId; //部门ID
+    private String week;
     private String workNum; //工号
     private String position; //职务
     private String attenceDate;   //请假日

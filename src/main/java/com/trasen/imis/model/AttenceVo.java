@@ -59,4 +59,6 @@ public class AttenceVo {
 
     private String signinType;
 
+    private String createUser;
+
 }

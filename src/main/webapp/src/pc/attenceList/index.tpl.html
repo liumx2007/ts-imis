@@ -151,7 +151,7 @@
 
                         </div>
 
-                        <div class="brbotP NKwrapper Nkcont">
+                        <div class="brbotP NKwrapper Nkcont" ng-show="ctrl.content=='考勤列表'||ctrl.content=='迟到列表'">
                             <div class="form-group NkSerTit">
                                 <label class="col-px-70 control-label fl NkSN">签到类型</label>
                                 <div class="col-px-230 fr">
@@ -161,6 +161,15 @@
                                         <option value="sign">外出考勤</option>
                                         <option value="inEx">公司迟到</option>
                                     </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="brbotP NKwrapper Nkcont" ng-show="ctrl.content=='请假列表'">
+                            <div class="form-group NkSerTit">
+                                <label class="col-px-70 control-label fl NkSN">请假操作人</label>
+                                <div class="col-px-230 fr">
+                                    <input type="text" class="form-control" placeholder="操作人筛选" ng-model="ctrl.createUser">
                                 </div>
                             </div>
                         </div>
@@ -177,7 +186,7 @@
                 </div>
                 <div class="col-px-140 fl" ng-if="ctrl.content=='迟到列表'||ctrl.content=='早退列表'">
                     <button class="btn btn-default piliang Nksx" ng-click="ctrl.attenceToLeaveMultiple(ctrl.content)">
-                        批量操作</button>
+                        批量请假</button>
                 </div>
                 <div class="col-px-80 fl" ng-show="ctrl.isShowOpe('export')">
                     <a href="{{ctrl.excelExprot}}"><button class="btn btn-default daochu Nksx" ng-click="ctrl.myShaix = false">
@@ -226,6 +235,7 @@
 
                     <th ng-show="ctrl.content=='请假列表'">请假类型</th>
                     <th ng-show="ctrl.content=='请假列表'">请假时间</th>
+                    <th ng-show="ctrl.content=='请假列表'">操作人</th>
                     <th ng-show="ctrl.content=='请假列表'">请假事由</th>
 
                     <th style="width:60px;" ng-if="ctrl.content=='迟到列表'||ctrl.content=='早退列表'||ctrl.content=='缺勤列表'">操作</th>
@@ -265,10 +275,11 @@
 
                     <td ng-show="ctrl.content=='请假列表'" ng-bind="att.type | LeaveType"></td>
                     <td ng-show="ctrl.content=='请假列表'">{{att.startTime}}~{{att.endTime}}</td>
+                    <td ng-show="ctrl.content=='请假列表'" ng-bind="att.createUser"></td>
                     <td ng-show="ctrl.content=='请假列表'" ng-bind="att.remark"></td>
 
                     <td ng-if="ctrl.content=='迟到列表'||ctrl.content=='早退列表'||ctrl.content=='缺勤列表'">
-                        <button  class="btn btn-sm btn-default" ng-click="ctrl.attenceToLeaveSingle(att,ctrl.content)">修改</button>
+                        <button  class="btn btn-sm btn-default" ng-click="ctrl.attenceToLeaveSingle(att,ctrl.content)">请假</button>
                     </td>
                 </tr>
 
@@ -291,48 +302,48 @@
                 <h4 class="modal-title">考勤异常操作</h4>
             </div>
             <div class="RuleCont">
-            <div class="panel-body">
+                <div class="panel-body">
 
-                <div class="form-group RuleInput">
-                    <label class="RuleName">请假类型：</label>
-                    <select class="form-control Rinput60" ng-model="ctrl.twfDict"
-                            ng-options="twfDict.name  for twfDict in ctrl.twfDictList" required name="leave" ng-change="ctrl.changeOptions()">
-                        <option value="">请选择请假类型</option>
-                    </select>
-                    <span class="errorInput" ng-show="attenceForm.leave.$error.required && ctrl.submitted">该选项框必填</span>
-                </div>
-                <div ng-if="ctrl.xianshi">
                     <div class="form-group RuleInput">
-                        <label class="RuleName">开始时间：</label>
-                        <input type="text" class="form-control Rinput60" ng-model="ctrl.attenceLeave.startTime" name="startTime" ng-maxlength="100" required ng-pattern="ctrl.httptimeReg">
-                        <span class="errorInput" ng-show="attenceForm.startTime.$error.pattern"> 时间格式不合法;如："08:45:00"</span>
-                        <span class="errorInput" ng-show="attenceForm.startTime.$error.required && ctrl.submitted"> 该选项框必填 </span>
-                    </div>
-                    <div class="form-group RuleInput">
-                        <label class="RuleName">结束时间：</label>
-                        <input type="text" class="form-control Rinput60" ng-model="ctrl.attenceLeave.endTime" name="endTime" ng-maxlength="100" required ng-pattern="ctrl.httptimeReg">
-                        <span class="errorInput" ng-show="attenceForm.endTime.$error.pattern"> 时间格式不合法;如："08:45:00" </span>
-                        <span class="errorInput" ng-show="attenceForm.endTime.$error.required && ctrl.submitted"> 该选项框必填 </span>
-                    </div>
-                </div>
-                <div ng-if="!ctrl.xianshi">
-                    <div class="form-group RuleInput">
-                        <label class="RuleName">请假时间：</label>
-                        <select class="form-control Rinput60" ng-model="ctrl.riqi" name="riqi" required>
-                            <option value="3">上0.5</option>
-                            <option value="4">下0.5</option>
-                            <option value="8">1</option>
+                        <label class="RuleName">请假类型：</label>
+                        <select class="form-control Rinput60" ng-model="ctrl.twfDict"
+                                ng-options="twfDict.name  for twfDict in ctrl.twfDictList" required name="leave" ng-change="ctrl.changeOptions()">
+                            <option value="">请选择请假类型</option>
                         </select>
-                        <span class="errorInput" ng-show="attenceForm.riqi.$error.required && ctrl.submitted"> 该选项框必填</span>
+                        <span class="errorInput" ng-show="attenceForm.leave.$error.required && ctrl.submitted">该选项框必填</span>
+                    </div>
+                    <div ng-if="ctrl.xianshi">
+                        <div class="form-group RuleInput">
+                            <label class="RuleName">开始时间：</label>
+                            <input type="text" class="form-control Rinput60" ng-model="ctrl.attenceLeave.startTime" name="startTime" ng-maxlength="100" required ng-pattern="ctrl.httptimeReg">
+                            <span class="errorInput" ng-show="attenceForm.startTime.$error.pattern"> 时间格式不合法;如："08:45:00"</span>
+                            <span class="errorInput" ng-show="attenceForm.startTime.$error.required && ctrl.submitted"> 该选项框必填 </span>
+                        </div>
+                        <div class="form-group RuleInput">
+                            <label class="RuleName">结束时间：</label>
+                            <input type="text" class="form-control Rinput60" ng-model="ctrl.attenceLeave.endTime" name="endTime" ng-maxlength="100" required ng-pattern="ctrl.httptimeReg">
+                            <span class="errorInput" ng-show="attenceForm.endTime.$error.pattern"> 时间格式不合法;如："08:45:00" </span>
+                            <span class="errorInput" ng-show="attenceForm.endTime.$error.required && ctrl.submitted"> 该选项框必填 </span>
+                        </div>
+                    </div>
+                    <div ng-if="!ctrl.xianshi">
+                        <div class="form-group RuleInput">
+                            <label class="RuleName">请假时间：</label>
+                            <select class="form-control Rinput60" ng-model="ctrl.riqi" name="riqi" required>
+                                <option value="3">上0.5</option>
+                                <option value="4">下0.5</option>
+                                <option value="8">1</option>
+                            </select>
+                            <span class="errorInput" ng-show="attenceForm.riqi.$error.required && ctrl.submitted"> 该选项框必填</span>
+                        </div>
+                    </div>
+                    <div class="form-group RuleInput">
+                        <label class="RuleName">请假事由：</label>
+                        <textarea  type="text" class="form-control Rinput60" cols="60" rows="4" required name="remark" ng-model="ctrl.attenceLeave.remark"></textarea>
+                        <span class="errorInput" ng-show="attenceForm.remark.$error.required && ctrl.submitted"> 该选项框必填 </span>
+
                     </div>
                 </div>
-                <div class="form-group RuleInput">
-                    <label class="RuleName">请假事由：</label>
-                    <textarea  type="text" class="form-control Rinput60" cols="60" rows="4" required name="remark" ng-model="ctrl.attenceLeave.remark"></textarea>
-                    <span class="errorInput" ng-show="attenceForm.remark.$error.required && ctrl.submitted"> 该选项框必填 </span>
-
-                </div>
-            </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-warning" type="submit">保存</button>

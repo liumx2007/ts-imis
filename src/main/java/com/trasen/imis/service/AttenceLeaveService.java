@@ -1,5 +1,6 @@
 package com.trasen.imis.service;
 
+import com.trasen.imis.common.VisitInfoHolder;
 import com.trasen.imis.dao.TbAttenceLeaveMapper;
 import com.trasen.imis.model.AttenceLeave;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ public class AttenceLeaveService {
                     }else if(attenceLeave.getAttType()==2){
                         attenceService.deleLackAttence(attenceLeave.getAttId());
                     }
+                    attenceLeave.setCreateUser(VisitInfoHolder.getUserId());
                 }
             }
             return tbAttenceLeaveMapper.insertAttenceLeaveList(attenceLeaveList);
