@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trasen.imis.dao.TbAttenceLeaveMapper">
+    <insert id="insertAttenceLeaveList" parameterType="java.util.List">
+        insert into tb_attence_leave(`name`,tag_name,tag_id,work_num,position,attence_date,`type`,start_time,end_time,att_id,att_type,remark,leave_hours,created,create_user)
+        values
+        <foreach collection="list" item="item" index="index" separator="," >
+            (#{item.name},#{item.tagName},#{item.tagId},#{item.workNum},#{item.position},#{item.attenceDate},#{item.type},#{item.startTime},#{item.endTime},#{item.attId},#{item.attType},#{item.remark},#{item.leaveHours},#{item.created},#{item.createUser})
+        </foreach>
+    </insert>
+</mapper>

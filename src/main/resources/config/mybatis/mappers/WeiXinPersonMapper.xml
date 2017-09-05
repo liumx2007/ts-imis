@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trasen.imis.dao.WeiXinPersonMapper">
+
+    <select id="getPersonByOpenId" parameterType="String" resultType="com.trasen.imis.model.WinXinPerson">
+     SELECT
+	wx.open_id AS openId,
+	wx.work_num AS workNum,
+	wx.`name`,
+	per.dep_name AS depName,
+	per.dep_id AS depId,
+	per.phone,
+	per.position,
+	per.per_id AS perId,
+	per.entry_date AS entryDate,
+	bas.birthday,
+	bas.id_card AS idCard,
+	bas.house_address AS houseAddress,
+	(
+		SELECT
+			`name`
+		FROM
+			tb_tree tree
+		WHERE
+			locate(tree.pkid, per.tag_code) > 0
+		AND tree.`level` = 1
+	) AS corporation,
+fi.regular_date as regularDate
+FROM
+	tb_weixin_user wx
+LEFT JOIN tb_personnel per ON wx.work_num = per.work_num
+LEFT JOIN tb_personnel_basic bas ON bas.work_num = wx.work_num
+LEFT JOIN tb_personnel_file fi ON fi.work_num=wx.work_num
+WHERE
+	wx.open_id =#{openId}
+    </select>
+
+    <update id="updatePerson" parameterType="com.trasen.imis.model.WinXinPerson">
+        update tb_personnel set phone=#{phone} where per_id=#{perId}
+    </update>
+    <update id="updatePersonBasic" parameterType="com.trasen.imis.model.WinXinPerson">
+        update tb_personnel_basic set house_address=#{houseAddress} where per_id=#{perId}
+    </update>
+
+	<select id="getPersonByName" parameterType="String" resultType="com.trasen.imis.model.WinXinPerson">
+		SELECT
+		wx.open_id AS openId,
+		wx.work_num AS workNum,
+		wx.`name`,
+		per.dep_name AS depName,
+		per.dep_id AS depId,
+		per.phone,
+		per.position,
+		per.per_id AS perId,
+		per.entry_date AS entryDate,
+		bas.birthday,
+		bas.id_card AS idCard,
+		bas.house_address AS houseAddress,
+		(select group_concat(tag.tag_name) from tb_tag_personnel tag where tag.work_num=wx.work_num) as tagName
+		FROM
+		tb_weixin_user wx
+		LEFT JOIN tb_personnel per ON wx.work_num = per.work_num
+		LEFT JOIN tb_personnel_basic bas ON bas.work_num = wx.work_num
+		WHERE
+		wx.name =#{name}
+	</select>
+
+	<select id="getBlackList" parameterType="String" resultType="int">
+		select count(*) from tb_blacklist where `name`=#{name} and type=1 and is_vaild=1
+	</select>
+
+	<select id="checkWeixinOpenId" parameterType="String" resultType="Integer">
+		select count(*) from twf_dict where `type`=8 and code=#{code} and is_vaild=1
+	</select>
+
+	<update id="updateT_Weixin_user" parameterType="com.trasen.imis.model.TbPersonnel">
+		update tb_weixin_user set open_id=#{openId},binding_time=now() where work_num=#{workNum}
+	</update>
+</mapper>

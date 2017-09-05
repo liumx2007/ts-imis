@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trasen.imis.dao.PromotionMapper">
+    <select id="getJfPersonByopenId" parameterType="String" resultType="com.trasen.imis.model.TbJfPerson">
+      SELECT
+	wu.open_id,
+	wu.`name`,
+	wu.work_num,
+	pjf.pkid,
+	pjf.score,
+	pjf.rank,
+	pjf.created,
+	pjf.operator,
+	pjf.updated,
+	per.dep_id,
+	per.dep_name,
+	per.tag_code,
+	CONCAT(jfr.`name`, jfr.type) AS rankName,
+	jfr.px,
+	jfr.prm_score
+FROM
+	tb_weixin_user wu
+LEFT JOIN tb_personnel_jf pjf ON wu.work_num = pjf.work_num
+LEFT JOIN tb_personnel per ON per.work_num = wu.work_num
+LEFT JOIN tb_jf_rank jfr ON jfr.pkid = pjf.rank
+WHERE
+	wu.open_id = #{openId}
+    </select>
+	
+	<select id="selectCompany" resultType="com.trasen.imis.model.TbTree">
+		select * from tb_tree where parent=(select pkid from tb_tree where parent is null) and is_vaild=1
+	</select>
+
+	<select id="selectNextRank" resultType="com.trasen.imis.model.TbJfRank" parameterType="int">
+		select * from tb_jf_rank where px=#{px}
+	</select>
+
+	<select id="selectNextCjRank" resultType="com.trasen.imis.model.TbJfRank" parameterType="int">
+		select * from tb_jf_rank where px=#{px} and prm_score!=1
+	</select>
+
+	<select id="selectWzRank" resultType="com.trasen.imis.model.TbJfRank" parameterType="int">
+		select * from tb_jf_rank where px=#{px} and prm_score=1
+	</select>
+
+	<select id="getPersonJfCount" resultType="int" parameterType="String">
+		select count(*) from tb_personnel_jf where work_num=#{workNum}
+	</select>
+
+	<insert id="savaCheck" parameterType="com.trasen.imis.model.TbRankCheck">
+		insert into tb_rank_check(work_num,status,remark,old_rank,new_rank,created,updated,operator) values(#{workNum},#{status},#{remark},#{oldRank},#{newRank},#{created},#{updated},#{operator})
+	</insert>
+
+	<insert id="savaPersonJf" parameterType="com.trasen.imis.model.TbJfPerson">
+		insert into tb_personnel_jf(work_num,score,rank,created,updated,operator) values(#{workNum},#{score},#{rank},#{created},#{updated},#{operator})
+	</insert>
+
+	<select id="selectTbCheckCount" parameterType="String" resultType="int">
+		select count(*) from tb_rank_check where work_num=#{workNum} and status=1
+	</select>
+
+	<select id="getJfRecordByOpendId" resultType="com.trasen.imis.model.TbJfRecord" parameterType="String">
+		select re.* from tb_weixin_user wei left join tb_jf_record re on wei.work_num=re.work_num where wei.open_id=#{openId} and is_show=1 and status=1
+	</select>
+
+	<select id="getPersonByopenId" parameterType="String" resultType="com.trasen.imis.model.TbJfPerson">
+		SELECT
+		wu.open_id,
+		wu.`name`,
+		wu.work_num,
+		pjf.pkid,
+		pjf.score,
+		pjf.rank,
+		pjf.created,
+		pjf.operator,
+		pjf.updated,
+		CONCAT(jfr.`name`, jfr.type) AS rankName
+		FROM
+		tb_weixin_user wu
+		LEFT JOIN tb_personnel_jf pjf ON wu.work_num = pjf.work_num
+		LEFT JOIN tb_jf_rank jfr ON jfr.pkid = pjf.rank
+		WHERE
+		wu.open_id = #{openId}
+	</select>
+	
+</mapper>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trasen.imis.dao.TuserMaperr">
+    <insert id="insertGetId" parameterType="com.trasen.imis.model.Tuser" useGeneratedKeys="true" keyProperty="pkid">
+        insert into t_user(`name`,password,status,permission,app_id,display_name,per_id,created) value(#{name},#{password},#{status},'3','ts-imis',#{displayName},#{perId},#{created})
+    </insert>
+    <update id="updateTuser" parameterType="com.trasen.imis.model.Tuser">
+    update t_user set `name`=#{name},password=#{password},status=#{status},display_name=#{displayName},updated=#{updated} where pkid=#{pkid}
+</update>
+
+    <update id="updatePersonByTuser" parameterType="com.trasen.imis.model.Tuser">
+        update t_user set `name`=#{name},display_name=#{displayName},updated=#{updated} where pkid=#{pkid}
+    </update>
+
+    <select id="selectByperId" parameterType="String" resultType="com.trasen.imis.model.Tuser">
+        select * from t_user where per_id=#{perId} limit 1
+    </select>
+</mapper>

@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trasen.imis.dao.TbAttenceMapper">
+    <select id="getWeixinUser" parameterType="String" resultType="com.trasen.imis.model.AttenceVo">
+        select open_id as openId,work_num as workNum,tag_id as tagId,tag_name as tagName,`name`,`position`
+        from tb_weixin_user where open_id=#{openId}
+    </select>
+
+    <select id="getAttenceToday" parameterType="com.trasen.imis.model.AttenceVo" resultType="com.trasen.imis.model.AttenceVo">
+        select work_num as workNum,
+         tag_id as tagId,
+         tag_name as tagName,
+         `name`,`position`,
+         attence_date as attenceDate,
+         signin_time as signinTime,
+         signout_time as signoutTime,
+         work_hours as workHours,
+         `type`,remark,week
+         from tb_attence where work_num=#{workNum} and attence_date=#{attenceDate}
+    </select>
+
+    <insert id="insertAttence" parameterType="com.trasen.imis.model.AttenceVo">
+        insert into tb_attence (work_num,tag_id,tag_name,`name`,`position`,attence_date,signin_time,week,created,late_time,`type`,signin_address,signin_type,remark)
+        VALUES (#{workNum},#{tagId},#{tagName},#{name},#{position},#{attenceDate},#{signinTime},#{week},now(),#{lateTime},#{type},#{signinAddress},#{signinType},#{remark})
+    </insert>
+
+    <update id="updateAttenceSignoutTime" parameterType="com.trasen.imis.model.AttenceVo">
+        update tb_attence set signout_time = #{signoutTime},signout_address=#{signoutAddress},work_hours=#{workHours},updated=now(),operator=#{operator},back_time=#{backTime}
+        where attence_date=#{attenceDate} and work_num=#{workNum}
+    </update>
+
+    <select id="searchAttList" parameterType="com.trasen.imis.model.AttenceVo" resultType="com.trasen.imis.model.AttenceVo">
+        select *
+         from tb_attence where  1 =1
+        <if test="tagName!='' and tagName != null">
+            AND tag_name LIKE CONCAT('%',#{tagName},'%')
+        </if>
+        <if test="name!='' and name != null">
+            AND name LIKE CONCAT('%',#{name},'%')
+        </if>
+        <if test="signinType!='' and signinType != null">
+            AND signin_type = #{signinType}
+        </if>
+        <if test="attenceDate!='' and attenceDate != null">
+            AND attence_date = #{attenceDate}
+        </if>
+        <if test="lateTime != null">
+            AND late_time is not null and is_vaild =1
+        </if>
+        <if test="backTime != null">
+            AND back_time is not null and is_vaild =1
+        </if>
+        <if test="type != null">
+            AND type = #{type}
+        </if>
+        <if test="startTime!='' and startTime != null">
+            <![CDATA[ AND attence_date >= #{startTime} ]]>
+        </if>
+        <if test="endTime!='' and endTime != null">
+            <![CDATA[ AND attence_date <= #{endTime} ]]>
+        </if>
+
+
+    </select>
+
+    <select id="getAttenceLoactionList" resultType="com.trasen.imis.model.TbAttenceLocation">
+        select * from tb_attence_location
+    </select>
+
+    <select id="queryAttenceToDate" resultType="String" parameterType="String">
+        select work_num  from tb_attence where attence_date = #{date}
+    </select>
+
+    <select id="queryWeixinUser" resultType="com.trasen.imis.model.AttenceVo">
+        select open_id as openId,work_num as workNum,tag_id as tagId,tag_name as tagName,`name`,`position`
+        from tb_weixin_user where is_vaild = 1
+    </select>
+
+    <select id="selectLackAttence" resultType="Integer" parameterType="String">
+        select count(*) from tb_attence_lack where lack_date = #{date}
+    </select>
+
+    <insert id="insertLackAttence" parameterType="Map">
+        INSERT INTO tb_attence_lack(`name`, tag_name, work_num,tag_id,`position`, lack_date,week,created) VALUES
+        <foreach collection="list" index="index" item="c" separator=",">
+            (#{c.name}, #{c.tagName}, #{c.workNum}, #{c.tagId}, #{c.position}, #{c.attenceDate}, #{c.week},now())
+        </foreach>
+    </insert>
+
+    <select id="searchActualLackAttList" parameterType="com.trasen.imis.model.AttenceVo" resultType="com.trasen.imis.model.AttenceVo">
+        select pkid,open_id as openId,work_num as workNum,tag_id as tagId,tag_name as tagName,`name`,position,DATE_FORMAT(#{attenceDate},'%W') as week,#{attenceDate} as attenceDate from tb_weixin_user where is_vaild=1 and work_num not in (select work_num from tb_attence where attence_date=#{attenceDate})
+        <if test="tagName!='' and tagName != null">
+            AND tag_name LIKE CONCAT('%',#{tagName},'%')
+        </if>
+        <if test="name!='' and name != null">
+            AND name LIKE CONCAT('%',#{name},'%')
+        </if>
+    </select>
+
+    <select id="lateActualNum" resultType="Integer" parameterType="com.trasen.imis.model.AttenceVo">
+        select count(*) from tb_weixin_user where is_vaild=1 and work_num not in (select work_num from tb_attence where attence_date=#{attenceDate})
+        <if test="tagName!='' and tagName != null">
+            AND tag_name LIKE CONCAT('%',#{tagName},'%')
+        </if>
+        <if test="name!='' and name != null">
+            AND name LIKE CONCAT('%',#{name},'%')
+        </if>
+    </select>
+
+    <select id="searchLackAttList" parameterType="com.trasen.imis.model.AttenceVo" resultType="com.trasen.imis.model.AttenceVo">
+        select *,lack_date as attenceDate
+        from tb_attence_lack where  1 =1 and is_vaild =1
+        <if test="tagName!='' and tagName != null">
+            AND tag_name LIKE CONCAT('%',#{tagName},'%')
+        </if>
+        <if test="name!='' and name != null">
+            AND name LIKE CONCAT('%',#{name},'%')
+        </if>
+        <if test="attenceDate!='' and attenceDate != null">
+            AND lack_date = #{attenceDate}
+        </if>
+        <if test="startTime!='' and startTime != null">
+            <![CDATA[ AND lack_date >= #{startTime} ]]>
+        </if>
+        <if test="endTime!='' and endTime != null">
+            <![CDATA[ AND lack_date <= #{endTime} ]]>
+        </if>
+
+    </select>
+
+    <select id="searchLeaveAttList" parameterType="com.trasen.imis.model.AttenceVo" resultType="com.trasen.imis.model.AttenceVo">
+        select *
+        from tb_attence_leave where  1 =1
+        <if test="tagName!='' and tagName != null">
+            AND tag_name LIKE CONCAT('%',#{tagName},'%')
+        </if>
+        <if test="name!='' and name != null">
+            AND name LIKE CONCAT('%',#{name},'%')
+        </if>
+        <if test="attenceDate!='' and attenceDate != null">
+            AND attence_date = #{attenceDate}
+        </if>
+        <if test="startTime!='' and startTime != null">
+            <![CDATA[ AND attence_date >= #{startTime} ]]>
+        </if>
+        <if test="endTime!='' and endTime != null">
+            <![CDATA[ AND attence_date <= #{endTime} ]]>
+        </if>
+
+    </select>
+
+    <update id="deleAttence" parameterType="Long">
+        update tb_attence set is_vaild = 0 where pkid = #{pkid}
+    </update>
+
+    <update id="deleLackAttence" parameterType="Long">
+        update tb_attence_lack set is_vaild = 0 where pkid = #{pkid}
+    </update>
+    <!--  考勤异常统计 -->
+    <select id="signInNum" resultType="Integer" parameterType="com.trasen.imis.model.AttenceVo">
+        select count(*)
+        from tb_attence where  1 =1 AND type = 0
+        <if test="tagName!='' and tagName != null">
+            AND tag_name LIKE CONCAT('%',#{tagName},'%')
+        </if>
+        <if test="name!='' and name != null">
+            AND name LIKE CONCAT('%',#{name},'%')
+        </if>
+        <if test="signinType!='' and signinType != null">
+            AND signin_type = #{signinType}
+        </if>
+        <if test="attenceDate!='' and attenceDate != null">
+            AND attence_date = #{attenceDate}
+        </if>
+        <if test="startTime!='' and startTime != null">
+            <![CDATA[ AND attence_date >= #{startTime} ]]>
+        </if>
+        <if test="endTime!='' and endTime != null">
+            <![CDATA[ AND attence_date <= #{endTime} ]]>
+        </if>
+    </select>
+
+    <select id="lateNum" resultType="Integer" parameterType="com.trasen.imis.model.AttenceVo">
+        select count(*)
+        from tb_attence where  1 =1  AND late_time is not null and is_vaild =1
+        <if test="tagName!='' and tagName != null">
+            AND tag_name LIKE CONCAT('%',#{tagName},'%')
+        </if>
+        <if test="name!='' and name != null">
+            AND name LIKE CONCAT('%',#{name},'%')
+        </if>
+        <if test="signinType!='' and signinType != null">
+            AND signin_type = #{signinType}
+        </if>
+        <if test="attenceDate!='' and attenceDate != null">
+            AND attence_date = #{attenceDate}
+        </if>
+        <if test="startTime!='' and startTime != null">
+            <![CDATA[ AND attence_date >= #{startTime} ]]>
+        </if>
+        <if test="endTime!='' and endTime != null">
+            <![CDATA[ AND attence_date <= #{endTime} ]]>
+        </if>
+    </select>
+
+    <select id="backNum" resultType="Integer" parameterType="com.trasen.imis.model.AttenceVo">
+        select count(*)
+        from tb_attence where  1 =1  AND back_time is not null and is_vaild =1
+        <if test="tagName!='' and tagName != null">
+            AND tag_name LIKE CONCAT('%',#{tagName},'%')
+        </if>
+        <if test="name!='' and name != null">
+            AND name LIKE CONCAT('%',#{name},'%')
+        </if>
+        <if test="signinType!='' and signinType != null">
+            AND signin_type = #{signinType}
+        </if>
+        <if test="attenceDate!='' and attenceDate != null">
+            AND attence_date = #{attenceDate}
+        </if>
+        <if test="startTime!='' and startTime != null">
+            <![CDATA[ AND attence_date >= #{startTime} ]]>
+        </if>
+        <if test="endTime!='' and endTime != null">
+            <![CDATA[ AND attence_date <= #{endTime} ]]>
+        </if>
+    </select>
+
+    <select id="lackNum" resultType="Integer" parameterType="com.trasen.imis.model.AttenceVo">
+        select count(*)
+        from tb_attence_lack where  1 =1 and is_vaild =1
+        <if test="tagName!='' and tagName != null">
+            AND tag_name LIKE CONCAT('%',#{tagName},'%')
+        </if>
+        <if test="name!='' and name != null">
+            AND name LIKE CONCAT('%',#{name},'%')
+        </if>
+        <if test="attenceDate!='' and attenceDate != null">
+            AND lack_date = #{attenceDate}
+        </if>
+        <if test="startTime!='' and startTime != null">
+            <![CDATA[ AND lack_date >= #{startTime} ]]>
+        </if>
+        <if test="endTime!='' and endTime != null">
+            <![CDATA[ AND lack_date <= #{endTime} ]]>
+        </if>
+    </select>
+
+    <select id="addWorkNum" resultType="Integer" parameterType="com.trasen.imis.model.AttenceVo">
+        select count(*)
+        from tb_attence where  1 =1 AND type = 1
+        <if test="tagName!='' and tagName != null">
+            AND tag_name LIKE CONCAT('%',#{tagName},'%')
+        </if>
+        <if test="name!='' and name != null">
+            AND name LIKE CONCAT('%',#{name},'%')
+        </if>
+        <if test="signinType!='' and signinType != null">
+            AND signin_type = #{signinType}
+        </if>
+        <if test="attenceDate!='' and attenceDate != null">
+            AND attence_date = #{attenceDate}
+        </if>
+        <if test="startTime!='' and startTime != null">
+            <![CDATA[ AND attence_date >= #{startTime} ]]>
+        </if>
+        <if test="endTime!='' and endTime != null">
+            <![CDATA[ AND attence_date <= #{endTime} ]]>
+        </if>
+    </select>
+
+    <select id="leaveNum" resultType="Integer" parameterType="com.trasen.imis.model.AttenceVo">
+        select count(*)
+        from tb_attence_leave where  1 =1
+        <if test="tagName!='' and tagName != null">
+            AND tag_name LIKE CONCAT('%',#{tagName},'%')
+        </if>
+        <if test="name!='' and name != null">
+            AND name LIKE CONCAT('%',#{name},'%')
+        </if>
+        <if test="attenceDate!='' and attenceDate != null">
+            AND attence_date = #{attenceDate}
+        </if>
+        <if test="startTime!='' and startTime != null">
+            <![CDATA[ AND attence_date >= #{startTime} ]]>
+        </if>
+        <if test="endTime!='' and endTime != null">
+            <![CDATA[ AND attence_date <= #{endTime} ]]>
+        </if>
+    </select>
+
+    <select id="getSubPerson" resultType="com.trasen.imis.model.TbPersonnel" parameterType="com.trasen.imis.model.AttenceVo">
+        select p.*,w.open_id
+        from tb_personnel p left join tb_weixin_user w
+        on p.work_num=w.work_num
+        where
+        p.dep_id= (select dep_id from tb_personnel where `name`=#{name} and work_num=#{workNum} limit 1)
+        and p.work_num !=#{workNum}
+        <if test="remark!='' and remark != null">
+            AND p.name LIKE CONCAT('%',#{remark},'%')
+        </if>
+    </select>
+
+    <select id="getUserIdToOPenId" parameterType="String" resultType="Integer">
+        select u.pkid from t_user u
+        join tb_personnel p on p.per_id=u.per_id
+        join tb_weixin_user w on w.work_num=p.work_num
+        where w.open_id=#{openId} limit 1
+    </select>
+
+
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trasen.imis.dao.TbTagPersonnelMapper">
+    <select id="getTaTagPersonnelList" resultType="com.trasen.imis.model.TbTagPersonnel" parameterType="String">
+        select * from tb_tag_personnel where work_num=#{workNum}
+    </select>
+
+    <delete id="deleteTaTagPersonnel" parameterType="String">
+      delete from tb_tag_personnel where pkid=#{pkid}
+    </delete>
+
+    <delete id="deleteTaTagPersonnelForWorkNum" parameterType="String">
+        delete from tb_tag_personnel where work_num=#{workNum}
+    </delete>
+
+    <insert id="saveTagPersonnel" parameterType="java.util.List">
+          insert into tb_tag_personnel(tag_id,tag_name,work_num,created,operator) values
+        <foreach collection="list" item="item" index="index" separator="," >
+            (#{item.tagId},#{item.tagName},#{item.workNum},#{item.created},#{item.operator})
+        </foreach>
+
+    </insert>
+
+    <select id="getTagNameforWorNum" parameterType="String" resultType="String">
+         select group_concat(tag_name) from tb_tag_personnel where work_num=#{workNum}
+    </select>
+</mapper>

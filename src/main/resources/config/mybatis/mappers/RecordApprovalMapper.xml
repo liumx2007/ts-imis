@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trasen.imis.dao.RecordApprovalMapper">
+    <select id="getRecordApprovalList" parameterType="java.util.Map" resultType="com.trasen.imis.model.TbJfRecord">
+        SELECT
+          rjr.*,
+          pjf.score as currentScore,
+          per.`name`,
+          per.dep_name,
+          per.tag_code
+        FROM
+          tb_jf_record rjr
+          LEFT JOIN tb_personnel_jf pjf ON rjr.work_num = pjf.work_num
+          LEFT JOIN tb_personnel per ON per.work_num = rjr.work_num
+          where status=0
+          <if test="name!=null and name!=''">and per.name=#{name}</if>
+          <if test="company!=null">and per.tag_code LIKE CONCAT('%',#{company},'%')</if>
+          <if test="depName!=null">and per.tag_code LIKE CONCAT('%',#{depName},'%')</if>
+    </select>
+</mapper>

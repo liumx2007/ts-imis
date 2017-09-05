@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trasen.imis.dao.TbTreeMapper">
+    <select id="getTreeList" parameterType="String" resultType="com.trasen.imis.model.TbTree">
+        select * from tb_tree where parent = #{pkid} and is_vaild=1
+    </select>
+
+    <select id="getParentTree" resultType="com.trasen.imis.model.TbTree">
+        select * from tb_tree where parent is null limit 1
+    </select>
+    <select id="getDeptTreeList" parameterType="String" resultType="com.trasen.imis.model.TbTree">
+        select * from tb_tree where parent = #{pkid} and is_vaild=1 and `type`='dept'
+    </select>
+
+    <select id="getOrganizationDept" parameterType="java.util.Map" resultType="com.trasen.imis.model.TbDept">
+        select * from tb_dept where parent_dep_id=#{id} and is_vaild=1
+    </select>
+
+    <select id="getOrganizationDeptPerson" parameterType="java.util.Map" resultType="com.trasen.imis.model.TbPersonnel">
+        select * from tb_personnel where tag_code LIKE CONCAT('%|',#{id},'|%') and is_vaild=1
+    </select>
+
+    <select id="findDeptidRepeat" parameterType="String" resultType="int">
+        select count(pkid) from tb_tree where pkid=#{deptid}
+    </select>
+
+    <insert id="insertTree" parameterType="java.util.Map">
+      insert into tb_tree(pkid,parent,`name`,`level`,`type`) values(#{pkid},#{per_deptid},#{deptname},#{level},#{type})
+    </insert>
+
+    <insert id="insertDept" parameterType="java.util.Map">
+        insert into tb_dept(dep_id,dep_name,parent_dep_id,parent_dep_name,dep_level,remark,created) values(#{pkid},#{deptname},#{per_deptid},#{per_deptname},#{level},#{remark},#{created})
+    </insert>
+
+    <update id="updateTree" parameterType="java.util.Map">
+        update tb_tree set
+            parent=#{per_deptid},
+            `name`=#{deptname},
+            `level`=#{level},
+            `type`=#{type}
+        where pkid=#{pkid}
+    </update>
+
+
+
+
+    <update id="updatePersonnelTree" parameterType="java.util.Map">
+        update tb_tree set
+            parent=#{depId},
+            `level`=#{personlevel},
+            is_vaild=#{isVaild}
+        where pkid=#{perId}
+    </update>
+
+    <update id="updatePersonnel" parameterType="java.util.Map">
+        update tb_personnel set
+            work_num=#{workNum},
+            sex=#{sex},
+            `name`=#{name},
+            dep_id=#{depId},
+            dep_name=#{depName},
+            phone=#{phone},
+            is_vaild=#{isVaild},
+            tag_code=#{TagCode}
+         where per_id=#{perId}
+    </update>
+
+
+    <select id="selectTagCode" parameterType="String" resultType="String">
+        select parent from tb_tree where pkid=#{parent} and parent is not null
+    </select>
+
+    <delete id="deleteTreePersonnel" parameterType="String">
+        update tb_tree set is_vaild=0 where pkid=#{pkid}
+    </delete>
+
+    <select id="getSuperiorDepid" parameterType="String" resultType="com.trasen.imis.model.TbDept">
+        select * from tb_dept where dep_id = #{pkid} and is_vaild=1
+    </select>
+
+    <select id="getCountForPkid" parameterType="String" resultType="int">
+        select count(*) from tb_tree where parent=#{pkid} and is_vaild=1
+    </select>
+
+    <update id="delteForTree" parameterType="String">
+        update tb_tree set is_vaild=0 where pkid=#{pkid}
+    </update>
+
+    <update id="delteForDept" parameterType="String">
+        update tb_dept set is_vaild=0 where dep_id=#{pkid}
+    </update>
+
+    <select id="getDept" parameterType="String" resultType="com.trasen.imis.model.TbDept">
+        select * from tb_dept where dep_id = #{depId} and is_vaild=1
+    </select>
+    <update id="updateDept" parameterType="com.trasen.imis.model.TbDept">
+        update tb_dept set
+            dep_name=#{depName},
+            parent_dep_id=#{parentDepId},
+            parent_dep_name=#{parentDepName},
+            dep_level=#{depLevel},
+            remark=#{remark},
+            operator=#{operator}
+        where dep_id=#{depId}
+    </update>
+
+    <update id="updateDeptTree" parameterType="com.trasen.imis.model.TbTree">
+        update tb_tree set parent=#{parent},`name`=#{name},`level`=#{level}
+        where pkid = #{pkid} and type='dept' and is_vaild=1
+    </update>
+
+    <update id="updatePersonnelTagCode" parameterType="com.trasen.imis.model.TbPersonnel">
+        update tb_personnel set tag_code = #{tagCode},dep_name=#{depName},updated = now(),operator=#{operator}
+         where per_id = #{perId} and work_num = #{workNum}
+    </update>
+
+    <update id="updateSubDeptName" parameterType="com.trasen.imis.model.TbDept">
+        update tb_dept set parent_dep_name=#{depName},operator=#{operator} where parent_dep_id=#{depId}
+    </update>
+
+</mapper>

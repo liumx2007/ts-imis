@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trasen.imis.dao.TbAttenceLogMapper">
+    <insert id="insertAttenceLog" parameterType="com.trasen.imis.model.AttenceLogVo">
+        insert into tb_attence_log (open_id,longitude,latitude,accuracy,attence_time,attence_date,attence_week,`name`,work_num,remark,address,`type`)
+        VALUES (#{openId},#{longitude},#{latitude},#{accuracy},now(),#{attenceDate},#{attenceWeek},#{name},#{workNum},#{remark},#{address},#{type})
+    </insert>
+
+    <select id="queryAttLogList" parameterType="com.trasen.imis.model.AttenceLogVo" resultType="com.trasen.imis.model.AttenceLogVo">
+        select open_id as openId,longitude,latitude,accuracy,attence_time as attenceTime,
+        attence_date as attenceDate,attence_week as attenceWeek,`name`,work_num as workNum,remark,address,`type`
+        from tb_attence_log
+        where open_id=#{openId} and attence_date=#{attenceDate} order by attence_time desc
+    </select>
+
+    <select id="getAttenceLogList" parameterType="java.util.Map" resultType="com.trasen.imis.model.AttenceLogVo">
+        select *
+        from tb_attence_log
+        where work_num=#{workNum}
+        <if test="countDate!='' and countDate != null">
+            and date_format(attence_date,'%Y%m')=#{countDate}
+        </if>
+    </select>
+
+
+</mapper>

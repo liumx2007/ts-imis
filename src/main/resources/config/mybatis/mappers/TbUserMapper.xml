@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trasen.imis.dao.TbUserMapper">
+    <select id="getUser" parameterType="String" resultType="com.trasen.imis.model.TbUser">
+        select * from t_user where `name` = #{name} and status = 1 and permission=3 and app_id='ts-imis' limit 1
+    </select>
+
+
+</mapper>

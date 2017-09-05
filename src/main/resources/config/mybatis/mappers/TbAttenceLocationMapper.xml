@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trasen.imis.dao.TbAttenceLocationMapper">
+    <select id="getLocationList" resultType="com.trasen.imis.model.TbAttenceLocation">
+        select * from tb_attence_location
+    </select>
+    <insert id="locationSave" parameterType="com.trasen.imis.model.TbAttenceLocation">
+        <selectKey resultType="Integer" keyProperty="pkid">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+      insert into tb_attence_location(`name`,latitude,longitude,`range`,address,created,create_user,dep_name,dep_id,tag_name,tag_id,working_day,out_date,in_date,signin_time,signout_time) values
+      (#{name},#{latitude},#{longitude},#{range},#{address},now(),#{createUser},#{depName},#{depId},#{tagName},#{tagId},#{workingDay},#{outDate},#{inDate},#{signinTime},#{signoutTime})
+    </insert>
+
+    <select id="locationViewForid" parameterType="int" resultType="com.trasen.imis.model.TbAttenceLocation">
+        select * from tb_attence_location where pkid=#{pkid}
+    </select>
+    <update id="locationUpdateForid" parameterType="com.trasen.imis.model.TbAttenceLocation" >
+        update tb_attence_location set
+             `name`=#{name},
+             latitude=#{latitude},
+             longitude=#{longitude},
+             `range`=#{range},
+             dep_name=#{depName},
+             dep_id=#{depId},
+             tag_id=#{tagId},
+             working_day=#{workingDay},
+             out_date=#{outDate},
+             in_date=#{inDate},
+             signin_time=#{signinTime},
+             signout_time=#{signoutTime},
+             updated=now(),
+             operator=#{operator},
+             address=#{address}
+        where pkid=#{pkid}
+    </update>
+    <delete id="locationDeleteForid" parameterType="int">
+        delete from tb_attence_location where pkid=#{pkid}
+    </delete>
+</mapper>

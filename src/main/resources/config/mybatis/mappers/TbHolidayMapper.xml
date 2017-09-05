@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trasen.imis.dao.TbHolidayMapper">
+    <select id="selectCountByYearMonth" resultType="com.trasen.imis.model.TbHoliday" parameterType="String">
+        select * from tb_holiday where `year_month`=#{yearMonth}
+    </select>
+    <insert id="saveByList" parameterType="java.util.List">
+        insert into tb_holiday(`year_month`,work_day,holiday)
+        values
+        <foreach collection="list" item="item" index="index" separator="," >
+            (#{item.yearMonth},#{item.workDay},#{item.holiday})
+        </foreach>
+    </insert>
+
+    <delete id="deleteByYearMonth" parameterType="String">
+      delete from tb_holiday where `year_month` like CONCAT(#{yearMonth},'%')
+    </delete>
+</mapper>

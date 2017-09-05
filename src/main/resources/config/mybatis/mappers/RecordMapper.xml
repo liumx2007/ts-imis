@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trasen.imis.dao.RecordMapper">
+    <select id="getRecordRankList" resultType="com.trasen.imis.model.TbJfRank">
+        select * from tb_jf_rank order by px asc
+    </select>
+
+    <delete id="deleteRecordRank" parameterType="com.trasen.imis.model.TbJfRank">
+        delete from tb_jf_rank where pkid=#{pkid}
+    </delete>
+
+    <update id="updateRecordLevel" parameterType="com.trasen.imis.model.TbJfRank">
+        update tb_jf_rank set `name`=#{name},`type`=#{type},score=#{score},prm_score=#{prmScore},px=#{px} where pkid=#{pkid}
+    </update>
+
+    <insert id="insertRecordLevel" parameterType="com.trasen.imis.model.TbJfRank" useGeneratedKeys="true" keyProperty="pkid">
+        insert into tb_jf_rank(`name`,`type`,score,prm_score,px) values(#{name},#{type},#{score},#{prmScore},#{px})
+    </insert>
+
+    <delete id="deleteMoreRecordRank">
+        delete from tb_jf_rank where pkid in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>

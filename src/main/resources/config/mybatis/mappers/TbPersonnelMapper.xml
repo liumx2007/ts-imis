@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trasen.imis.dao.TbPersonnelMapper">
+    <select id="queryPersonnelList" parameterType="java.util.Map" resultType="com.trasen.imis.model.TbPersonnel">
+        select p.per_id,p.work_num,p.name,sex,dep_id,dep_name,phone,tag_code,`position`,entry_date,picture,
+        id_card,birthday,birthday_type,household_registe,house_address,
+        province,city,district,school,major,education,graduate_date,linkman,link_phone,remark,
+        rank,re_entry,regular_date,quit_date,try_salary,salary,salary_remark,shb_date,gjj_date
+        from tb_personnel p
+        left join tb_personnel_basic b on p.per_id = b.per_id
+        left join tb_personnel_file f on p.per_id = f.per_id
+        where 1=1 and p.is_vaild=1
+        <if test="depName!='' and depName != null">
+            AND p.dep_name LIKE CONCAT('%',#{depName},'%')
+        </if>
+        <if test="name!='' and name != null">
+            AND p.name LIKE CONCAT('%',#{name},'%')
+        </if>
+        <if test="position!='' and position != null">
+            AND p.position LIKE CONCAT('%',#{position},'%')
+        </if>
+        <if test="sex!='' and sex != null">
+            AND p.sex=#{sex}
+        </if>
+        <if test="workNum!='' and workNum != null">
+            AND p.work_num=#{workNum}
+        </if>
+        <if test="SocialStart!='' and SocialStart != null">
+        <![CDATA[ AND f.shb_date >= #{SocialStart} ]]>
+    </if>
+        <if test="SocialEnd!='' and SocialEnd != null">
+            <![CDATA[ AND f.shb_date <= #{SocialEnd} ]]>
+        </if>
+        <if test="AccumulationStart!='' and AccumulationStart != null">
+            <![CDATA[ AND f.gjj_date >= #{AccumulationStart} ]]>
+        </if>
+        <if test="AccumulationEnd!='' and AccumulationEnd != null">
+            <![CDATA[ AND f.gjj_date <= #{AccumulationEnd} ]]>
+        </if>
+
+        <if test="BirthdayStart!='' and BirthdayStart != null">
+            <![CDATA[ AND b.birthday >= #{BirthdayStart} ]]>
+        </if>
+        <if test="BirthdayEnd!='' and BirthdayEnd != null">
+            <![CDATA[ AND b.birthday <= #{BirthdayEnd} ]]>
+        </if>
+        <if test="birthdayType!='' and birthdayType != null">
+            AND b.birthday_type=#{birthdayType}
+        </if>
+    </select>
+
+    <insert id="getPkid" parameterType="com.trasen.imis.model.TbPkid" useGeneratedKeys="true" keyProperty="pkid">
+        INSERT INTO tb_pkid(`type`,created) VALUES (#{type},now())
+    </insert>
+
+    <insert id="insertPersonnel" parameterType="com.trasen.imis.model.TbPersonnel">
+        insert into tb_personnel (per_id,work_num,`name`,sex,dep_id,dep_name,phone,tag_code,operator,created,`position`,entry_date,picture)
+        values
+        (#{perId},#{workNum},#{name},#{sex},#{depId},#{depName},#{phone},#{tagCode},#{operator},#{created},#{position},#{entryDate},#{picture})
+    </insert>
+
+    <update id="updatePersonnel" parameterType="com.trasen.imis.model.TbPersonnel">
+        update tb_personnel set work_num = #{workNum},`name`=#{name},sex=#{sex},dep_id=#{depId},dep_name=#{depName},phone=#{phone},tag_code=#{tagCode},
+        operator=#{operator},`position`=#{position},updated=#{updated},entry_date = #{entryDate},picture = #{picture}
+        where per_id=#{perId}
+    </update>
+
+    <update id="deletePersonnel" parameterType="String">
+        update tb_personnel set is_vaild = 0 where per_id=#{perId}
+    </update>
+    
+    <select id="getParentDepId" parameterType="String" resultType="String">
+        select parent_dep_id from tb_dept where dep_id = #{depId} and is_vaild=1
+    </select>
+
+    <select id="getPersonnelBasic" parameterType="String" resultType="com.trasen.imis.model.TbPersonnel">
+        select * from tb_personnel_basic where per_id = #{perId}
+    </select>
+
+    <select id="getPersonnelFile" parameterType="String" resultType="com.trasen.imis.model.TbPersonnel">
+        select * from tb_personnel_file where per_id = #{perId}
+    </select>
+
+    <insert id="insertPersonnelBasic" parameterType="com.trasen.imis.model.TbPersonnel">
+        insert into tb_personnel_basic (per_id,work_num,`name`,id_card,birthday,birthday_type,household_registe,house_address,
+        province,city,district,school,major,education,graduate_date,linkman,link_phone,idCard_file,separation_file,school_file,remark,created,operator)
+        values
+        (#{perId},#{workNum},#{name},#{idCard},#{birthday},#{birthdayType},#{householdRegiste},#{houseAddress},
+        #{province},#{city},#{district},#{school},#{major},#{education},#{graduateDate},#{linkman},#{linkPhone},#{idCardFile},#{separationFile},#{schoolFile},#{remark},#{created},#{operator})
+    </insert>
+
+    <update id="updatePersonnelBasic" parameterType="com.trasen.imis.model.TbPersonnel">
+        update tb_personnel_basic set work_num = #{workNum},`name`=#{name},id_card=#{idCard},birthday=#{birthday},
+        birthday_type=#{birthdayType},household_registe=#{householdRegiste},house_address=#{houseAddress},
+        province=#{province},city=#{city},district=#{district},school=#{school},major=#{major},education=#{education},
+        graduate_date=#{graduateDate},linkman=#{linkman},link_phone=#{linkPhone},idCard_file=#{idCardFile},separation_file=#{separationFile},school_file=#{schoolFile},remark=#{remark},updated=#{updated},
+        operator=#{operator}
+        where per_id=#{perId}
+    </update>
+
+    <insert id="insertPersonnelFile" parameterType="com.trasen.imis.model.TbPersonnel">
+        insert into tb_personnel_file (per_id,work_num,rank,re_entry,regular_date,quit_date,try_salary,salary,salary_remark,shb_date,gjj_date,created,operator)
+        values
+        (#{perId},#{workNum},#{rank},#{reEntry},#{regularDate},#{quitDate},#{trySalary},#{salary},#{salaryRemark},#{shbDate},#{gjjDate},#{created},#{operator})
+    </insert>
+
+    <update id="updatePersonnelFile" parameterType="com.trasen.imis.model.TbPersonnel">
+        update tb_personnel_file set work_num = #{workNum},rank=#{rank},re_entry=#{reEntry},regular_date=#{regularDate},
+        quit_date=#{quitDate},try_salary=#{trySalary},salary=#{salary},salary_remark=#{salaryRemark},shb_date=#{shbDate},
+        gjj_date=#{gjjDate},updated=#{updated},operator=#{operator}
+        where per_id=#{perId}
+    </update>
+
+    <select id="findWorkNumRepeat" parameterType="String" resultType="int">
+      select count(*)  from tb_personnel where work_num=#{workNum}
+    </select>
+
+    <select id="getPersonnelForWorkNum" parameterType="String" resultType="com.trasen.imis.model.TbPersonnel">
+        select per.*,bas.id_card,u.open_id from tb_personnel per
+        left join tb_personnel_basic bas on bas.per_id=per.per_id
+        left join tb_weixin_user u on per.work_num=u.work_num
+        where per.work_num=#{workNum} limit 1
+    </select>
+
+    <insert id="insertDeptLog" parameterType="com.trasen.imis.model.TbDeptLog">
+        insert into tb_dept_log (old_dep_id,old_dept,old_position,new_dep_id,new_dept,new_position,
+        change_date,work_num,per_id,exe_date,created,operator)
+        values (#{oldDepId},#{oldDept},#{oldPosition},#{newDepId},#{newDept},#{newPosition},
+        #{changeDate},#{workNum},#{perId},#{exeDate},#{created},#{operator})
+    </insert>
+
+    <select id="queryDeptLog" parameterType="com.trasen.imis.model.TbDeptLog" resultType="com.trasen.imis.model.TbDeptLog">
+        select * from tb_dept_log where per_id = #{perId}
+    </select>
+
+    <update id="updateWeixinUser" parameterType="com.trasen.imis.model.AttenceVo">
+        update tb_weixin_user set tag_id=#{tagId},tag_name=#{tagName} where work_num=#{workNum}
+    </update>
+
+    <insert id="insertWeixinUser" parameterType="com.trasen.imis.model.AttenceVo">
+        insert into tb_weixin_user (work_num,tag_id,tag_name,`name`,`position`,is_vaild)
+        values
+        (#{workNum},#{tagId},#{tagName},#{name},#{position},1)
+    </insert>
+
+    <select id="getWeixinUser" parameterType="String" resultType="com.trasen.imis.model.AttenceVo">
+        select * from tb_weixin_user where work_num=#{workNum} limit 1;
+    </select>
+
+    <update id="deleteWeixinUser" parameterType="String">
+        update tb_weixin_user set is_vaild=0 where work_num=#{workNum}
+    </update>
+
+    <select id="queryAddresssPersonnelList" parameterType="java.util.Map" resultType="com.trasen.imis.model.TbPersonnel">
+        select p.per_id,p.work_num,p.name,sex,dep_id,dep_name,phone,tag_code,`position`,entry_date,picture,
+        id_card,birthday,birthday_type,household_registe,house_address,
+        province,city,district,school,major,education,graduate_date,linkman,link_phone,remark,
+        rank,re_entry,regular_date,quit_date,try_salary,salary,salary_remark,shb_date,gjj_date
+        from tb_personnel p
+        left join tb_personnel_basic b on p.per_id = b.per_id
+        left join tb_personnel_file f on p.per_id = f.per_id
+        where 1=1 and p.is_vaild=1 order by p.work_num asc
+    </select>
+
+
+    <!--离职信息-->
+    <select id="queryQuitPersonnelList" parameterType="java.util.Map" resultType="com.trasen.imis.model.TbPersonnel">
+        select p.per_id,p.work_num,p.name,sex,dep_id,dep_name,phone,tag_code,`position`,entry_date,picture,
+        id_card,birthday,birthday_type,household_registe,house_address,
+        province,city,district,school,major,education,graduate_date,linkman,link_phone,remark,
+        rank,re_entry,regular_date,quit_date,try_salary,salary,salary_remark,shb_date,gjj_date
+        from tb_personnel p
+        left join tb_personnel_basic b on p.per_id = b.per_id
+        left join tb_personnel_file f on p.per_id = f.per_id
+        where 1=1 and p.is_vaild=0
+        <if test="depName!='' and depName != null">
+            AND p.dep_name LIKE CONCAT('%',#{depName},'%')
+        </if>
+        <if test="name!='' and name != null">
+            AND p.name LIKE CONCAT('%',#{name},'%')
+        </if>
+        <if test="position!='' and position != null">
+            AND p.position LIKE CONCAT('%',#{position},'%')
+        </if>
+        <if test="sex!='' and sex != null">
+            AND p.sex=#{sex}
+        </if>
+    </select>
+
+
+
+</mapper>

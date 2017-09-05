@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trasen.imis.dao.TbAttenceCountMapper">
+    <select id="queryWeixinUser" resultType="com.trasen.imis.model.TbWeixinUser">
+        select * from tb_weixin_user where is_vaild = 1
+    </select>
+
+    <!-- 实际签到天数 -->
+    <select id="getFactSignNum" resultType="Integer" parameterType="Map">
+        select count(*) from tb_attence where name=#{name} and date_format(attence_date,'%Y%m')=#{date}
+    </select>
+    <!-- 正常出勤 -->
+    <select id="getAttNum" resultType="Integer" parameterType="Map">
+        select count(*) from tb_attence where name=#{name} and date_format(attence_date,'%Y%m')=#{date}
+        and late_time is null and back_time is null and is_vaild=1
+    </select>
+    <!-- 迟到天数 -->
+    <select id="getLateNum" resultType="Integer" parameterType="Map">
+        select count(*) from tb_attence where name=#{name} and date_format(attence_date,'%Y%m')=#{date}
+        and late_time is not null and is_vaild=1
+    </select>
+    <!-- 早退天数 -->
+    <select id="getBackNum" resultType="Integer" parameterType="Map">
+        select count(*) from tb_attence where name=#{name} and date_format(attence_date,'%Y%m')=#{date}
+        and back_time is not null and is_vaild=1
+    </select>
+    <!-- 旷工天数 -->
+    <select id="getLackNum" resultType="Integer" parameterType="Map">
+        select count(*) from tb_attence_lack where name=#{name} and date_format(lack_date,'%Y%m')=#{date}
+        and is_vaild=1
+    </select>
+    
+    <select id="queryAttenceLeaveList" parameterType="Map" resultType="com.trasen.imis.model.AttenceLeave">
+        select * from tb_attence_leave where name=#{name} and date_format(attence_date,'%Y%m')=#{date}
+    </select>
+
+    <insert id="saveAttenceCount" parameterType="com.trasen.imis.model.TbAttenceCount">
+        insert into tb_attence_count (`name`,work_num,tag_name,tag_id,should_sign_num,fact_sign_num,
+        att_num,late_num,back_num,lack_num,annual_leave,maternity_leave,peternitu_leave,
+        marital_leave,funeral_leave,affair_leave,sick_leave,other_leave,count_date,created) values
+        (#{name},#{workNum},#{tagName},#{tagId},#{shouldSignNum},#{factSignNum},
+        #{attNum},#{lateNum},#{backNum},#{lackNum},#{annualLeave},#{maternityLeave},#{peternituLeave},
+        #{maritalLeave},#{funeralLeave},#{affairLeave},#{sickLeave},#{otherLeave},#{countDate},#{created})
+    </insert>
+
+    <update id="updateAttenceCount" parameterType="com.trasen.imis.model.TbAttenceCount">
+        update tb_attence_count set should_sign_num=#{shouldSignNum},fact_sign_num=#{factSignNum},att_num=#{attNum},late_num=#{lateNum}
+        ,back_num=#{backNum} ,lack_num=#{lackNum} ,annual_leave=#{annualLeave}
+        ,maternity_leave=#{maternityLeave} ,peternitu_leave=#{peternituLeave} ,marital_leave=#{maritalLeave}
+        ,funeral_leave=#{funeralLeave} ,affair_leave=#{affairLeave} ,sick_leave=#{sickLeave}
+        ,other_leave=#{otherLeave} ,updated=now()
+        where `name`=#{name} and count_date=#{countDate}
+    </update>
+
+    <select id="getAttenceCount" resultType="com.trasen.imis.model.TbAttenceCount" parameterType="Map">
+        select * from tb_attence_count where `name`=#{name} and count_date=#{date}
+    </select>
+
+    <select id="queryAttenceCountList" parameterType="com.trasen.imis.model.TbAttenceCount" resultType="com.trasen.imis.model.TbAttenceCount">
+        select * from tb_attence_count where 1=1
+        <if test="tagName!='' and tagName != null">
+            AND tag_name LIKE CONCAT('%',#{tagName},'%')
+        </if>
+        <if test="name!='' and name != null">
+            AND name LIKE CONCAT('%',#{name},'%')
+        </if>
+        <if test="countDate!='' and countDate != null">
+            AND count_date = #{countDate}
+        </if>
+        <if test="lateNum>0">
+            AND late_num>0
+        </if>
+        <if test="lackNum>0">
+        AND lack_num>0
+        </if>
+        <if test="backNum>0">
+            AND back_num>0
+        </if>
+        <if test="maternityLeave>0">
+        AND maternity_leave>0
+        </if>
+        <if test="annualLeave>0">
+            AND annual_leave>0
+        </if>
+        <if test="peternituLeave>0">
+            AND peternitu_leave>0
+        </if>
+        <if test="maritalLeave>0">
+            AND marital_leave>0
+        </if>
+        <if test="funeralLeave>0">
+            AND funeral_leave>0
+        </if>
+        <if test="affairLeave>0">
+            AND affair_leave>0
+        </if>
+        <if test="sickLeave>0">
+        AND sick_leave>0
+        </if>
+        <if test="otherLeave>0">
+            AND other_leave>0
+        </if>
+    </select>
+
+</mapper>

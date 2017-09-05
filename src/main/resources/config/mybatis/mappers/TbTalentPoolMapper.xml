@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trasen.imis.dao.TbTalentPoolMapper">
+    <select id="searchTalentPoolList" parameterType="com.trasen.imis.model.TbTalentPool" resultType="com.trasen.imis.model.TbTalentPool">
+        select *
+        from tb_talent_pool where  1 =1
+        <if test="name!='' and name != null">
+            AND name LIKE CONCAT('%',#{name},'%')
+        </if>
+        <if test="willJob!='' and willJob != null">
+            AND will_job LIKE CONCAT('%',#{willJob},'%')
+        </if>
+        <if test="beGood!='' and beGood != null">
+            AND be_good LIKE CONCAT('%',#{beGood},'%')
+        </if>
+        <if test="isCome != null">
+            AND is_come = #{isCome}
+        </if>
+        <if test="result != null">
+            AND result = #{result}
+        </if>
+    </select>
+
+    <insert id="saveTalentPool" parameterType="com.trasen.imis.model.TbTalentPool">
+        <selectKey resultType="Integer" keyProperty="pkid">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into tb_talent_pool (`name`,sex,phone,work_date,
+        will_job,be_good,school,education,
+        certificate,resume_file,is_come,result,
+        reserve,remark,created,operator)
+        values (#{name},#{sex},#{phone},#{workDate},
+        #{willJob},#{beGood},#{school},#{education},
+        #{certificate},#{resumeFile},#{isCome},#{result},
+        #{reserve},#{remark},#{created},#{operator})
+    </insert>
+
+    <update id="updateTalentPool" parameterType="com.trasen.imis.model.TbTalentPool">
+        update tb_talent_pool set `name`=#{name},sex=#{sex},phone=#{phone},work_date=#{workDate},
+        will_job=#{willJob},be_good=#{beGood},school=#{school},education=#{education},
+        certificate=#{certificate},resume_file=#{resumeFile},is_come=#{isCome},result=#{result},
+        reserve=#{reserve},remark=#{remark},updated=#{updated},operator=#{operator}
+        where pkid = #{pkid}
+    </update>
+
+    <delete id="deleteTalentPool" parameterType="Integer">
+        delete from tb_talent_pool where pkid = #{pkid}
+    </delete>
+
+    <select id="queryWorkHistory" parameterType="com.trasen.imis.model.TbWorkHistory" resultType="com.trasen.imis.model.TbWorkHistory">
+        select * from tb_work_history where per_id = #{perId} and type = #{type}
+    </select>
+
+    <insert id="insertWorkHistory" parameterType="com.trasen.imis.model.TbWorkHistory">
+        insert into tb_work_history (start_date,end_date,company,dept,
+        post,`type`,per_id,created,operator)
+        values (#{startDate},#{endDate},#{company},#{dept},
+        #{post},#{type},#{perId},#{created},#{operator})
+    </insert>
+
+    <update id="updateWorkHistory" parameterType="com.trasen.imis.model.TbWorkHistory">
+        update tb_work_history set start_date=#{startDate},end_date=#{endDate},company=#{company},dept=#{dept},
+        post=#{post},updated=#{updated},operator=#{operator}
+        where pkid = #{pkid} and  `type`=#{type} and per_id = #{perId}
+    </update>
+
+    <delete id="deleteWorkHistory" parameterType="Integer">
+        delete from tb_work_history where pkid = #{pkid}
+    </delete>
+
+
+
+
+
+
+</mapper>
