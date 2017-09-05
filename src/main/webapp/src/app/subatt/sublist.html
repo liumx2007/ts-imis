@@ -46,7 +46,7 @@
                     <span class="red"   ng-if="!person.signinType">未签到</span>
                     <span class="red"   ng-if="person.signinType&&person.signinType=='inEx'" ng-bind="person.signinType | signinType"></span>
                     <span class="green" ng-if="person.signinType&&person.signinType=='signIn'" ng-bind="person.signinType | signinType"></span>
-                    <span class="green" ng-if="person.signinType&&person.signinType=='sign'" ng-bind="person.signinType | signinType"></span>
+                    <span class="blue" ng-if="person.signinType&&person.signinType=='sign'" ng-bind="person.signinType | signinType"></span>
 
                 </div>
 
