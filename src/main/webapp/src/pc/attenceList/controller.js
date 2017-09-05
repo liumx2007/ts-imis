@@ -485,7 +485,7 @@ app.controller('attenceToLeaveMultiple', ['$scope', '$modalInstance','$http', 'd
             if (!invalid) {
                 seltMul.attenceLeavearray = [];
                 var riqidate;
-                if (seltMul.riqi == 4 || seltMul.riqi == 8) {
+                if (seltMul.riqi == 3 ||seltMul.riqi == 4 || seltMul.riqi == 8) {
                     riqidate = seltMul.riqi;
                 } else {
                     riqidate = 2;
