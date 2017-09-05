@@ -274,7 +274,10 @@
                     <td ng-show="ctrl.content=='加班列表'" ng-bind="att.remark"></td>
 
                     <td ng-show="ctrl.content=='请假列表'" ng-bind="att.type | LeaveType"></td>
-                    <td ng-show="ctrl.content=='请假列表'">{{att.startTime}}~{{att.endTime}}</td>
+                    <td ng-show="ctrl.content=='请假列表'&&att.leaveHours==2">{{att.startTime}}~{{att.endTime}}</td>
+                    <td ng-show="ctrl.content=='请假列表'&&att.leaveHours==3">08:30:00~12:00:00</td>
+                    <td ng-show="ctrl.content=='请假列表'&&att.leaveHours==4">14:00:00~17:30:00</td>
+                    <td ng-show="ctrl.content=='请假列表'&&att.leaveHours==8">08:30:00~17:30:00</td>
                     <td ng-show="ctrl.content=='请假列表'" ng-bind="att.createUser"></td>
                     <td ng-show="ctrl.content=='请假列表'" ng-bind="att.remark"></td>
 
