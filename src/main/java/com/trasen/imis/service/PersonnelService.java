@@ -175,16 +175,18 @@ public class PersonnelService {
         attenceVo.setWorkNum(tbPersonnel.getWorkNum());
         attenceVo.setName(tbPersonnel.getName());
         attenceVo.setPosition(tbPersonnel.getPosition());
+        String tagId = tbPersonnel.getTagCode();
+        String tagName = tbPersonnel.getDepName();
         if(tagList!=null&&tagList.size()>0){
-            //默认取第一个标签作为考勤规则依据
-            TbTagPersonnel tbTagPersonnel = tagList.get(0);
-            String tag = tbTagPersonnel.getTagId();
-            attenceVo.setTagId(tag);
-            attenceVo.setTagName(tbTagPersonnel.getTagName());
-        }else{
-            attenceVo.setTagId(tbPersonnel.getTagCode());
-            attenceVo.setTagName(tbPersonnel.getDepName());
+            for(TbTagPersonnel tag:tagList){
+                if(tag.getTagId()!=null){
+                    String key = tag.getTagId().replace("|","");
+                    tagId = tagId +key+"|";
+                }
+            }
         }
+        attenceVo.setTagId(tagId);
+        attenceVo.setTagName(tagName);
         AttenceVo weixinUser = tbPersonnelMapper.getWeixinUser(tbPersonnel.getWorkNum());
         if(weixinUser==null){
             tbPersonnelMapper.insertWeixinUser(attenceVo);
