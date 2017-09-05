@@ -11,7 +11,7 @@
                         新增劳动合同
                     </button>
                 </div>
-                <div class="col-px-80 fl" style="position: relative;" ng-mouseleave="ctrl.showdiv()">
+                <div class="col-px-80 fl" style="position: relative;" id="myShaix">
                     <button class="btn btn-default saixuan Nksx" ng-click="ctrl.toggShaix()">
                         筛选
                     </button>
@@ -60,7 +60,7 @@
                                                    close-text="Close"/>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default" ng-click="ctrl.opendtStart($event)"><i
-                                                    class="glyphicon glyphicon-calendar"></i></button>
+                                                        class="glyphicon glyphicon-calendar"></i></button>
                                             </span>
                                         </p>
                                     </div>
@@ -74,7 +74,7 @@
                                                    close-text="Close"/>
                                             <span class="input-group-btn">
                                             <button type="button" class="btn btn-default" ng-click="ctrl.opendtEnd($event)"><i
-                                                class="glyphicon glyphicon-calendar"></i></button>
+                                                    class="glyphicon glyphicon-calendar"></i></button>
                                             </span>
                                         </p>
                                     </div>
@@ -82,23 +82,23 @@
                             </div>
                         </div>
                         <div class="brbotP NKwrapper Nkcont">
-                                <div class="form-group NkSerTit">
-                                    <label class="col-px-60 control-label fl NkSN">合同年限</label>
-                                    <div class="col-px-270 fr">
-                                        <input type="text" class="form-control" placeholder="合同年限" ng-model="ctrl.years">
-                                    </div>
+                            <div class="form-group NkSerTit">
+                                <label class="col-px-60 control-label fl NkSN">合同年限</label>
+                                <div class="col-px-270 fr">
+                                    <input type="text" class="form-control" placeholder="合同年限" ng-model="ctrl.years">
                                 </div>
-
-                         </div>
-                        <div class="brbotP NKwrapper Nkcont">
-                                <div class="form-group NkSerTit">
-                                    <label class="col-px-60 control-label fl NkSN">合同类型</label>
-                                    <div class="col-px-270 fr">
-                                        <select class="form-control Rinput60" ng-model="ctrl.twfDictContractType" ng-options="twfDict.name  for twfDict in ctrl.twfDictList"></select>
-                                    </div>
-                                </div>
-
                             </div>
+
+                        </div>
+                        <div class="brbotP NKwrapper Nkcont">
+                            <div class="form-group NkSerTit">
+                                <label class="col-px-60 control-label fl NkSN">合同类型</label>
+                                <div class="col-px-270 fr">
+                                    <select class="form-control Rinput60" ng-model="ctrl.twfDictContractType" ng-options="twfDict.name  for twfDict in ctrl.twfDictList"></select>
+                                </div>
+                            </div>
+
+                        </div>
                         <!--重置按钮-->
                         <div class="fr NKwrapper">
                             <button class="btn m-b-xs w-xs ButCz" ng-click="ctrl.cancel()">清空</button>

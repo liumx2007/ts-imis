@@ -16,5 +16,6 @@ public class TbUser {
     private String displayName;// '展示名',
     private String perId;// '人员ID',
     private String xtoken;
+    private String newPassword;
 
 }

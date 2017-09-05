@@ -36,9 +36,14 @@ app.controller('PersonnelFile', ['$scope','$http','$log','$modal','$filter','Fil
         selt.myShaix = !selt.myShaix;
     };
 
-    this.showdiv= function() {
-        selt.myShaix = false;
-    };
+    $(document).on("click",function(e){//js
+        var $target = $(e.target);
+        if(!($target.parents().andSelf().is("#myShaix"))){
+            $scope.$apply(function(){
+                selt.myShaix=false;
+            });
+        }
+    });
 
     //筛选
     this.nameStrs = [];
@@ -96,7 +101,7 @@ app.controller('PersonnelFile', ['$scope','$http','$log','$modal','$filter','Fil
             "pageSize":10
         };
         this.excelPersonExprot="/excel/excelPersonExprot?depName="+selt.depName+"&name="+selt.name+"&position="+selt.position+"&sex="+selt.sexcx+"&workNum="
-        +selt.workNum+"&birthdayType="+selt.birthdayTypecx+"&SocialStart="+$filter("date")(selt.SocialStart, "yyyy-MM-dd")+"&SocialEnd="+$filter("date")(selt.SocialEnd, "yyyy-MM-dd")+
+            +selt.workNum+"&birthdayType="+selt.birthdayTypecx+"&SocialStart="+$filter("date")(selt.SocialStart, "yyyy-MM-dd")+"&SocialEnd="+$filter("date")(selt.SocialEnd, "yyyy-MM-dd")+
             "&AccumulationStart="+$filter("date")(selt.AccumulationStart, "yyyy-MM-dd")+
             "&AccumulationEnd="+$filter("date")(selt.AccumulationEnd, "yyyy-MM-dd")+
             "&BirthdayStart="+$filter("date")(selt.BirthdayStart, "yyyy-MM-dd")+
@@ -198,11 +203,11 @@ app.controller('PersonnelFile', ['$scope','$http','$log','$modal','$filter','Fil
     };
 
     /*this.disabled = function(date, mode) {
-        return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
-    };*/
+     return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+     };*/
     this.formats = ['yyyy-MM-dd', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
     this.format = this.formats[0];
-   // this.entryDate = $filter("date")(new Date(), "yyyy-MM-dd");
+    // this.entryDate = $filter("date")(new Date(), "yyyy-MM-dd");
     this.open = function($event) {
         $event.preventDefault();
         $event.stopPropagation();
@@ -388,7 +393,7 @@ app.controller('PersonnelFile', ['$scope','$http','$log','$modal','$filter','Fil
             if(!result.success){
                 selt.findworkNum=true;
                 selt.message=result.message;
-             }else{
+            }else{
                 selt.findworkNum=false;
             }
 
@@ -666,19 +671,19 @@ app.controller('PersonnelFile', ['$scope','$http','$log','$modal','$filter','Fil
         });
 
         /*selectAddressInstance.result.then(function (tagName) {
-            var tagNamelist="";
-            if(tagName.length>0){
-                for(var i=0;i<tagName.length;i++){
-                    if(i+1==tagName.length){
-                        tagNamelist=tagNamelist+tagName[i];
-                    }else{
-                        tagNamelist=tagNamelist+tagName[i]+",";
-                    }
+         var tagNamelist="";
+         if(tagName.length>0){
+         for(var i=0;i<tagName.length;i++){
+         if(i+1==tagName.length){
+         tagNamelist=tagNamelist+tagName[i];
+         }else{
+         tagNamelist=tagNamelist+tagName[i]+",";
+         }
 
-                }
-            }
-            this.excelPersonAddressExprot="/excel/excelPersonAddressExprot?tagName="+tagNamelist;
-        });*/
+         }
+         }
+         this.excelPersonAddressExprot="/excel/excelPersonAddressExprot?tagName="+tagNamelist;
+         });*/
 
     };
 
@@ -851,13 +856,13 @@ app.controller('tagController', ['$scope', '$modalInstance','$http','workNum', f
         for(var i=0;i<tag.selected.length;i++){
             update.push(tag.selected[i].tagName)
         }
-            if (action == 'add' && update.indexOf(id.tagName)==-1) {
-                tag.selected.push(id);
-            }
-            if (action == 'remove' && update.indexOf(id.tagName) != -1) {
-                var idx = update.indexOf(id.tagName);
-                tag.selected.splice(idx, 1);
-            }
+        if (action == 'add' && update.indexOf(id.tagName)==-1) {
+            tag.selected.push(id);
+        }
+        if (action == 'remove' && update.indexOf(id.tagName) != -1) {
+            var idx = update.indexOf(id.tagName);
+            tag.selected.splice(idx, 1);
+        }
     }
 
     tag.updateSelection = function ($event, id) {
@@ -882,15 +887,15 @@ app.controller('tagController', ['$scope', '$modalInstance','$http','workNum', f
             var tagname3={workNum:workNum};
             tag.selected.push(tagname3);
         }
-         $http.post("/tag/saveTaTagPersonnel",angular.toJson(tag.selected)).success(function (result) {
-                if(result.success){
-                    tag.selecttag=tag.selected;
-                    tag.selected=[];
-                    $modalInstance.close(tag.selecttag);
-                }else{
-                    alert(result.message);
-                }
-            });
+        $http.post("/tag/saveTaTagPersonnel",angular.toJson(tag.selected)).success(function (result) {
+            if(result.success){
+                tag.selecttag=tag.selected;
+                tag.selected=[];
+                $modalInstance.close(tag.selecttag);
+            }else{
+                alert(result.message);
+            }
+        });
 
     }
     tag.cancel = function () {

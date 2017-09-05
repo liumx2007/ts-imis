@@ -28,9 +28,14 @@ app.controller('QuitPersonnelFile', ['$scope','$http','$log','$modal','$filter',
         selt.myShaix = !selt.myShaix;
     };
 
-    this.showdiv= function() {
-        selt.myShaix = false;
-    };
+    $(document).on("click",function(e){//js
+        var $target = $(e.target);
+        if(!($target.parents().andSelf().is("#myShaix"))){
+            $scope.$apply(function(){
+                selt.myShaix=false;
+            });
+        }
+    });
 
     this.submitSeach = function () {
         selt.setPage(1);
@@ -60,7 +65,7 @@ app.controller('QuitPersonnelFile', ['$scope','$http','$log','$modal','$filter',
             "pageSize":10
         };
         this.excelQuitPersonExprot="/excel/excelQuitPersonExprot?depName="+selt.depName+"&name="+selt.name+"&position="+selt.position+"&sex="+selt.sexcx+"&workNum="
-        +selt.workNum;
+            +selt.workNum;
 
         $http.post("/personnel/searchQuitPersonnel",angular.toJson(paramsAtt)).success(function (result) {
             if(result.code==1){
@@ -114,7 +119,7 @@ app.controller('QuitPersonnelFile', ['$scope','$http','$log','$modal','$filter',
 
     this.formats = ['yyyy-MM-dd', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
     this.format = this.formats[0];
-   // this.entryDate = $filter("date")(new Date(), "yyyy-MM-dd");
+    // this.entryDate = $filter("date")(new Date(), "yyyy-MM-dd");
     this.open = function($event) {
         $event.preventDefault();
         $event.stopPropagation();

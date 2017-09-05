@@ -30,13 +30,14 @@ app.controller('Contract', ['$scope', '$modal', '$http', '$filter','$log', funct
         selt.myShaix = !selt.myShaix;
     };
     this.szReg="^(0|[1-9][0-9]*)$";
-    this.showdiv=function(){
-        selt.myShaix = false;
-    }
-    /*this.showdivxz=function(){
-       // document.getElementById("activeid").click();
-        document.querySelector('#activeid').click();
-    }*/
+    $(document).on("click",function(e){//js
+        var $target = $(e.target);
+        if(!($target.parents().andSelf().is("#myShaix"))){
+            $scope.$apply(function(){
+                selt.myShaix=false;
+            });
+        }
+    });
 
     this.cancel = function () {
         selt.name = "";
@@ -112,8 +113,8 @@ app.controller('Contract', ['$scope', '$modal', '$http', '$filter','$log', funct
     };
 
     /*this.disabled = function(date, mode) {
-        return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
-    };*/
+     return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+     };*/
     this.formats = ['yyyy-MM-dd', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
     this.format = this.formats[0];
 
@@ -258,18 +259,18 @@ app.controller('Contract', ['$scope', '$modal', '$http', '$filter','$log', funct
     };
 
     /*//获取部门
-    this.findDeptperson = function (size) {
-        var selectdeptInstance = $modal.open({
-            templateUrl: 'selectdept.html',
-            controller: 'selectdeptController as selectdeptctrl',
-            size: size
-        });
+     this.findDeptperson = function (size) {
+     var selectdeptInstance = $modal.open({
+     templateUrl: 'selectdept.html',
+     controller: 'selectdeptController as selectdeptctrl',
+     size: size
+     });
 
-        selectdeptInstance.result.then(function (deptname) {
-            selt.contract.name=deptname.label;
-        });
+     selectdeptInstance.result.then(function (deptname) {
+     selt.contract.name=deptname.label;
+     });
 
-    }*/
+     }*/
 
 
     this.panelClass = "contact panel panel-default";
@@ -284,31 +285,31 @@ app.controller('Contract', ['$scope', '$modal', '$http', '$filter','$log', funct
 }]);
 
 /*
-//组织结构添加修改
-app.controller('selectdeptController', ['$scope', '$modalInstance','$http', function($scope,$modalInstance,$http) {
-    var finddept=this;
-    var deptname;
-    finddept.showbutton=false;
-    finddept.my_tree = {};
-    finddept.success=false;
-    $http.post("/organization/getDeptOrganization").success(function(data){
-        finddept.success=data.success;
+ //组织结构添加修改
+ app.controller('selectdeptController', ['$scope', '$modalInstance','$http', function($scope,$modalInstance,$http) {
+ var finddept=this;
+ var deptname;
+ finddept.showbutton=false;
+ finddept.my_tree = {};
+ finddept.success=false;
+ $http.post("/organization/getDeptOrganization").success(function(data){
+ finddept.success=data.success;
 
-        finddept.my_data =data.object;
-    });
-    finddept.my_tree_handler = function(branch) {
-        if(branch.data.type!="person"){
-            alert("请选择人员");
-        }else{
-            deptname={level:branch.data.level,type:branch.data.type,id:branch.data.pkid,label:branch.label,parent:branch.data.parent};
-            finddept.showbutton=true;
-        }
+ finddept.my_data =data.object;
+ });
+ finddept.my_tree_handler = function(branch) {
+ if(branch.data.type!="person"){
+ alert("请选择人员");
+ }else{
+ deptname={level:branch.data.level,type:branch.data.type,id:branch.data.pkid,label:branch.label,parent:branch.data.parent};
+ finddept.showbutton=true;
+ }
 
-    };
-    finddept.selectdept=function(){
-        $modalInstance.close(deptname);
-    }
-    finddept.cancel = function () {
-        $modalInstance.dismiss('cancel');
-    };
-}])*/
+ };
+ finddept.selectdept=function(){
+ $modalInstance.close(deptname);
+ }
+ finddept.cancel = function () {
+ $modalInstance.dismiss('cancel');
+ };
+ }])*/

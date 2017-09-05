@@ -211,27 +211,46 @@ app.controller('Contact', ['$scope','$modal','$http','$filter', function($scope,
     this.toggle= function() {
         selt.myYear = !selt.myYear;
     };
-    this.showdivTog=function(){
-        selt.myYear = false;
-    };
+
     this.toggYue= function() {
         selt.myYue = !selt.myYue;
     };
-    this.showdivYue=function(){
-        selt.myYue = false;
-    };
+
     this.toggShaix= function() {
         selt.myShaix = !selt.myShaix;
     };
-    this.showdivShaix=function(){
-        selt.myShaix=false;
-    }
+
+
     this.toggXians= function() {
         selt.myXians = !selt.myXians;
     };
-    this.showdivXians=function(){
-      selt.myXians=false;
-    };
+
+
+    $(document).on("click",function(e){//js
+        var $target = $(e.target);
+        if(!($target.parents().andSelf().is("#myYear"))){
+            $scope.$apply(function(){
+                selt.myYear=false;
+            });
+        };
+        if(!($target.parents().andSelf().is("#myYue"))){
+            $scope.$apply(function(){
+                selt.myYue=false;
+            });
+        };
+        if(!($target.parents().andSelf().is("#myShaix"))){
+            $scope.$apply(function(){
+                selt.myShaix=false;
+            });
+        };
+        if(!($target.parents().andSelf().is("#myXians"))){
+            $scope.$apply(function(){
+                selt.myXians=false;
+            });
+        };
+    });
+
+
     this.yearList = ["2015","2016","2017"];
     this.changeYear = function (year) {
         selt.yearc = year;

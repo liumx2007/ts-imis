@@ -8,4 +8,6 @@ import com.trasen.imis.model.TbUser;
 public interface TbUserMapper {
 
     TbUser getUser(String name);
+
+    int updatePassword(TbUser tbUser);
 }

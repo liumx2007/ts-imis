@@ -41,9 +41,14 @@ app.controller('talentPool', ['$scope','$http','$log','$modal','$filter','FileUp
         selt.myShaix = !selt.myShaix;
     };
 
-    this.showdiv=function(){
-        selt.myShaix = false;
-    }
+    $(document).on("click",function(e){//js
+        var $target = $(e.target);
+        if(!($target.parents().andSelf().is("#myShaix"))){
+            $scope.$apply(function(){
+                selt.myShaix=false;
+            });
+        }
+    });
 
     //筛选
     this.nameStrs = [];
@@ -187,8 +192,8 @@ app.controller('talentPool', ['$scope','$http','$log','$modal','$filter','FileUp
     };
 
     /*this.disabled = function(date, mode) {
-        return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
-    };*/
+     return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+     };*/
     this.format = 'yyyy-MM-dd';
 
     this.open = function($event) {
@@ -340,9 +345,9 @@ app.controller('talentPool', ['$scope','$http','$log','$modal','$filter','FileUp
     };
 
     var uploader = $scope.uploader = new FileUploader({
-     url: '/fileUpload/file?type=talent',
-     headers:undefined
-     });
+        url: '/fileUpload/file?type=talent',
+        headers:undefined
+    });
 
     this.fileItem = "";
     uploader.onAfterAddingFile = function(fileItem) {
@@ -399,8 +404,8 @@ app.controller('workHistoryCtrl', ['$scope', '$modalInstance','$http', 'data','$
     };
 
     /*this.disabled = function(date, mode) {
-        return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
-    };*/
+     return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+     };*/
     this.format = 'yyyy-MM-dd';
 
     this.openStart = function($event) {

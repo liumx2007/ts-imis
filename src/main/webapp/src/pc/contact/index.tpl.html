@@ -8,7 +8,7 @@
 
         <div class="row NKwrapper Nkinput">
             <div  class="fr">
-                <div class="col-px-180 fl" style="position: relative;" ng-mouseleave="ctrl.showdivTog()">
+                <div class="col-px-180 fl" style="position: relative;" id="myYear">
                     <div class="form-control ng-pristine ng-valid ng-touched NkinputSelec" ng-click="ctrl.toggle()">时间：{{ctrl.yearc}}年</div>
                     <!--显隐（年份）-->
                     <div class="Nkxy Nkpopover" style="display: block;top: 31px;left: 16px;" ng-show="ctrl.myYear">
@@ -25,7 +25,7 @@
                 </div>
 
 
-                <div class="col-px-100-r fl" style="position: relative;" ng-mouseleave="ctrl.showdivYue()">
+                <div class="col-px-100-r fl" style="position: relative;" id="myYue">
                     <div class="form-control ng-pristine ng-valid ng-touched NkinputSelec" ng-click="ctrl.toggYue()" ng-bind="ctrl.yuec"></div>
                     <!--显隐（年份）-->
                     <div class="Nkxy Nkpopover" style="display: block;top: 31px;left: 16px;" ng-show="ctrl.myYue" >
@@ -41,7 +41,7 @@
                     </div>
 
                 </div>
-                <div class="col-px-80 fl" style="position: relative;" ng-mouseleave="ctrl.showdivShaix()">
+                <div class="col-px-80 fl" style="position: relative;" id="myShaix">
                     <button class="btn btn-default saixuan Nksx"  ng-click="ctrl.toggShaix()">
                         筛选</button>
                     <!--筛选弹出-->
@@ -199,7 +199,7 @@
                     <!--筛选弹出end-->
 
                 </div>
-                <div class="col-px-100-r fl" ng-mouseleave="ctrl.showdivXians()">
+                <div class="col-px-100-r fl" id="myXians">
                     <button class="btn btn-default xianshi Nksx" ng-click="ctrl.toggXians()">
                         显示列</button>
                     <!--显示弹出-->
@@ -389,9 +389,9 @@
                 <div class="col-px-80 fl" ng-show="ctrl.isShowOpe('export')">
                     <a ng-href="{{ctrl.excelCountExprot}}" >
                         <button class="btn btn-default daochu Nksx"
-                              ng-click="ctrl.myYear = false;ctrl.myYue = false;
+                                ng-click="ctrl.myYear = false;ctrl.myYue = false;
                               ctrl.myShaix = false;ctrl.myXians= false;">
-                        导出</button></a>
+                            导出</button></a>
                     <!--<button class="btn btn-default daochu Nksx" ng-click="ctrl.excelContactExport()">
                         导出</button>-->
                 </div>

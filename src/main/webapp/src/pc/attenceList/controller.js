@@ -40,9 +40,16 @@ app.controller('AttenceList', ['$scope','$http','$log','$modal','$filter', funct
     this.toggShaix= function() {
         selt.myShaix = !selt.myShaix;
     };
-    this.showdiv=function(){
-        selt.myShaix = false;
-    }
+
+
+    $(document).on("click",function(e){//js
+        var $target = $(e.target);
+        if(!($target.parents().andSelf().is("#myShaix"))){
+            $scope.$apply(function(){
+                selt.myShaix=false;
+            });
+        }
+    });
 
     this.setPage = function (pageNo,content) {
         selt.content = content;

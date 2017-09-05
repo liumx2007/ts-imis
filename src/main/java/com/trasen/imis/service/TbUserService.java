@@ -56,4 +56,19 @@ public class TbUserService {
         return tbUser;
     }
 
+    public TbUser getUser(String name,String pwd){
+        TbUser tbUser = null;
+        if(!StringUtil.isEmpty(name)&&!StringUtil.isEmpty(pwd)){
+            TbUser user = tbUserMapper.getUser(name);
+            if(user!=null&&user.getPassword()!=null&&pwd.equals(user.getPassword())){
+                return user;
+            }
+        }
+        return tbUser;
+    }
+
+    public int updatePassword(TbUser tbUser){
+        return tbUserMapper.updatePassword(tbUser);
+    }
+
 }

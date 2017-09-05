@@ -50,4 +50,34 @@ public class LoginController {
             return result;
         }
     }
+
+    @RequestMapping(value="/updatePassword",method = RequestMethod.POST)
+    @ResponseBody
+    public Result updatePassword(@RequestBody TbUser tbuser){
+        Result result=new Result();
+        if(tbuser==null||tbuser.getName()==null||tbuser.getPassword()==null||tbuser.getNewPassword()==null){
+            result.setMessage("用户名或密码为空");
+            result.setSuccess(false);
+            return result;
+        }
+        TbUser user = tbUserService.getUser(tbuser.getName(),tbuser.getPassword());
+
+        if(user==null){
+            result.setMessage("用户名或密码有误");
+            result.setSuccess(false);
+            return result;
+        }else{
+
+            int num = tbUserService.updatePassword(tbuser);
+            if(num>0){
+                result.setMessage("修改密码成功");
+                result.setSuccess(true);
+            }else{
+                result.setMessage("密码未修改");
+                result.setSuccess(true);
+            }
+            result.setObject(user);
+            return result;
+        }
+    }
 }
