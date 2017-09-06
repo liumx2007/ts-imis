@@ -342,7 +342,7 @@ app.controller('AttenceList', ['$scope','$http','$log','$modal','$filter', funct
 
     this.cancel = function () {
         selt.name = "";
-        selt.tagName = "";
+        //selt.tagName = "";
     };
 
 

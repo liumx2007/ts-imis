@@ -27,6 +27,36 @@
         </if>
     </select>
 
+    <select id="getJfPersonnel" resultType="com.trasen.imis.model.TbJfPerson" parameterType="String">
+        select * from tb_personnel_jf where work_num = #{workNum} limit 1
+    </select>
+    
+    <insert id="addJfPersonToScore" parameterType="com.trasen.imis.model.TbJfPerson">
+        insert into tb_personnel_jf (work_num,score,created,operator)
+        values (#{workNum},#{score},now(),#{operator})
+    </insert>
+
+    <insert id="addJfPersonToRank" parameterType="com.trasen.imis.model.TbJfPerson">
+        insert into tb_personnel_jf (work_num,rank,created,operator)
+        values (#{workNum},#{rank},now(),#{operator})
+    </insert>
+
+    <update id="updateJfPersonToScore" parameterType="com.trasen.imis.model.TbJfPerson">
+        update tb_personnel_jf set score = #{score} ,operator=#{operator},updated=now()
+        where work_num = #{workNum}
+    </update>
+
+    <update id="updateJfPersonToRank" parameterType="com.trasen.imis.model.TbJfPerson">
+        update tb_personnel_jf set rank = #{rank} ,operator=#{operator},updated=now()
+        where work_num = #{workNum}
+    </update>
+
+    <select id="getRankName" parameterType="Integer" resultType="String">
+        select CONCAT(`name`, `type`) as rankName from tb_jf_rank where pkid = #{rank}
+    </select>
+
+
+
 
 
 
