@@ -149,4 +149,69 @@ app.controller('JfLevelCtrl', ['$scope','$http','$log','$modal','$filter', funct
 
 
 
-}])
+
+
+
+    this.showLevelSelect = function (size) {
+        if(selt.person==undefined){
+            return;
+        }
+        var levelSelect = $modal.open({
+            templateUrl: 'src/pc/jfLevel/level-select.html',
+            controller: 'LevelSelectCtrl as ctrl',
+            size: size,
+            resolve: {
+                data: function () {
+                    return selt.person;
+                }
+            }
+        });
+
+        levelSelect.result.then(function (jfPerson) {
+            selt.selectPerson(jfPerson);
+        });
+
+    }
+
+
+
+}]);
+
+app.controller('LevelSelectCtrl', ['$scope', '$modalInstance','$http', 'data',function($scope,$modalInstance,$http,data) {
+    var seltLevel=this;
+
+
+    $http.post("/record/getRecordRankList").success(function (result) {
+        if (result.success) {
+            seltLevel.levelList = result.object;
+        } else {
+            seltLevel.levelList = [];
+        }
+    });
+
+    this.selectID = "";
+    this.select = function(item){
+        seltLevel.selectID = item.pkid;
+    };
+
+    this.submitOK = function(){
+        seltLevel.UpdateLevel();
+    };
+    
+    this.UpdateLevel = function () {
+        if(seltLevel.selectID==""){
+            alert("请选择一个级别");
+            return;
+        }
+        data.rank = seltLevel.selectID
+        $http.post("/jfLevel/updateLevel",angular.toJson(data)).success(function (result) {
+            alert(result.message);
+            $modalInstance.close(result.object);
+        });
+
+    }
+    
+    
+
+
+}]);

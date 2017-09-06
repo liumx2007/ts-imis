@@ -16,6 +16,18 @@ public interface TbJfRecordMapper {
 
     List<TbJfRecord> seachJfRecord(Map<String,Object> param,Page page);
 
+    TbJfPerson getJfPersonnel(String workNum);
+
+    int addJfPersonToScore(TbJfPerson tbJfPerson);
+
+    int addJfPersonToRank(TbJfPerson tbJfPerson);
+
+    int updateJfPersonToScore(TbJfPerson tbJfPerson);
+
+    int updateJfPersonToRank(TbJfPerson tbJfPerson);
+
+    String getRankName(Integer pkid);
+
 
 
 

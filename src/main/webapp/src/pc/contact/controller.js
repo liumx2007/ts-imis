@@ -295,7 +295,7 @@ app.controller('Contact', ['$scope','$modal','$http','$filter', function($scope,
 
     this.cancel = function () {
         selt.countName = "";
-        selt.tagName = "";
+        //selt.tagName = "";
     };
 
     this.panelClass = "contact panel panel-default";

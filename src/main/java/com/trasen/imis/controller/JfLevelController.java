@@ -4,9 +4,11 @@ import cn.trasen.commons.util.StringUtil;
 import cn.trasen.core.entity.Result;
 import cn.trasen.core.feature.orm.mybatis.Page;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.trasen.imis.common.AppCons;
 import com.trasen.imis.model.TbJfPerson;
 import com.trasen.imis.model.TbJfRecord;
 import com.trasen.imis.model.TbPersonnel;
+import com.trasen.imis.model.TbTalentPool;
 import com.trasen.imis.service.JfLevelService;
 import org.apache.commons.collections.MapUtils;
 import org.apache.log4j.Logger;
@@ -123,5 +125,36 @@ public class JfLevelController {
             result.put("msg", e.getMessage());
         }
         return result;
+    }
+
+
+    /**
+     * 修改级别
+     * */
+    @ResponseBody
+    @RequestMapping(value="/updateLevel", method = RequestMethod.POST)
+    public Result updateLevel(@RequestBody TbJfPerson tbJfPerson)  {
+        Result result=new Result();
+        result.setSuccess(false);
+        result.setMessage("保存失败");
+        try {
+            //数据更新
+            if(tbJfPerson!=null){
+                result.setSuccess(true);
+                result.setMessage("修改成功");
+                jfLevelService.saveJfPersonToScoreAndRank(tbJfPerson, AppCons.RANK);
+                String rankName = jfLevelService.getRankName(tbJfPerson.getRank());
+                if(rankName!=null){
+                    tbJfPerson.setRankName(rankName);
+                }
+                result.setObject(tbJfPerson);
+            }
+        }catch (Exception e) {
+            logger.error("级别修改异常" + e.getMessage(), e);
+            result.setSuccess(false);
+            result.setMessage("修改失败");
+        }
+        return  result;
+
     }
 }

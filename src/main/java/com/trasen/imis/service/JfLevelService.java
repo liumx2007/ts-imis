@@ -2,6 +2,7 @@ package com.trasen.imis.service;
 
 import cn.trasen.commons.util.StringUtil;
 import cn.trasen.core.feature.orm.mybatis.Page;
+import com.trasen.imis.common.AppCons;
 import com.trasen.imis.dao.TbJfRecordMapper;
 import com.trasen.imis.model.TbJfPerson;
 import com.trasen.imis.model.TbJfRecord;
@@ -44,5 +45,34 @@ public class JfLevelService {
         }
         return list;
     }
+
+    public boolean saveJfPersonToScoreAndRank(TbJfPerson tbJfPerson,Integer type){
+        boolean boo = false;
+        if(tbJfPerson!=null&&tbJfPerson.getWorkNum()!=null&&type!=null){
+            TbJfPerson jfPerson = tbJfRecordMapper.getJfPersonnel(tbJfPerson.getWorkNum());
+            if(type == AppCons.SCORE&&tbJfPerson.getScore()!=null){
+                if(jfPerson==null){
+                    tbJfRecordMapper.addJfPersonToScore(tbJfPerson);
+                }else{
+                    tbJfRecordMapper.updateJfPersonToScore(tbJfPerson);
+                }
+                boo = true;
+            }else if(type == AppCons.RANK&&tbJfPerson.getRank()!=null){
+                if(jfPerson==null){
+                    tbJfRecordMapper.addJfPersonToRank(tbJfPerson);
+                }else{
+                    tbJfRecordMapper.updateJfPersonToRank(tbJfPerson);
+                }
+                boo = true;
+            }
+        }
+        return boo;
+    }
+
+    public String getRankName(Integer pkid){
+        return tbJfRecordMapper.getRankName(pkid);
+    }
+
+
 
 }

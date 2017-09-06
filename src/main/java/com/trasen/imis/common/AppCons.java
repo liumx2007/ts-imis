@@ -33,6 +33,10 @@ public class AppCons {
     /**晋级申请不通过*/
     public static final int PROMOTION_DISAGREE=3;
 
+    public static final int SCORE = 1;
+
+    public static final int RANK = 2;
+
     /**积分申请审核成功*/
     public static final int RECORDAPP_AGREE=1;
 
