@@ -3,9 +3,11 @@ package com.trasen.imis.service;
 import cn.trasen.commons.util.StringUtil;
 import cn.trasen.core.feature.orm.mybatis.Page;
 import com.trasen.imis.common.AppCons;
+import com.trasen.imis.common.VisitInfoHolder;
 import com.trasen.imis.dao.TbJfRecordMapper;
 import com.trasen.imis.model.TbJfPerson;
 import com.trasen.imis.model.TbJfRecord;
+import org.apache.ibatis.ognl.InappropriateExpressionException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -49,11 +51,16 @@ public class JfLevelService {
     public boolean saveJfPersonToScoreAndRank(TbJfPerson tbJfPerson,Integer type){
         boolean boo = false;
         if(tbJfPerson!=null&&tbJfPerson.getWorkNum()!=null&&type!=null){
+            tbJfPerson.setOperator(VisitInfoHolder.getUserId());
             TbJfPerson jfPerson = tbJfRecordMapper.getJfPersonnel(tbJfPerson.getWorkNum());
             if(type == AppCons.SCORE&&tbJfPerson.getScore()!=null){
                 if(jfPerson==null){
                     tbJfRecordMapper.addJfPersonToScore(tbJfPerson);
                 }else{
+                    if(jfPerson.getScore()!=null){
+                        Integer score = jfPerson.getScore()+tbJfPerson.getScore();
+                        tbJfPerson.setScore(score);
+                    }
                     tbJfRecordMapper.updateJfPersonToScore(tbJfPerson);
                 }
                 boo = true;

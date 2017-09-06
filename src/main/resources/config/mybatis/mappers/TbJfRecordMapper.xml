@@ -42,7 +42,7 @@
     </insert>
 
     <update id="updateJfPersonToScore" parameterType="com.trasen.imis.model.TbJfPerson">
-        update tb_personnel_jf set score = score + #{score} ,operator=#{operator},updated=now()
+        update tb_personnel_jf set score = #{score} ,operator=#{operator},updated=now()
         where work_num = #{workNum}
     </update>
 
