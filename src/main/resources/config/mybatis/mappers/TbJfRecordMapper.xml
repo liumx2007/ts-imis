@@ -55,6 +55,15 @@
         select CONCAT(`name`, `type`) as rankName from tb_jf_rank where pkid = #{rank}
     </select>
 
+    <insert id="addJfRecord" parameterType="com.trasen.imis.model.TbJfRecord">
+        insert into tb_jf_record (work_num,score,`type`,status,remark,create_user,created,is_show)
+        values (#{workNum},#{score},#{type},#{status},#{remark},#{createUser},now(),1)
+    </insert>
+
+    <update id="updateJfRecord" parameterType="com.trasen.imis.model.TbJfRecord">
+        update tb_jf_record set remark=#{remark},operator=#{operator},updated=now()
+        where pkid = #{pkid}
+    </update>
 
 
 

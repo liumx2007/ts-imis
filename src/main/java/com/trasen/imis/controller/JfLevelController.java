@@ -157,4 +157,31 @@ public class JfLevelController {
         return  result;
 
     }
+
+
+    /**
+     * 添加修改积分记录
+     * */
+    @ResponseBody
+    @RequestMapping(value="/addJfRecord", method = RequestMethod.POST)
+    public Result addJfRecord(@RequestBody TbJfRecord tbJfRecord)  {
+        Result result=new Result();
+        result.setSuccess(false);
+        result.setMessage("失败");
+        try {
+            //数据更新
+            if(tbJfRecord!=null){
+                jfLevelService.addJfRecord(tbJfRecord);
+                result.setObject(tbJfRecord);
+                result.setSuccess(true);
+                result.setMessage("成功");
+            }
+        }catch (Exception e) {
+            logger.error("添加修改积分记录异常" + e.getMessage(), e);
+            result.setSuccess(false);
+            result.setMessage("失败");
+        }
+        return  result;
+
+    }
 }

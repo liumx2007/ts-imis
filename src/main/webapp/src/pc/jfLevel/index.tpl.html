@@ -84,7 +84,8 @@
             <div class="wrapper-sm b-b" style="line-height: 23px;">
                 <div class="m-t-n-xxs m-b-n-xxs m-l-xs">
                     <!--<a class="pull-right text-danger m-r">批量删除积分</a>-->
-                    <a class="pull-right text-info m-r-lg" ng-click="showInfo('add')">添加积分</a>
+                    <a class="pull-right text-info m-r-lg" ng-click="ctrl.showInfo('deptAdd')">部门添加积分</a>
+                    <a class="pull-right text-info m-r-lg" ng-click="ctrl.showInfo('add')">添加积分</a>
                     <a class="pull-right text-info m-r-lg" ng-click="ctrl.showLevelSelect()">修改等级</a>
                     <span class="m-r">姓名：<b ng-bind="ctrl.person.name"></b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <span>当前积分：<b ng-bind="ctrl.person.score"></b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -148,9 +149,9 @@
                                     <td ng-bind="item.score"></td>
                                     <td ng-bind="item.remark"></td>
                                     <td>
-                                        <a class="text-info" ng-click="showInfo('info',item)">详情</a>&nbsp;|&nbsp;
-                                        <a class="text-info" ng-click="showInfo('edit',item)">编辑</a>&nbsp;|&nbsp;
-                                        <a class="text-danger" ng-click="deleteJF(item)">删除</a>
+                                        <a class="text-info" ng-click="ctrl.showInfo('info',item)">详情</a>&nbsp;|&nbsp;
+                                        <a class="text-info" ng-click="ctrl.showInfo('edit',item)">编辑</a>&nbsp;|&nbsp;
+                                        <a class="text-danger" ng-click="ctrl.deleteJF(item)">删除</a>
                                     </td>
                                 </tr>
                                 </tbody>

@@ -28,6 +28,10 @@ public interface TbJfRecordMapper {
 
     String getRankName(Integer pkid);
 
+    int addJfRecord(TbJfRecord tbJfRecord);
+
+    int updateJfRecord(TbJfRecord tbJfRecord);
+
 
 
 

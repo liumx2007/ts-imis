@@ -171,6 +171,43 @@ app.controller('JfLevelCtrl', ['$scope','$http','$log','$modal','$filter', funct
             selt.selectPerson(jfPerson);
         });
 
+    };
+
+    this.jfInputItem = {};
+    this.showInfo = function (type,item) {
+        if(selt.person==undefined){
+            return;
+        }
+        selt.jfInputItem.showType = type;
+        if(type=="edit"||type=="info"){
+            selt.jfInputItem =item;
+        }
+        else if(type=="add"){
+            selt.jfInputItem = {};
+            selt.jfInputItem.workNum = selt.person.workNum;
+            selt.jfInputItem.type = 1;
+        }else if(type=='deptAdd'){
+            selt.jfInputItem = {};
+            selt.jfInputItem.workNum = selt.person.workNum;
+            selt.jfInputItem.type = 2;
+        }
+
+
+
+        var jfLevelInfo = $modal.open({
+            templateUrl: 'src/pc/jfLevel/jflevel-info.html',
+            controller: 'JfLevelInfoCtrl as ctrl',
+            resolve: {
+                data: function () {
+                    return selt.jfInputItem;
+                }
+            }
+        });
+
+        jfLevelInfo.result.then(function () {
+            selt.selectPerson(selt.person);
+        });
+
     }
 
 
@@ -206,12 +243,40 @@ app.controller('LevelSelectCtrl', ['$scope', '$modalInstance','$http', 'data',fu
         data.rank = seltLevel.selectID
         $http.post("/jfLevel/updateLevel",angular.toJson(data)).success(function (result) {
             alert(result.message);
-            $modalInstance.close(result.object);
+            $modalInstance.close();
         });
 
     }
     
     
+
+
+}]);
+
+
+app.controller('JfLevelInfoCtrl', ['$scope', '$modalInstance','$http', 'data',function($scope,$modalInstance,$http,data) {
+    var seltInfo=this;
+    this.jfRecord = data;
+
+
+
+    this.addInfo = function(){
+        seltInfo.saveJfRecord();
+    };
+
+    this.saveJfRecord = function () {
+        $http.post("/jfLevel/addJfRecord",angular.toJson(seltInfo.jfRecord)).success(function (result) {
+            alert(result.message);
+            $modalInstance.close(result.object);
+        });
+
+    };
+
+    this.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+
+
 
 
 }]);

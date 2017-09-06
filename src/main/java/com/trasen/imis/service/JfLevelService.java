@@ -80,6 +80,38 @@ public class JfLevelService {
         return tbJfRecordMapper.getRankName(pkid);
     }
 
+    public boolean addJfRecord(TbJfRecord tbJfRecord){
+        boolean boo = false;
+        if(tbJfRecord!=null){
+            tbJfRecord.setCreateUser(VisitInfoHolder.getUserId());
+            tbJfRecord.setOperator(VisitInfoHolder.getUserId());
+            if(tbJfRecord.getPkid()!=null){
+                tbJfRecordMapper.updateJfRecord(tbJfRecord);
+                boo = true;
+            }else{
+
+                Integer type = tbJfRecord.getType();
+                if(type!=null){
+                    if(type==AppCons.HR_ADD_SCORE){
+                        tbJfRecord.setStatus(1);
+                        tbJfRecordMapper.addJfRecord(tbJfRecord);
+                        TbJfPerson tbJfPerson = new TbJfPerson();
+                        tbJfPerson.setWorkNum(tbJfRecord.getWorkNum());
+                        tbJfPerson.setScore(tbJfRecord.getScore());
+                        tbJfPerson.setOperator(VisitInfoHolder.getUserId());
+                        boo = saveJfPersonToScoreAndRank(tbJfPerson,AppCons.SCORE);
+                    }else{
+                        tbJfRecord.setStatus(0);
+                        tbJfRecordMapper.addJfRecord(tbJfRecord);
+                        boo = true;
+                    }
+                }
+            }
+        }
+
+        return boo;
+    }
+
 
 
 }
