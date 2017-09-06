@@ -50,7 +50,6 @@ public class RecordApprovalService {
     }
 
     public void updateJfRecrod(List<TbJfRecord> tbJfRecordList,int status){
-        TbJfRank tbJfRank=promotionMapper.selectWzRank(1);
             for(TbJfRecord tbJfRecord:tbJfRecordList){
                 if(AppCons.RECORDAPP_AGREE==status) {
                     int count = promotionMapper.getPersonJfCount(tbJfRecord.getWorkNum());
@@ -59,12 +58,16 @@ public class RecordApprovalService {
                         tbJfPerson.setUpdated(new Date());
                         tbJfPerson.setOperator(VisitInfoHolder.getUserId());
                         tbJfPerson.setWorkNum(tbJfRecord.getWorkNum());
-                        tbJfPerson.setScore(tbJfRecord.getScore() + tbJfRecord.getCurrentScore());
+                        if(tbJfRecord.getCurrentScore()==null){
+                            tbJfPerson.setScore(tbJfRecord.getScore());
+                        }else{
+                            tbJfPerson.setScore(tbJfRecord.getScore()+tbJfRecord.getCurrentScore());
+                        }
+
                         recordApprovalMapper.updatePerjfScore(tbJfPerson);
                     } else {
                         tbJfPerson.setWorkNum(tbJfRecord.getWorkNum());
                         tbJfPerson.setScore(tbJfRecord.getScore());
-                        tbJfPerson.setRank(tbJfRank.getPkid());
                         tbJfPerson.setCreated(new Date());
                         promotionMapper.savaPersonJf(tbJfPerson);
                     }

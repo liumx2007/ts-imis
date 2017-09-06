@@ -36,12 +36,8 @@ WHERE
 		select * from tb_jf_rank where px=#{px}
 	</select>
 
-	<select id="selectNextCjRank" resultType="com.trasen.imis.model.TbJfRank" parameterType="int">
-		select * from tb_jf_rank where px=#{px} and prm_score!=1
-	</select>
-
-	<select id="selectWzRank" resultType="com.trasen.imis.model.TbJfRank" parameterType="int">
-		select * from tb_jf_rank where px=#{px} and prm_score=1
+	<select id="selectRankList" resultType="com.trasen.imis.model.TbJfRank">
+		select * from tb_jf_rank order by px,score asc
 	</select>
 
 	<select id="getPersonJfCount" resultType="int" parameterType="String">

@@ -36,24 +36,22 @@ public class WeiXinPromotionService {
                     break;
                 }
             }
+            List<TbJfRank> tbJfRankList = promotionMapper.selectRankList();
             if (tbJfPerson.getPx() == null) {
-                TbJfRank tbJfRank1 = promotionMapper.selectNextCjRank(1);
-                TbJfRank tbJfRank2 = promotionMapper.selectWzRank(1);
-                logger.info("====初级一级");
-                tbJfPerson.setPx(tbJfRank2.getPx());
-                tbJfPerson.setRank(tbJfRank2.getPkid());
-                tbJfPerson.setRankName(tbJfRank2.getName() + tbJfRank2.getType());
-                tbJfPerson.setScore(tbJfRank2.getScore());
-                tbJfPerson.setNextRankName(tbJfRank1.getName() + tbJfRank1.getType());
-                tbJfPerson.setPrmScore(tbJfRank1.getScore());
-                tbJfPerson.setNextRank(tbJfRank1.getPkid());
+                logger.info("====初始化未转");
+                tbJfPerson.setPx(tbJfRankList.get(0).getPx());
+                tbJfPerson.setRank(tbJfRankList.get(0).getPkid());
+                tbJfPerson.setRankName(tbJfRankList.get(0).getName() + tbJfRankList.get(0).getType());
+                tbJfPerson.setScore(0);
+                tbJfPerson.setNextRankName(tbJfRankList.get(1).getName() + tbJfRankList.get(1).getType());
+                tbJfPerson.setPrmScore(tbJfRankList.get(1).getScore());
+                tbJfPerson.setNextRank(tbJfRankList.get(1).getPkid());
             } else {
-                if (tbJfPerson.getPx() == 1 && tbJfPerson.getPrmScore() == 1) {
-                    TbJfRank tbJfRank1 = promotionMapper.selectNextCjRank(tbJfPerson.getPx());
+                if (tbJfPerson.getPx() == tbJfRankList.get(0).getPx() && tbJfPerson.getPrmScore() == tbJfRankList.get(0).getPrmScore()) {
                     logger.info("====初级一级");
-                    tbJfPerson.setNextRankName(tbJfRank1.getName() + tbJfRank1.getType());
-                    tbJfPerson.setPrmScore(tbJfRank1.getScore());
-                    tbJfPerson.setNextRank(tbJfRank1.getPkid());
+                    tbJfPerson.setNextRankName(tbJfRankList.get(1).getName() + tbJfRankList.get(1).getType());
+                    tbJfPerson.setPrmScore(tbJfRankList.get(1).getScore());
+                    tbJfPerson.setNextRank(tbJfRankList.get(1).getPkid());
                 } else {
                     TbJfRank tbJfRank = promotionMapper.selectNextRank(tbJfPerson.getPx() + 1);
                     if (tbJfRank != null) {
@@ -79,7 +77,6 @@ public class WeiXinPromotionService {
             logger.info("晋级申请保存成功====");
         }else{
             TbJfPerson tbJfPerson=new TbJfPerson();
-            tbJfPerson.setScore(1);
             tbJfPerson.setRank(tbRankCheck.getOldRank());
             tbJfPerson.setWorkNum(tbRankCheck.getWorkNum());
             tbJfPerson.setCreated(tbRankCheck.getCreated());

@@ -82,7 +82,6 @@ public class PromotionAppService {
                }else{
                    TbJfPerson tbJfPerson=new TbJfPerson();
                    tbJfPerson.setWorkNum(tbRankCheck.getWorkNum());
-                   tbJfPerson.setScore(1);
                    tbJfPerson.setRank(tbRankCheck.getNewRank());
                    tbJfPerson.setCreated(new Date());
                    saveperjf.add(tbJfPerson);

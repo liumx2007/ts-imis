@@ -18,9 +18,7 @@ public interface PromotionMapper {
 
     public TbJfRank selectNextRank(int px);
 
-    public TbJfRank selectNextCjRank(int px);
-
-    public TbJfRank selectWzRank(int px);
+    public List<TbJfRank> selectRankList();
 
     public void savaCheck(TbRankCheck tbRankCheck);
 

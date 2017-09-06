@@ -45,10 +45,10 @@
     </update>
 
     <insert id="savetbPersonnelJf" parameterType="java.util.List">
-        insert into tb_personnel_jf(work_num,score,rank,created)
+        insert into tb_personnel_jf(work_num,rank,created)
         values
         <foreach collection="list" item="item" index="index" separator="," >
-            (#{item.workNum},#{item.score},#{item.rank},#{item.created})
+            (#{item.workNum},#{item.rank},#{item.created})
         </foreach>
     </insert>
 
