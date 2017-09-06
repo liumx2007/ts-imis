@@ -64,7 +64,7 @@ public class RecordApprovalController {
     @RequestMapping(value="/disareeUpdateJfRecord",method = RequestMethod.POST)
     public Result disareeUpdateJfRecord(@RequestBody List<TbJfRecord> tbJfRecordList){
         Result result=new Result();
-        recordApprovalService.updateJfRecrod(tbJfRecordList, AppCons.PROMOTION_DISAGREE);
+        recordApprovalService.updateJfRecrod(tbJfRecordList, AppCons.RECORDAPP_DISAGREE);
         result.setMessage("更新成功");
         result.setSuccess(true);
         return result;
