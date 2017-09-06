@@ -1,17 +1,17 @@
 package com.trasen.imis.service;
 
 import cn.trasen.core.feature.orm.mybatis.Page;
+import com.trasen.imis.common.AppCons;
+import com.trasen.imis.common.VisitInfoHolder;
 import com.trasen.imis.dao.PromotionAppMapper;
+import com.trasen.imis.dao.PromotionMapper;
 import com.trasen.imis.dao.RecordApprovalMapper;
-import com.trasen.imis.model.TbJfRecord;
-import com.trasen.imis.model.TbRankCheck;
-import com.trasen.imis.model.TbTree;
+import com.trasen.imis.model.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author luoyun
@@ -30,6 +30,9 @@ public class RecordApprovalService {
     @Autowired
     private PromotionAppMapper promotionAppMapper;
 
+    @Autowired
+    private PromotionMapper promotionMapper;
+
     public List<TbJfRecord> getRecordApprovalList(Map<String,String> param, Page page){
 
         List<TbJfRecord> tbJfRecordList=recordApprovalMapper.getRecordApprovalList(param,page);
@@ -44,5 +47,32 @@ public class RecordApprovalService {
             }
         }
         return tbJfRecordList;
+    }
+
+    public void updateJfRecrod(List<TbJfRecord> tbJfRecordList,int status){
+        TbJfRank tbJfRank=promotionMapper.selectWzRank(1);
+            for(TbJfRecord tbJfRecord:tbJfRecordList){
+                if(AppCons.RECORDAPP_AGREE==status) {
+                    int count = promotionMapper.getPersonJfCount(tbJfRecord.getWorkNum());
+                    TbJfPerson tbJfPerson = new TbJfPerson();
+                    if (count > 0) {
+                        tbJfPerson.setUpdated(new Date());
+                        tbJfPerson.setOperator(VisitInfoHolder.getUserId());
+                        tbJfPerson.setWorkNum(tbJfRecord.getWorkNum());
+                        tbJfPerson.setScore(tbJfRecord.getScore() + tbJfRecord.getCurrentScore());
+                        recordApprovalMapper.updatePerjfScore(tbJfPerson);
+                    } else {
+                        tbJfPerson.setWorkNum(tbJfRecord.getWorkNum());
+                        tbJfPerson.setScore(tbJfRecord.getScore());
+                        tbJfPerson.setRank(tbJfRank.getPkid());
+                        tbJfPerson.setCreated(new Date());
+                        promotionMapper.savaPersonJf(tbJfPerson);
+                    }
+                }
+                tbJfRecord.setStatus(status);
+                tbJfRecord.setOperator(VisitInfoHolder.getUserId());
+                tbJfRecord.setUpdated(new Date());
+                recordApprovalMapper.updateJfRecord(tbJfRecord);
+        }
     }
 }

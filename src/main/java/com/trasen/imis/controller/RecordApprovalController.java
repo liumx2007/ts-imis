@@ -1,8 +1,10 @@
 package com.trasen.imis.controller;
 
+import cn.trasen.core.entity.Result;
 import cn.trasen.core.feature.orm.mybatis.Page;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.trasen.imis.common.AppCons;
 import com.trasen.imis.model.TbJfRecord;
 import com.trasen.imis.model.TbRankCheck;
 import com.trasen.imis.service.RecordApprovalService;
@@ -46,5 +48,25 @@ public class RecordApprovalController {
                 + String.valueOf(page.getTotalCount()) + ",\"list\":" + data + ",\"pageSize\": "+page.getPageSize()+ ",\"code\": "+1+"}";
         return json;
 
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/agreeUpdateJfRecrod",method = RequestMethod.POST)
+    public Result agreeUpdateJfRecrod(@RequestBody List<TbJfRecord> tbJfRecordList){
+        Result result=new Result();
+        recordApprovalService.updateJfRecrod(tbJfRecordList, AppCons.RECORDAPP_AGREE);
+        result.setMessage("更新成功");
+        result.setSuccess(true);
+        return result;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/disareeUpdateJfRecord",method = RequestMethod.POST)
+    public Result disareeUpdateJfRecord(@RequestBody List<TbJfRecord> tbJfRecordList){
+        Result result=new Result();
+        recordApprovalService.updateJfRecrod(tbJfRecordList, AppCons.PROMOTION_DISAGREE);
+        result.setMessage("更新成功");
+        result.setSuccess(true);
+        return result;
     }
 }

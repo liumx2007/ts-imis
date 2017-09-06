@@ -30,6 +30,6 @@ public class TbJfRecord {
     private String name;//姓名
     private String company;//公司
     private String depName;
-    private String currentScore;//当前积分
+    private Integer currentScore;//当前积分
     private String tagCode;
 }

@@ -181,20 +181,34 @@ app.controller('recordAppCtrl', ['$scope', '$modalInstance','$http', 'data', fun
     angular.forEach(data, function(item) {
         seltPro.name=seltPro.name+item.name+",";
     });
-
-    /*this.agreePromotion=function(){
-        $http.post("/promotionApp/agreeUpdateRank",angular.toJson(data)).success(function (result) {
+    this.submitted=false;
+    this.agreeRecordApp=function(){
+        if(seltPro.remark==undefined||seltPro.remark==""){
+            this.submitted=true;
+            return;
+        }
+        angular.forEach(data, function(item) {
+            item.checkRemark=seltPro.remark;
+        });
+        $http.post("/recordApp/agreeUpdateJfRecrod",angular.toJson(data)).success(function (result) {
             alert(result.message);
             $modalInstance.close();
         });
     };
 
-    this.notAgreePromotion=function(){
-        $http.post("/promotionApp/disagreeUpdateRank",angular.toJson(data)).success(function (result) {
+    this.notAgreeRecordApp=function(){
+        if(seltPro.remark==undefined||seltPro.remark==""){
+            this.submitted=true;
+            return;
+        }
+        angular.forEach(data, function(item) {
+            item.checkRemark=seltPro.remark;
+        });
+        $http.post("/recordApp/disareeUpdateJfRecord",angular.toJson(data)).success(function (result) {
             alert(result.message);
             $modalInstance.close();
         });
-    };*/
+    };
 
     this.cancel = function () {
         $modalInstance.dismiss('cancel');

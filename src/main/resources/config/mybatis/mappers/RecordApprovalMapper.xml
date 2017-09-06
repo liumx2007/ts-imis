@@ -18,4 +18,14 @@
           <if test="company!=null">and per.tag_code LIKE CONCAT('%',#{company},'%')</if>
           <if test="depName!=null">and per.tag_code LIKE CONCAT('%',#{depName},'%')</if>
     </select>
+
+
+    <update id="updatePerjfScore" parameterType="com.trasen.imis.model.TbJfPerson">
+      update tb_personnel_jf set score=#{score},updated=#{updated},operator=#{operator} where work_num=#{workNum}
+    </update>
+
+    <update id="updateJfRecord" parameterType="com.trasen.imis.model.TbJfRecord">
+        update tb_jf_record set status=#{status},updated=#{updated},operator=#{operator},check_remark=#{checkRemark} where pkid=#{pkid}
+    </update>
+
 </mapper>
