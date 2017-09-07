@@ -65,6 +65,10 @@
         where pkid = #{pkid}
     </update>
 
+    <select id="getScoreFromWorkNum" parameterType="String" resultType="Integer">
+        select score from tb_personnel_jf where work_num = #{workNum} limit 1
+    </select>
+
 
 
 

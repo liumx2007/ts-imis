@@ -144,10 +144,10 @@ public class JfLevelController {
                 result.setMessage("修改成功");
                 jfLevelService.saveJfPersonToScoreAndRank(tbJfPerson, AppCons.RANK);
                 String rankName = jfLevelService.getRankName(tbJfPerson.getRank());
-                if(rankName!=null){
-                    tbJfPerson.setRankName(rankName);
+                if(rankName==null){
+                    rankName = "初级未转";
                 }
-                result.setObject(tbJfPerson);
+                result.setObject(rankName);
             }
         }catch (Exception e) {
             logger.error("级别修改异常" + e.getMessage(), e);
@@ -172,7 +172,8 @@ public class JfLevelController {
             //数据更新
             if(tbJfRecord!=null){
                 jfLevelService.addJfRecord(tbJfRecord);
-                result.setObject(tbJfRecord);
+                Integer score = jfLevelService.getScoreFromWorkNum(tbJfRecord.getWorkNum());
+                result.setObject(score);
                 result.setSuccess(true);
                 result.setMessage("成功");
             }

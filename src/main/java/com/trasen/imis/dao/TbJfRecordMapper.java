@@ -32,6 +32,8 @@ public interface TbJfRecordMapper {
 
     int updateJfRecord(TbJfRecord tbJfRecord);
 
+    Integer getScoreFromWorkNum(String workNum);
+
 
 
 

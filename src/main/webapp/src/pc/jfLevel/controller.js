@@ -167,8 +167,9 @@ app.controller('JfLevelCtrl', ['$scope','$http','$log','$modal','$filter', funct
             }
         });
 
-        levelSelect.result.then(function (jfPerson) {
-            selt.selectPerson(jfPerson);
+        levelSelect.result.then(function (rankName) {
+            selt.person.rankName = rankName;
+            selt.selectPerson(selt.person);
         });
 
     };
@@ -204,7 +205,8 @@ app.controller('JfLevelCtrl', ['$scope','$http','$log','$modal','$filter', funct
             }
         });
 
-        jfLevelInfo.result.then(function () {
+        jfLevelInfo.result.then(function (score) {
+            selt.person.score = score;
             selt.selectPerson(selt.person);
         });
 
@@ -243,7 +245,7 @@ app.controller('LevelSelectCtrl', ['$scope', '$modalInstance','$http', 'data',fu
         data.rank = seltLevel.selectID
         $http.post("/jfLevel/updateLevel",angular.toJson(data)).success(function (result) {
             alert(result.message);
-            $modalInstance.close();
+            $modalInstance.close(result.object);
         });
 
     }
@@ -265,6 +267,15 @@ app.controller('JfLevelInfoCtrl', ['$scope', '$modalInstance','$http', 'data',fu
     };
 
     this.saveJfRecord = function () {
+        if(seltInfo.jfRecord.score==""||seltInfo.jfRecord.score==undefined){
+            alert("请填写积分!");
+            return;
+        }
+        if(seltInfo.jfRecord.remark==""||seltInfo.jfRecord.remark==undefined){
+            alert("请填写原因!");
+            return;
+        }
+
         $http.post("/jfLevel/addJfRecord",angular.toJson(seltInfo.jfRecord)).success(function (result) {
             alert(result.message);
             $modalInstance.close(result.object);
