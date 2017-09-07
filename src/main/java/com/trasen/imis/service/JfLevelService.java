@@ -130,6 +130,15 @@ public class JfLevelService {
         return score;
     }
 
+    public boolean isShowRecord(TbJfRecord tbJfRecord){
+        boolean boo = false;
+        int num = tbJfRecordMapper.isShowRecord(tbJfRecord);
+        if(num>0){
+            boo = true;
+        }
+        return boo;
+    }
+
 
 
 }

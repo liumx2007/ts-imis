@@ -69,6 +69,11 @@
         select score from tb_personnel_jf where work_num = #{workNum} limit 1
     </select>
 
+    <update id="isShowRecord" parameterType="com.trasen.imis.model.TbJfRecord">
+        update tb_jf_record set is_show=#{isShow},operator=#{operator},updated=now()
+        where pkid = #{pkid}
+    </update>
+
 
 
 

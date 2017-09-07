@@ -182,8 +182,7 @@ app.controller('JfLevelCtrl', ['$scope','$http','$log','$modal','$filter', funct
         selt.jfInputItem.showType = type;
         if(type=="edit"||type=="info"){
             selt.jfInputItem =item;
-        }
-        else if(type=="add"){
+        }else if(type=="add"){
             selt.jfInputItem = {};
             selt.jfInputItem.workNum = selt.person.workNum;
             selt.jfInputItem.type = 1;
@@ -191,6 +190,8 @@ app.controller('JfLevelCtrl', ['$scope','$http','$log','$modal','$filter', funct
             selt.jfInputItem = {};
             selt.jfInputItem.workNum = selt.person.workNum;
             selt.jfInputItem.type = 2;
+        }else{
+            return;
         }
 
 
@@ -210,7 +211,23 @@ app.controller('JfLevelCtrl', ['$scope','$http','$log','$modal','$filter', funct
             selt.selectPerson(selt.person);
         });
 
-    }
+    };
+
+    this.isShowRecord = function (item,isShow) {
+        if(isShow==1&&!confirm("你确定显示吗？")){
+            return;
+        };
+        if(isShow==0&&!confirm("你确定隐藏吗？")){
+            return;
+        };
+        item.isShow = isShow;
+        $http.post("/jfLevel/isShowRecord",angular.toJson(item)).success(function (result) {
+            if(result.success){
+                selt.selectPerson(selt.person);
+            }
+        });
+
+    };
 
 
 

@@ -151,7 +151,9 @@
                                     <td>
                                         <a class="text-info" ng-click="ctrl.showInfo('info',item)">详情</a>&nbsp;|&nbsp;
                                         <a class="text-info" ng-click="ctrl.showInfo('edit',item)">编辑</a>&nbsp;|&nbsp;
-                                        <a class="text-danger" ng-click="ctrl.deleteJF(item)">删除</a>
+
+                                        <a class="text-danger" ng-show="item.isShow==0" ng-click="ctrl.isShowRecord(item,1)">显示</a>
+                                        <a class="text-danger" ng-show="item.isShow==1" ng-click="ctrl.isShowRecord(item,0)">隐藏</a>
                                     </td>
                                 </tr>
                                 </tbody>

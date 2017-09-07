@@ -34,6 +34,8 @@ public interface TbJfRecordMapper {
 
     Integer getScoreFromWorkNum(String workNum);
 
+    int isShowRecord(TbJfRecord tbJfRecord);
+
 
 
 
