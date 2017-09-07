@@ -197,9 +197,15 @@ public class MenuTest {
         cb13.setType("view");
         cb13.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx883815fb0da06f3d&redirect_uri=http%3A%2F%2Fplattesting09.trasen.cn%2Fsrc%2Findex.html%23%2FjfRecord&response_type=code&scope=snsapi_base&state=TS-IMIS#wechat_redirect");
 
+        ViewButton cb14 = new ViewButton();
+        cb14.setName("个人信息");
+        cb14.setType("view");
+        cb14.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx883815fb0da06f3d&redirect_uri=http%3A%2F%2Fplattesting09.trasen.cn%2Fsrc%2Findex.html%23%2Fperson&response_type=code&scope=snsapi_base&state=TS-IMIS#wechat_redirect");
+
         List<Button> cb1List = new ArrayList<>();
         cb1List.add(cb12);
         cb1List.add(cb13);
+        cb1List.add(cb14);
 
         cb1.setSub_button(cb1List);
 
