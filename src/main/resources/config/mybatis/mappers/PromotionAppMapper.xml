@@ -31,7 +31,7 @@
     </select>
 
     <update id="updateRankCkeck" parameterType="Map">
-        update tb_rank_check set status=#{status},updated=#{updated},operator=#{operator} where pkid in
+        update tb_rank_check set status=#{status},updated=#{updated},operator=#{operator},remark=#{remark} where pkid in
         <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
             #{item.pkid}
         </foreach>

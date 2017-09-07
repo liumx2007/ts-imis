@@ -180,11 +180,20 @@ app.controller('promotionApprovalCtrl', ['$scope', '$modalInstance','$http', 'da
     var seltPro=this;
 
     seltPro.name="";
+    this.submitted=false;
     angular.forEach(data, function(item) {
         seltPro.name=seltPro.name+item.name+",";
     });
 
     this.agreePromotion=function(){
+        if(seltPro.remark==undefined||seltPro.remark==""){
+            this.submitted=true;
+            return;
+        }
+        angular.forEach(data, function(item) {
+            item.remark=seltPro.remark;
+        });
+
         $http.post("/promotionApp/agreeUpdateRank",angular.toJson(data)).success(function (result) {
             alert(result.message);
             $modalInstance.close();
@@ -192,6 +201,15 @@ app.controller('promotionApprovalCtrl', ['$scope', '$modalInstance','$http', 'da
     };
 
     this.notAgreePromotion=function(){
+
+        if(seltPro.remark==undefined||seltPro.remark==""){
+            this.submitted=true;
+            return;
+        }
+        angular.forEach(data, function(item) {
+            item.remark=seltPro.remark;
+        });
+
         $http.post("/promotionApp/disagreeUpdateRank",angular.toJson(data)).success(function (result) {
             alert(result.message);
             $modalInstance.close();

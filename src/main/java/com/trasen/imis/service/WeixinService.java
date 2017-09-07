@@ -236,7 +236,7 @@ public class WeixinService {
                     tm.setFromUserName(ToUserName);
                     tm.setMsgType(MessageUtil.MESSAGG_TYPE_TEXT);
                     tm.setCreateTime(System.currentTimeMillis());
-                    tm.setContent("你好，欢迎关注[长沙创星]公众号！[愉快]/呲牙/玫瑰\n目前可以回复文本消息");
+                    tm.setContent("你好，欢迎关注[长沙创星]公众号！[愉快]/呲牙/玫瑰\n加入创星输入格式：加入创星#工号#身份证后六位");
                     return MessageUtil.textMessageToXml(tm);
                 }
                 else if (event.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE)) {

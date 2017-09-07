@@ -69,6 +69,7 @@ public class PromotionAppService {
        param.put("status",status);
        param.put("updated",new Date());
        param.put("operator",VisitInfoHolder.getUserId());
+       param.put("remark",tbRankCheckList.get(0).getRemark());
        param.put("list",tbRankCheckList);
        List<TbRankCheck> updateperjf=new ArrayList<>();
        List<TbJfPerson> saveperjf=new ArrayList<>();
