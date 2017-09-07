@@ -171,9 +171,21 @@ public class JfLevelController {
         try {
             //数据更新
             if(tbJfRecord!=null){
-                jfLevelService.addJfRecord(tbJfRecord);
-                Integer score = jfLevelService.getScoreFromWorkNum(tbJfRecord.getWorkNum());
-                result.setObject(score);
+                if(tbJfRecord.getWorkNum()!=null&&tbJfRecord.getWorkNums()==null){
+                    jfLevelService.addJfRecord(tbJfRecord);
+                    Integer score = jfLevelService.getScoreFromWorkNum(tbJfRecord.getWorkNum());
+                    result.setObject(score);
+                }
+                if(tbJfRecord.getWorkNum()==null&&tbJfRecord.getWorkNums()!=null&&tbJfRecord.getWorkNums().size()>0){
+                    for(String workNum : tbJfRecord.getWorkNums()){
+                        TbJfRecord jfRecord = new TbJfRecord();
+                        jfRecord.setWorkNum(workNum);
+                        jfRecord.setType(AppCons.HR_ADD_SCORE);
+                        jfRecord.setScore(tbJfRecord.getScore());
+                        jfRecord.setRemark(tbJfRecord.getRemark());
+                        jfLevelService.addJfRecord(jfRecord);
+                    }
+                }
                 result.setSuccess(true);
                 result.setMessage("成功");
             }

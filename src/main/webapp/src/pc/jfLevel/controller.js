@@ -230,6 +230,46 @@ app.controller('JfLevelCtrl', ['$scope','$http','$log','$modal','$filter', funct
     };
 
 
+    this.showPLAddJF = function(){
+        var isHasCheceks = false;
+        var workNums = [];
+        angular.forEach(selt.jfPersonList, function(item) {
+            if(item.check == true){
+                workNums.push(item.workNum);
+                isHasCheceks = true;
+            }
+        });
+
+        if(!isHasCheceks){
+            alert("您未选择人员!");
+            return;
+        }
+        selt.jfInputItem.workNums = workNums;
+        var jfLevelInfo = $modal.open({
+            templateUrl: 'src/pc/jfLevel/jflevel-info.html',
+            controller: 'JfLevelInfoCtrl as ctrl',
+            resolve: {
+                data: function () {
+                    return selt.jfInputItem;
+                }
+            }
+        });
+
+        jfLevelInfo.result.then(function (score) {
+            selt.searchPersonnel();
+        });
+    };
+
+    this.selectAll = function(){
+        angular.forEach(selt.jfPersonList, function(item) {
+            item.check = selt.checkAll;
+        });
+    };
+
+
+
+
+
 
 }]);
 
