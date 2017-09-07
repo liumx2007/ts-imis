@@ -70,21 +70,27 @@ public class WeiXinPromotionController {
     @ResponseBody
     public Result getJfRecordByOpendId(@RequestBody Map<String,String> param){
         Result result=new Result();
-        if(param.isEmpty()||param.get("openId")==null||param.get("score")==null){
+        if(param.isEmpty()||param.get("openId")==null){
             result.setMessage("参数错误");
             result.setSuccess(false);
             return result;
+        }
+        int score;
+        if(param.get("score")==null){
+            score=0;
+        }else{
+            score =Integer.valueOf(param.get("score"));
         }
         List<TbJfRecord> tbJfRecordList=weiXinPromotionService.getJfRecordByOpendId(param.get("openId"));
         if(tbJfRecordList==null){
             result.setMessage("数据查询失败");
             result.setSuccess(false);
         }else{
-            int score=0;
+            int score_=0;
             for(TbJfRecord tbJfRecord:tbJfRecordList){
-                score=score+tbJfRecord.getScore();
+                score_=score_+tbJfRecord.getScore();
             }
-            if(score==Integer.valueOf(param.get("score"))){
+            if(score_==score){
                 result.setMessage("数据查询成功");
                 result.setSuccess(true);
                 result.setObject(tbJfRecordList);
