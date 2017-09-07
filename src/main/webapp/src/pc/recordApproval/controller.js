@@ -4,14 +4,7 @@
 app.controller('recordApprovalCtrl', ['$scope','$http','$log','$modal','$filter', function($scope,$http,$log,$modal,$filter) {
     var selt = this;
     //---页面按钮权限控制--start--
-    this.opCodes = [];
-    $http.get("/ts-authorize/ts-imis/operList/app-quit").success(function (result) {
-        if (result.success) {
-            selt.opCodes = result.object;
-        } else {
-            alert(result.message);
-        }
-    });
+
 
     $http.post("/promotionApp/getCompanyList").success(function (result) {
         if (result.success) {

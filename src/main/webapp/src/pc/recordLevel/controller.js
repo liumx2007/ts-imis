@@ -8,14 +8,7 @@ app.controller('recordLevelCtrl', ['$scope','$http','$log','$modal','$filter', f
     selt.selected=[];
 
     //---页面按钮权限控制--start--
-    this.opCodes = [];
-    $http.get("/ts-authorize/ts-imis/operList/app-quit").success(function (result) {
-        if (result.success) {
-            selt.opCodes = result.object;
-        } else {
-            alert(result.message);
-        }
-    });
+
 
     $http.post("/record/getRecordRankList").success(function (result) {
         if(result.success){

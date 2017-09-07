@@ -3,13 +3,7 @@ app.controller('JfLevelCtrl', ['$scope','$http','$log','$modal','$filter', funct
 
     //---页面按钮权限控制--start--
     this.opCodes = [];
-    $http.get("/ts-authorize/ts-imis/operList/app-talentPool").success(function (result) {
-        if (result.success) {
-            selt.opCodes = result.object;
-        } else {
-            alert(result.message);
-        }
-    });
+    this.depName = "";
     this.isShowOpe = function(value){
         for(var i = 0; i < selt.opCodes.length; i++){
             if(value === selt.opCodes[i]){
@@ -18,6 +12,17 @@ app.controller('JfLevelCtrl', ['$scope','$http','$log','$modal','$filter', funct
         }
         return false;
     };
+    $http.get("/ts-authorize/ts-imis/operList/app-jfLevel").success(function (result) {
+        if (result.success) {
+            selt.opCodes = result.object;
+            if(!selt.isShowOpe("all")){
+                selt.depName = result.message;
+            }
+            selt.searchPersonnel();
+        } else {
+            alert(result.message);
+        }
+    });
     //-------------------end---
 
 
@@ -77,11 +82,13 @@ app.controller('JfLevelCtrl', ['$scope','$http','$log','$modal','$filter', funct
 
     };
 
+
     this.searchPersonnel=function(){
         var param={
             "companyId":selt.companyPkid,
             "deptId":selt.deptPkid,
-            "name":selt.perName
+            "name":selt.perName,
+            "depName":selt.depName
         };
         $http.post("/jfLevel/queryJfPersonnel",angular.toJson(param)).success(function (result) {
             if(result.success){

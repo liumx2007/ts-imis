@@ -51,6 +51,7 @@ public class JfLevelController {
             String companyId = MapUtils.getString(params, "companyId");
             String deptId = MapUtils.getString(params, "deptId");
             String name = MapUtils.getString(params, "name");
+            String depName = MapUtils.getString(params, "depName");
 
             Map<String,Object> param = new HashMap<>();
             String tagCode = null;
@@ -59,6 +60,10 @@ public class JfLevelController {
             }
             if(!StringUtil.isEmpty(deptId)){
                 tagCode = deptId;
+            }
+            if(!StringUtil.isEmpty(depName)){
+                tagCode = null;
+                param.put("depName",depName);
             }
             param.put("tagCode",tagCode);
             param.put("name",name);

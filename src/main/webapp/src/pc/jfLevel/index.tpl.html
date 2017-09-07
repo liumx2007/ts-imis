@@ -12,7 +12,7 @@
             </div>
 
             <div class="wrapper b-b">
-                <div class="row">
+                <div class="row" ng-show="ctrl.isShowOpe('all')">
                     <label class="col-sm-3 control-label" style="line-height: 34px;">公司：</label>
                     <div class="col-sm-9">
                         <select class="form-control" ng-model="ctrl.companyPkid" ng-change="ctrl.getDeptList()">
@@ -21,7 +21,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" ng-show="ctrl.isShowOpe('all')">
                     <label class="col-sm-3 control-label" style="line-height: 34px;">部门：</label>
                     <div class="col-sm-9">
                         <select class="form-control" ng-model="ctrl.deptPkid">
@@ -40,7 +40,7 @@
                     <label class="col-sm-3 control-label" style="line-height: 34px;"></label>
                     <div class="col-sm-9">
                         <a href class="btn btn-sm btn-info" style="width: 45%;" ng-click="ctrl.searchPersonnel()"><i class="fa fa-search fa-fw m-r-xs"></i> 查询</a>
-                        <a href class="btn btn-sm btn-danger" style="width: 50%;" ng-click="ctrl.showPLAddJF()"><i class="fa fa-plus fa-fw m-r-xs"></i> 批量添加积分</a>
+                        <a href class="btn btn-sm btn-danger" style="width: 50%;" ng-click="ctrl.showPLAddJF()" ng-show="ctrl.isShowOpe('add')"><i class="fa fa-plus fa-fw m-r-xs"></i> 批量添加积分</a>
                     </div>
                 </div>
             </div>
@@ -87,8 +87,8 @@
                 <div class="m-t-n-xxs m-b-n-xxs m-l-xs">
                     <!--<a class="pull-right text-danger m-r">批量删除积分</a>-->
                     <a class="pull-right text-info m-r-lg" ng-click="ctrl.showInfo('deptAdd')">部门添加积分</a>
-                    <a class="pull-right text-info m-r-lg" ng-click="ctrl.showInfo('add')">添加积分</a>
-                    <a class="pull-right text-info m-r-lg" ng-click="ctrl.showLevelSelect()">修改等级</a>
+                    <a class="pull-right text-info m-r-lg" ng-click="ctrl.showInfo('add')" ng-show="ctrl.isShowOpe('add')">添加积分</a>
+                    <a class="pull-right text-info m-r-lg" ng-click="ctrl.showLevelSelect()" ng-show="ctrl.isShowOpe('update')">修改等级</a>
                     <span class="m-r">姓名：<b ng-bind="ctrl.person.name"></b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <span>当前积分：<b ng-bind="ctrl.person.score"></b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <span class="m-r">当前等级：
@@ -151,11 +151,11 @@
                                     <td ng-bind="item.score"></td>
                                     <td ng-bind="item.remark"></td>
                                     <td>
-                                        <a class="text-info" ng-click="ctrl.showInfo('info',item)">详情</a>&nbsp;|&nbsp;
-                                        <a class="text-info" ng-click="ctrl.showInfo('edit',item)">编辑</a>&nbsp;|&nbsp;
+                                        <a class="text-info" ng-click="ctrl.showInfo('info',item)">详情</a>
+                                        <a class="text-info" ng-click="ctrl.showInfo('edit',item)" ng-show="ctrl.isShowOpe('update')">编辑</a>
 
-                                        <a class="text-danger" ng-show="item.isShow==0" ng-click="ctrl.isShowRecord(item,1)">显示</a>
-                                        <a class="text-danger" ng-show="item.isShow==1" ng-click="ctrl.isShowRecord(item,0)">隐藏</a>
+                                        <a class="text-danger" ng-show="item.isShow==0&&ctrl.isShowOpe('delete')" ng-click="ctrl.isShowRecord(item,1)">显示</a>
+                                        <a class="text-danger" ng-show="item.isShow==1&&ctrl.isShowOpe('delete')" ng-click="ctrl.isShowRecord(item,0)">隐藏</a>
                                     </td>
                                 </tr>
                                 </tbody>
