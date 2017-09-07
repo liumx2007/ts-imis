@@ -179,7 +179,7 @@ app.controller('JfLevelCtrl', ['$scope','$http','$log','$modal','$filter', funct
         if(selt.person==undefined){
             return;
         }
-        selt.jfInputItem.showType = type;
+
         if(type=="edit"||type=="info"){
             selt.jfInputItem =item;
         }else if(type=="add"){
@@ -193,9 +193,7 @@ app.controller('JfLevelCtrl', ['$scope','$http','$log','$modal','$filter', funct
         }else{
             return;
         }
-
-
-
+        selt.jfInputItem.showType = type;
         var jfLevelInfo = $modal.open({
             templateUrl: 'src/pc/jfLevel/jflevel-info.html',
             controller: 'JfLevelInfoCtrl as ctrl',
