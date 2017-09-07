@@ -144,10 +144,10 @@ public class JfLevelController {
                 result.setMessage("修改成功");
                 jfLevelService.saveJfPersonToScoreAndRank(tbJfPerson, AppCons.RANK);
                 String rankName = jfLevelService.getRankName(tbJfPerson.getRank());
-                if(rankName!=null){
-                    tbJfPerson.setRankName(rankName);
+                if(rankName==null){
+                    rankName = "初级未转";
                 }
-                result.setObject(tbJfPerson);
+                result.setObject(rankName);
             }
         }catch (Exception e) {
             logger.error("级别修改异常" + e.getMessage(), e);
@@ -171,13 +171,49 @@ public class JfLevelController {
         try {
             //数据更新
             if(tbJfRecord!=null){
-                jfLevelService.addJfRecord(tbJfRecord);
-                result.setObject(tbJfRecord);
+                if(tbJfRecord.getWorkNum()!=null&&tbJfRecord.getWorkNums()==null){
+                    jfLevelService.addJfRecord(tbJfRecord);
+                    Integer score = jfLevelService.getScoreFromWorkNum(tbJfRecord.getWorkNum());
+                    result.setObject(score);
+                }
+                if(tbJfRecord.getWorkNum()==null&&tbJfRecord.getWorkNums()!=null&&tbJfRecord.getWorkNums().size()>0){
+                    for(String workNum : tbJfRecord.getWorkNums()){
+                        TbJfRecord jfRecord = new TbJfRecord();
+                        jfRecord.setWorkNum(workNum);
+                        jfRecord.setType(AppCons.HR_ADD_SCORE);
+                        jfRecord.setScore(tbJfRecord.getScore());
+                        jfRecord.setRemark(tbJfRecord.getRemark());
+                        jfLevelService.addJfRecord(jfRecord);
+                    }
+                }
                 result.setSuccess(true);
                 result.setMessage("成功");
             }
         }catch (Exception e) {
             logger.error("添加修改积分记录异常" + e.getMessage(), e);
+            result.setSuccess(false);
+            result.setMessage("失败");
+        }
+        return  result;
+
+    }
+
+    /**
+     * 移动的展示隐藏积分记录
+     * */
+    @ResponseBody
+    @RequestMapping(value="/isShowRecord", method = RequestMethod.POST)
+    public Result isShowRecord(@RequestBody TbJfRecord tbJfRecord)  {
+        Result result=new Result();
+        result.setSuccess(false);
+        try {
+            //数据更新
+            if(tbJfRecord!=null){
+                boolean boo = jfLevelService.isShowRecord(tbJfRecord);
+                result.setSuccess(boo);
+            }
+        }catch (Exception e) {
+            logger.error("移动的展示隐藏积分记录异常" + e.getMessage(), e);
             result.setSuccess(false);
             result.setMessage("失败");
         }

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author luoyun
@@ -32,4 +33,6 @@ public class TbJfRecord {
     private String depName;
     private Integer currentScore;//当前积分
     private String tagCode;
+
+    private List<String> workNums;
 }

@@ -55,11 +55,21 @@ public class JfLevelService {
             TbJfPerson jfPerson = tbJfRecordMapper.getJfPersonnel(tbJfPerson.getWorkNum());
             if(type == AppCons.SCORE&&tbJfPerson.getScore()!=null){
                 if(jfPerson==null){
+                    if(tbJfPerson.getScore()<0){
+                        tbJfPerson.setScore(0);
+                    }
                     tbJfRecordMapper.addJfPersonToScore(tbJfPerson);
                 }else{
                     if(jfPerson.getScore()!=null){
                         Integer score = jfPerson.getScore()+tbJfPerson.getScore();
+                        if(score<0){
+                            score = 0;
+                        }
                         tbJfPerson.setScore(score);
+                    }else{
+                        if(tbJfPerson.getScore()<0){
+                            tbJfPerson.setScore(0);
+                        }
                     }
                     tbJfRecordMapper.updateJfPersonToScore(tbJfPerson);
                 }
@@ -109,6 +119,23 @@ public class JfLevelService {
             }
         }
 
+        return boo;
+    }
+
+    public Integer getScoreFromWorkNum(String workNum){
+        Integer score = tbJfRecordMapper.getScoreFromWorkNum(workNum);
+        if(score==null){
+            score =0;
+        }
+        return score;
+    }
+
+    public boolean isShowRecord(TbJfRecord tbJfRecord){
+        boolean boo = false;
+        int num = tbJfRecordMapper.isShowRecord(tbJfRecord);
+        if(num>0){
+            boo = true;
+        }
         return boo;
     }
 

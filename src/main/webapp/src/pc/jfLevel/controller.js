@@ -167,8 +167,9 @@ app.controller('JfLevelCtrl', ['$scope','$http','$log','$modal','$filter', funct
             }
         });
 
-        levelSelect.result.then(function (jfPerson) {
-            selt.selectPerson(jfPerson);
+        levelSelect.result.then(function (rankName) {
+            selt.person.rankName = rankName;
+            selt.selectPerson(selt.person);
         });
 
     };
@@ -178,11 +179,10 @@ app.controller('JfLevelCtrl', ['$scope','$http','$log','$modal','$filter', funct
         if(selt.person==undefined){
             return;
         }
-        selt.jfInputItem.showType = type;
+
         if(type=="edit"||type=="info"){
             selt.jfInputItem =item;
-        }
-        else if(type=="add"){
+        }else if(type=="add"){
             selt.jfInputItem = {};
             selt.jfInputItem.workNum = selt.person.workNum;
             selt.jfInputItem.type = 1;
@@ -190,10 +190,10 @@ app.controller('JfLevelCtrl', ['$scope','$http','$log','$modal','$filter', funct
             selt.jfInputItem = {};
             selt.jfInputItem.workNum = selt.person.workNum;
             selt.jfInputItem.type = 2;
+        }else{
+            return;
         }
-
-
-
+        selt.jfInputItem.showType = type;
         var jfLevelInfo = $modal.open({
             templateUrl: 'src/pc/jfLevel/jflevel-info.html',
             controller: 'JfLevelInfoCtrl as ctrl',
@@ -204,11 +204,68 @@ app.controller('JfLevelCtrl', ['$scope','$http','$log','$modal','$filter', funct
             }
         });
 
-        jfLevelInfo.result.then(function () {
+        jfLevelInfo.result.then(function (score) {
+            selt.person.score = score;
             selt.selectPerson(selt.person);
         });
 
-    }
+    };
+
+    this.isShowRecord = function (item,isShow) {
+        if(isShow==1&&!confirm("你确定显示吗？")){
+            return;
+        };
+        if(isShow==0&&!confirm("你确定隐藏吗？")){
+            return;
+        };
+        item.isShow = isShow;
+        $http.post("/jfLevel/isShowRecord",angular.toJson(item)).success(function (result) {
+            if(result.success){
+                selt.selectPerson(selt.person);
+            }
+        });
+
+    };
+
+
+    this.showPLAddJF = function(){
+        var isHasCheceks = false;
+        var workNums = [];
+        angular.forEach(selt.jfPersonList, function(item) {
+            if(item.check == true){
+                workNums.push(item.workNum);
+                isHasCheceks = true;
+            }
+        });
+
+        if(!isHasCheceks){
+            alert("您未选择人员!");
+            return;
+        }
+        selt.jfInputItem.workNums = workNums;
+        var jfLevelInfo = $modal.open({
+            templateUrl: 'src/pc/jfLevel/jflevel-info.html',
+            controller: 'JfLevelInfoCtrl as ctrl',
+            resolve: {
+                data: function () {
+                    return selt.jfInputItem;
+                }
+            }
+        });
+
+        jfLevelInfo.result.then(function (score) {
+            selt.searchPersonnel();
+        });
+    };
+
+    this.selectAll = function(){
+        angular.forEach(selt.jfPersonList, function(item) {
+            item.check = selt.checkAll;
+        });
+    };
+
+
+
 
 
 
@@ -243,7 +300,7 @@ app.controller('LevelSelectCtrl', ['$scope', '$modalInstance','$http', 'data',fu
         data.rank = seltLevel.selectID
         $http.post("/jfLevel/updateLevel",angular.toJson(data)).success(function (result) {
             alert(result.message);
-            $modalInstance.close();
+            $modalInstance.close(result.object);
         });
 
     }
@@ -265,6 +322,15 @@ app.controller('JfLevelInfoCtrl', ['$scope', '$modalInstance','$http', 'data',fu
     };
 
     this.saveJfRecord = function () {
+        if(seltInfo.jfRecord.score==""||seltInfo.jfRecord.score==undefined){
+            alert("请填写积分!");
+            return;
+        }
+        if(seltInfo.jfRecord.remark==""||seltInfo.jfRecord.remark==undefined){
+            alert("请填写原因!");
+            return;
+        }
+
         $http.post("/jfLevel/addJfRecord",angular.toJson(seltInfo.jfRecord)).success(function (result) {
             alert(result.message);
             $modalInstance.close(result.object);

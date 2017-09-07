@@ -40,7 +40,7 @@
                     <label class="col-sm-3 control-label" style="line-height: 34px;"></label>
                     <div class="col-sm-9">
                         <a href class="btn btn-sm btn-info" style="width: 45%;" ng-click="ctrl.searchPersonnel()"><i class="fa fa-search fa-fw m-r-xs"></i> 查询</a>
-                        <a href class="btn btn-sm btn-danger" style="width: 50%;" ng-click="showPLAddJF()"><i class="fa fa-plus fa-fw m-r-xs"></i> 批量添加积分</a>
+                        <a href class="btn btn-sm btn-danger" style="width: 50%;" ng-click="ctrl.showPLAddJF()"><i class="fa fa-plus fa-fw m-r-xs"></i> 批量添加积分</a>
                     </div>
                 </div>
             </div>
@@ -53,7 +53,7 @@
                                 <tr>
                                     <th style="width: 5%;" data-sort-ignore="true">
                                         <label class="i-checks m-b-none">
-                                            <input type="checkbox" ng-model="checkAll" ng-change="selectAll()"><i></i>
+                                            <input type="checkbox" ng-model="ctrl.checkAll" ng-change="ctrl.selectAll()"><i></i>
                                         </label>
                                     </th>
                                     <th>姓名</th>
@@ -63,7 +63,9 @@
                                 </thead>
                                 <tbody>
                                 <tr ng-repeat="item in ctrl.jfPersonList"  ng-click="ctrl.selectPerson(item)"  style="cursor: pointer;">
-                                    <td><label class="i-checks m-b-none"><input type="checkbox" name="id" ><i></i></label></td>
+                                    <td>
+                                        <label class="i-checks m-b-none"><input type="checkbox" name="id" ng-model="item.check"><i></i></label>
+                                    </td>
                                     <td ng-bind="item.name"></td>
                                     <td ng-bind="item.score"></td>
                                     <td ng-bind="item.rankName"></td>
@@ -151,7 +153,9 @@
                                     <td>
                                         <a class="text-info" ng-click="ctrl.showInfo('info',item)">详情</a>&nbsp;|&nbsp;
                                         <a class="text-info" ng-click="ctrl.showInfo('edit',item)">编辑</a>&nbsp;|&nbsp;
-                                        <a class="text-danger" ng-click="ctrl.deleteJF(item)">删除</a>
+
+                                        <a class="text-danger" ng-show="item.isShow==0" ng-click="ctrl.isShowRecord(item,1)">显示</a>
+                                        <a class="text-danger" ng-show="item.isShow==1" ng-click="ctrl.isShowRecord(item,0)">隐藏</a>
                                     </td>
                                 </tr>
                                 </tbody>
