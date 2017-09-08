@@ -29,12 +29,10 @@ public class JfRecordTask implements Runnable{
     public void run() {
         String connt_date=DateUtils.getYearMonth();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        String firstday;
-        // 获取前月的第一天
         Calendar cale =Calendar.getInstance();
         cale.add(Calendar.MONTH, 0);
         cale.set(Calendar.DAY_OF_MONTH, 1);
-        firstday = format.format(cale.getTime());
+        String firstday = format.format(cale.getTime());
         String date_conut=DateUtils.getDate(new Date(),"yyyy-MM-dd");
         if(firstday.equals(date_conut)){
             logger.info("======================生成["+connt_date+"]考勤积分=====================");
