@@ -103,7 +103,7 @@ public class AttenceBootstrap  implements ApplicationListener<ApplicationEvent> 
                     }
                     String endcountJf_time = endDate + " " + countJf_time.trim();
                     long countJf_timeDiffCount = DateUtils.dateDiff(startTime, endcountJf_time, "yyyy-MM-dd HH:mm:ss", "m");
-                    scheduler.scheduleAtFixedRate(jfRecordTask,countJf_timeDiffCount, 24 * 60*30, TimeUnit.MINUTES);
+                    scheduler.scheduleAtFixedRate(jfRecordTask,countJf_timeDiffCount, 24 * 60, TimeUnit.MINUTES);
                     logger.info("===========任务启动完成=========");
 
 
