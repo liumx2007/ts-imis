@@ -543,8 +543,34 @@ public class DateUtils {
 		return weekName;
 	}
 
-	/*public static void main(String[] args){
-		System.out.println(getChinaWeek("Sunday"));
-	}*/
+
+	//获取本月上一月yyyyMM
+	public static String getYearMonth(){
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.MONTH, -1);
+		SimpleDateFormat format =  new SimpleDateFormat("yyyyMM");
+		String time = format.format(c.getTime());
+		return time;
+	}
+
+	public static void main(String[] args){
+		// 获取当月第一天和最后一天
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		String firstday, lastday;
+		// 获取前月的第一天
+		Calendar cale = null;
+		cale = Calendar.getInstance();
+		cale = Calendar.getInstance();
+		cale.add(Calendar.MONTH, 0);
+		cale.set(Calendar.DAY_OF_MONTH, 1);
+		firstday = format.format(cale.getTime());
+		// 获取前月的最后一天
+		cale = Calendar.getInstance();
+		cale.add(Calendar.MONTH, 1);
+		cale.set(Calendar.DAY_OF_MONTH, 0);
+		lastday = format.format(cale.getTime());
+		System.out.println("本月第一天和最后一天分别是 ： " + firstday + " and " + lastday);
+
+	}
 
 }

@@ -43,7 +43,10 @@ public class AppCons {
     /**积分申请审核失败*/
     public static final int RECORDAPP_DISAGREE=3;
 
+    /**人事加分*/
     public static final int HR_ADD_SCORE = 1;
+    /**系统加分*/
+    public static final int XT_ADD_SCORE = 3;
 
     public static final int DEPT_ADD_SCORE = 2;
 

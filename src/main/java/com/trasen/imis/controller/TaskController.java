@@ -8,6 +8,7 @@ import com.trasen.imis.model.TbAttenceLocation;
 import com.trasen.imis.service.AttenceCountService;
 import com.trasen.imis.service.AttenceService;
 import com.trasen.imis.service.ContractService;
+import com.trasen.imis.service.JfRecordService;
 import com.trasen.imis.task.WeiXinPersonTask;
 import com.trasen.imis.utils.DateUtils;
 import com.trasen.imis.utils.HttpUtil;
@@ -45,6 +46,9 @@ public class TaskController {
 
     @Autowired
     ContractService contractService;
+
+    @Autowired
+    JfRecordService jfRecordService;
 
 
     @ResponseBody
@@ -135,6 +139,21 @@ public class TaskController {
         result.setSuccess(true);
         result.setStatusCode(1);
         result.setMessage("劳动合同发送任务成功");
+        return result;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/savejfRecordFor_attence", method = RequestMethod.GET, produces = "application/json")
+    public Result savejfRecordFor_attence(@RequestParam String date) {
+        Result result = new Result();
+        if(StringUtil.isEmpty(date)){
+            date = DateUtils.getYearMonth();
+        }
+        logger.info("=======生成["+date+"]考勤积分");
+        jfRecordService.savejfRecordFor_attence(date);
+        result.setSuccess(true);
+        result.setStatusCode(1);
+        result.setMessage("生成["+date+"]考勤积分");
         return result;
     }
 }

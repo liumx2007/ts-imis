@@ -1,9 +1,6 @@
 package com.trasen.imis;
 
-import com.trasen.imis.task.AttenceCountTask;
-import com.trasen.imis.task.AttenceRuleTask;
-import com.trasen.imis.task.MakeAttenceLackTask;
-import com.trasen.imis.task.WeiXinPersonTask;
+import com.trasen.imis.task.*;
 import com.trasen.imis.utils.DateUtils;
 import com.trasen.imis.utils.PropertiesUtils;
 import org.slf4j.Logger;
@@ -42,6 +39,9 @@ public class AttenceBootstrap  implements ApplicationListener<ApplicationEvent> 
 
     @Autowired
     WeiXinPersonTask weiXinPersonTask;
+
+    @Autowired
+    JfRecordTask jfRecordTask;
 
 
     @Override
@@ -95,6 +95,18 @@ public class AttenceBootstrap  implements ApplicationListener<ApplicationEvent> 
                     long contractDiffCount = DateUtils.dateDiff(startTime, endcontractTime, "yyyy-MM-dd HH:mm:ss", "m");
                     scheduler.scheduleAtFixedRate(weiXinPersonTask, contractDiffCount, 24 * 60, TimeUnit.MINUTES);
                     logger.info("===========任务启动完成=========");
+
+                    //定时增加考勤积分记录
+                    String countJf_time = PropertiesUtils.getProperty("countJF_time");
+                    if (countJf_time == null) {
+                        countJf_time = "02:00:00";
+                    }
+                    String endcountJf_time = endDate + " " + countJf_time.trim();
+                    long countJf_timeDiffCount = DateUtils.dateDiff(startTime, endcountJf_time, "yyyy-MM-dd HH:mm:ss", "m");
+                    scheduler.scheduleAtFixedRate(jfRecordTask,countJf_timeDiffCount, 24 * 60*30, TimeUnit.MINUTES);
+                    logger.info("===========任务启动完成=========");
+
+
                 } catch (Exception e) {
                     logger.info("任务启动异常", e);
                 }
