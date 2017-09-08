@@ -27,44 +27,12 @@ import java.nio.charset.Charset;
 public class BaiduMapController {
 
     /*
-    * 通过地址获取坐标点，在百度地图上显示
-    * */
-    @RequestMapping(value="/getAddressBaiduMapView",method = RequestMethod.GET)
-    public String getAddressBaiduMapView(@QueryParam("address") String address, HttpServletRequest request, HttpServletResponse response) throws MalformedURLException {
-
-        String coordinate=new BaiDuUtil().getCoordinateforAddress(address);
-        String width = PropertiesUtils.getProperty("width");
-        if(width==null){
-            width = "400";
-        }
-        String height = PropertiesUtils.getProperty("height");
-        if(height==null){
-            height = "350";
-        }
-
-        String baiduurl="http://api.map.baidu.com/staticimage/v2?ak=TTYEcxv5asPAMZ8ZBIMtuqIyXLOjrGhM&width="+width+"&height="+height+"&center="+coordinate+"&markers="+coordinate+"&zoom=15&markerStyles=s,A,0xff0000";
-        try {
-            InputStream is = new URL(baiduurl).openStream();
-
-           // String line = null;
-            byte[] b = new byte[1024];
-            int len = -1;
-            while((len = is.read(b, 0, 1024)) != -1) {
-                response.getOutputStream().write(b, 0, len);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /*
     * 通过坐标点，在百度地图上显示
     * */
     @RequestMapping(value="/getCoordinateBaiduMapView",method = RequestMethod.GET)
     public String getCoordinateBaiduMapView(@QueryParam("coordinate") String coordinate, HttpServletRequest request, HttpServletResponse response) throws MalformedURLException {
 
-        //String coordinate=new BaiDuUtil().getCoordinateforAddress(address);
+        coordinate=BaiDuUtil.getCoordinateForbd09ll(coordinate);
         String centerCoordinate=null;
         String[] coordinateArray=coordinate.split(";");
         if(coordinateArray.length==0){
@@ -82,7 +50,7 @@ public class BaiduMapController {
         if(height==null){
             height = "350";
         }
-        String baiduurl="http://api.map.baidu.com/staticimage/v2?ak=TTYEcxv5asPAMZ8ZBIMtuqIyXLOjrGhM&"+width+"=400&height="+height+"&center="+centerCoordinate+"&markers="+coordinate+"&zoom=14&markerStyles=s,A,0xff0000";
+        String baiduurl="http://api.map.baidu.com/staticimage/v2?ak=TTYEcxv5asPAMZ8ZBIMtuqIyXLOjrGhM&width="+width+"&height="+height+"&center="+centerCoordinate+"&markers="+coordinate+"&zoom=14&markerStyles=s,A,0xff0000";
         try {
             InputStream is = new URL(baiduurl).openStream();
 
@@ -106,7 +74,7 @@ public class BaiduMapController {
 
 
 
-        String  address=new BaiDuUtil().getAddressForCoordinate(coordinate);
+        String  address=BaiDuUtil.getAddressForCoordinate(coordinate);
 
         String json = "{\"address\": \"" + address + "\"}";
         return json;

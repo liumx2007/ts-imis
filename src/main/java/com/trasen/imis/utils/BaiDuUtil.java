@@ -56,7 +56,7 @@ public class BaiDuUtil {
     *
     * 进行坐标点装换
     * */
-    public String getCoordinateForbd09ll(String coordinate) throws MalformedURLException {
+    public static String getCoordinateForbd09ll(String coordinate) throws MalformedURLException {
         String baiduurl="http://api.map.baidu.com/geoconv/v1/?coords="+coordinate+"&from=1&to=5&ak=TTYEcxv5asPAMZ8ZBIMtuqIyXLOjrGhM";
         StringBuffer str = new StringBuffer();
         URL url = new URL(baiduurl);
@@ -98,7 +98,7 @@ public class BaiDuUtil {
     /*
     * 利用百度地图，通过坐标点获取地址
     * */
-    public String getAddressForCoordinate(String coordinate){
+    public static String getAddressForCoordinate(String coordinate){
         String locationCoordinate=null;
         try {
             String coordinabdo9ll=getCoordinateForbd09ll(coordinate);
@@ -137,13 +137,12 @@ public class BaiDuUtil {
         return address;
     }
 
-    /*public static void main(String[] args)  {
+    public static void main(String[] args)  {
         String address= null;
 
-            address = new BaiDuUtil().getAddressForCoordinate("112.87424,28.214897");
+            address = new BaiDuUtil().getAddressForCoordinate("112.87425,28.21533");
 
         System.out.println(address);
     }
-*/
 
 }
