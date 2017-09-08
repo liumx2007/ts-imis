@@ -15,6 +15,7 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.List;
 
 /**
  * @author luoyun
@@ -78,6 +79,17 @@ public class BaiduMapController {
 
         String json = "{\"address\": \"" + address + "\"}";
         return json;
+    }
+
+    /*
+    * 通过坐标点获取地址
+    * */
+    @RequestMapping(value="/getAddressForCoordinateList",method = RequestMethod.GET)
+    @ResponseBody
+    public List<String> getAddressForCoordinateList(@QueryParam("coordinate") String coordinate){
+        String  address=BaiDuUtil.getAddressForCoordinate(coordinate);
+        List<String> list = BaiDuUtil.getAddressForCoordinateList(address,coordinate);
+        return list;
     }
 
 

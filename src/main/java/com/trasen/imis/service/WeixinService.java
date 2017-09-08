@@ -1,10 +1,10 @@
 package com.trasen.imis.service;
 
+import cn.trasen.commons.util.DateUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.trasen.imis.model.JsapiSignature;
-import com.trasen.imis.model.TbPersonnel;
-import com.trasen.imis.model.UserToken;
-import com.trasen.imis.model.WinXinPerson;
+import com.trasen.imis.dao.TbAttenceLogMapper;
+import com.trasen.imis.dao.TbAttenceMapper;
+import com.trasen.imis.model.*;
 import com.trasen.imis.model.resp.*;
 import com.trasen.imis.utils.HttpUtil;
 import com.trasen.imis.utils.MessageUtil;
@@ -20,10 +20,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by zhangxiahui on 17/6/13.
@@ -35,6 +32,13 @@ public class WeixinService {
 
     @Autowired
     private WinXinPersonService winXinPersonService;
+
+    @Autowired
+    private TbAttenceLogMapper tbAttenceLogMapper;
+
+    @Autowired
+    private TbAttenceMapper tbAttenceMapper;
+
 
     /**
      * 解析微信请求并读取XML
@@ -194,6 +198,53 @@ public class WeixinService {
                     }
                     return xml_tmt;
                 }
+
+
+                //补当天签到指令
+                if(content.contains("补当天签到#")){
+                    String[] ArrayString=content.split("#");
+                    TextMessage tmt = new TextMessage();
+                    tmt.setToUserName(FromUserName);
+                    tmt.setFromUserName(ToUserName);
+                    tmt.setMsgType(MessageUtil.MESSAGG_TYPE_TEXT);
+                    tmt.setCreateTime(System.currentTimeMillis());
+                    String xml_tmt="";
+                    if(ArrayString.length!=3){
+                        tmt.setContent("您输入的补签指令有误");
+                        xml_tmt = MessageUtil.textMessageToXml(tmt);
+                        logger.info("xml:" + xml_tmt);
+                    }else{
+                        String name = ArrayString[1];
+                        // TODO: 17/9/8
+                        //补签到逻辑
+                        /*AttenceVo attenceVoT = null;
+                        //open_id as openId,work_num as workNum,tag_id as tagId,tag_name as tagName,`name`,`position`
+                        if(attenceVoT!=null){
+                            tmt.setContent(name+"当天已签到,无需补签操作!");
+                            xml_tmt = MessageUtil.textMessageToXml(tmt);
+                            logger.info("xml:" + xml_tmt);
+                        }else{
+                            //#{openId},#{longitude},#{latitude},#{accuracy},now(),#{attenceDate},#{attenceWeek},
+                            // #{name},#{workNum},#{remark},#{address},#{type}
+                            AttenceLogVo attenceLogVo = new AttenceLogVo();
+                            tbAttenceLogMapper.insertAttenceLog(attenceLogVo);
+
+                            //#{workNum},#{tagId},#{tagName},#{name},#{position},#{attenceDate},#{signinTime},#{week},now(),
+                            // #{lateTime},#{type},#{signinAddress},#{signinType},#{remark}
+                            AttenceVo attenceVo = new AttenceVo();
+                            tbAttenceMapper.insertAttence(attenceVo);
+
+
+                            //signout_time = #{signoutTime},signout_address=#{signoutAddress},work_hours=#{workHours},updated=now(),
+                            // operator=#{operator},back_time=#{backTime}
+                            tbAttenceMapper.updateAttenceSignoutTime(attenceVo);
+                        }*/
+
+                    }
+                    return xml_tmt;
+                }
+
+
 
 
                 // 响应

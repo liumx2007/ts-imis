@@ -9,6 +9,8 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author luoyun
@@ -137,12 +139,94 @@ public class BaiDuUtil {
         return address;
     }
 
+    /*
+    * 利用百度地图，通过坐标点获取地址
+    * */
+    public static List<String> getAddressForCoordinateList(String address,String coordinate){
+        List<String> list = new ArrayList<>();
+        String addressFujin = "";
+        if(address!=null){
+            list.add(address);
+            addressFujin = address.substring(0,address.indexOf("["));
+        }
+
+
+        String locationCoordinate=null;
+        try {
+            String coordinabdo9ll=getCoordinateForbd09ll(coordinate);
+            String[] coordinabdo9llArrayy=coordinabdo9ll.split(",");
+            locationCoordinate=coordinabdo9llArrayy[1]+","+coordinabdo9llArrayy[0];
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+
+        Integer radius = 300;
+
+
+        String baiduurl="http://api.map.baidu.com/place/v2/search?query=医院&page_size=10&page_num=0&scope=1&location="+locationCoordinate+"&radius="+radius+"&output=json&ak=TTYEcxv5asPAMZ8ZBIMtuqIyXLOjrGhM";
+        StringBuffer str = new StringBuffer();
+        try {
+            URL url = new URL(baiduurl);
+            BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream(),"utf-8"));
+            String line;
+            while ((line = in.readLine()) != null) {
+                str.append(line);
+            }
+            in.close();
+            if (str.equals("") || str == null) {
+                System.err.println("百度服务无返回");
+                return list;
+            }
+            System.out.println(str.toString());
+            JSONObject dataJson =(JSONObject)JSONObject.parse(str.toString());
+            if(dataJson!=null){
+                Integer total = dataJson.getInteger("total");
+                if(total!=null&&total>0){
+                    List<JSONObject> results = (List<JSONObject>)dataJson.get("results");
+                    if(results!=null&&results.size()>0){
+                        for(JSONObject jsonObject : results){
+                            String name = jsonObject.getString("name");
+                            if(name!=null){
+                                list.add(addressFujin+"["+name+"]");
+                            }
+                        }
+
+                    }
+
+                }
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+
+
+
     public static void main(String[] args)  {
         String address= null;
+        //公司:112.87425,28.21533
 
-            address = new BaiDuUtil().getAddressForCoordinate("112.87425,28.21533");
+
+        address = new BaiDuUtil().getAddressForCoordinate("115.61130,33.17476");
+
+        //115.61130,33.17476
+        //113.11034,29.14915
+        //112.85190,26.42187
 
         System.out.println(address);
+
+        List<String> list = BaiDuUtil.getAddressForCoordinateList(address,"115.61130,33.17476");
+        for(String str : list){
+            System.out.println(str);
+        }
     }
 
 }

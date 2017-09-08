@@ -221,16 +221,18 @@
                 };
                 //获取地址信息--------
                 this.getaddress=function(GPSStr) {
-                    $http.get("/baidumap/getAddressforCoordinate/?coordinate=" + GPSStr).success(function (result) {
-                        selt.address = result.address;
+                    $http.get("/baidumap/getAddressForCoordinateList/?coordinate=" + GPSStr).success(function (result) {
+                        selt.addressList = result;
+
+                        selt.address = result[0];
                     });
                 };
 
                 //测试用
-                /*this.baidumapurl="/baidumap/getCoordinateBaiduMapView/?coordinate=112.87425,28.21533";
-                this.getaddress('112.87425,28.21533');
+                this.baidumapurl="/baidumap/getCoordinateBaiduMapView/?coordinate=112.87425,28.21533";
+                this.getaddress('112.85190,26.42187');
                 this.longitude = 112.87425;
-                this.latitude = 28.21533;*/
+                this.latitude = 28.21533;
             }
         }])
         .filter('attenceAddress',function(){
