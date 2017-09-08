@@ -1,7 +1,7 @@
 (function() {
     angular
         .module('WEBAPP.MOBILE.CONTROLLER', ['ui.bootstrap'])
-        .controller('MobileCtrl', ['$http','$scope','$uibModal','$filter','utils',function($http,$scope,$uibModal,$filter,utils) {
+        .controller('MobileCtrl', ['$http','$scope','$uibModal','$filter','utils','$log',function($http,$scope,$uibModal,$filter,utils,$log) {
             var selt = this;
             //----用户授权,需要跳两次页面-----
             var code =  utils.getUrlVar('code');
@@ -157,7 +157,7 @@
                             "address":selt.address,
                             "tagId":selt.attence.tagId
                         };
-                        if(type=='signOut'){
+                        if(type=='signOut'||type=='sign'){
                             var confrimInstance = $uibModal.open({
                                 templateUrl: 'signConfirm.html',
                                 controller: 'signConfirmController',
@@ -228,11 +228,37 @@
                     });
                 };
 
+                this.open = function (size, parentSelector) {
+                    var parentElem = parentSelector ?
+                        angular.element($document[0].querySelector('.modal-demo ' + parentSelector)) : undefined;
+                    var modalInstance = $uibModal.open({
+                        animation: selt.animationsEnabled,
+                        ariaLabelledBy: 'modal-title',
+                        ariaDescribedBy: 'modal-body',
+                        templateUrl: 'myModalContent.html',
+                        controller: 'ModalInstanceCtrl',
+                        controllerAs: '$ctrl',
+                        size: size,
+                        appendTo: parentElem,
+                        resolve: {
+                            items: function () {
+                                return selt.addressList;
+                            }
+                        }
+                    });
+
+                    modalInstance.result.then(function (selectedItem) {
+                        selt.address = selectedItem;
+                    }, function () {
+                        $log.info('Modal dismissed at: ' + new Date());
+                    });
+                };
+
                 //测试用
-                this.baidumapurl="/baidumap/getCoordinateBaiduMapView/?coordinate=112.87425,28.21533";
+                /*this.baidumapurl="/baidumap/getCoordinateBaiduMapView/?coordinate=112.87425,28.21533";
                 this.getaddress('112.85190,26.42187');
                 this.longitude = 112.87425;
-                this.latitude = 28.21533;
+                this.latitude = 28.21533;*/
             }
         }])
         .filter('attenceAddress',function(){
@@ -261,4 +287,20 @@ angular.module('WEBAPP.MOBILE.CONTROLLER').controller('signConfirmController', f
     conf.cancel = function () {
         $uibModalInstance.dismiss('cancel');
     };
-})
+});
+
+angular.module('WEBAPP.MOBILE.CONTROLLER').controller('ModalInstanceCtrl', function ($uibModalInstance, items) {
+    var $ctrl = this;
+    $ctrl.items = items;
+    $ctrl.selected = {
+        item: $ctrl.items[0]
+    };
+
+    $ctrl.ok = function () {
+        $uibModalInstance.close($ctrl.selected.item);
+    };
+
+    $ctrl.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+});

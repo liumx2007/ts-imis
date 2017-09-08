@@ -33,7 +33,7 @@
 
     <!--我的位置-->
     <div class="Location">
-        <p ng-show="$ctrl.attType">我在<i ng-bind="$ctrl.address"></i>附近<i>地址微调</i></p>
+        <p ng-show="$ctrl.attType">我在<i ng-bind="$ctrl.address"></i>附近<i ng-click="$ctrl.open()">地址微调</i></p>
         <p ng-show="!$ctrl.attType">我在<i ng-bind="$ctrl.address | attenceAddress"></i>附近</p>
     </div>
     <!--签到按钮-->
@@ -49,7 +49,7 @@
     </div>
     <!--签到按钮-->
     <div class="SignBut" ng-show="$ctrl.attType">
-        <input ng-show="$ctrl.address&&$ctrl.attence.name" type="button" class="sigBut siBack" value="签到" ng-click="$ctrl.signInOrOutClick('sign')">
+        <input ng-show="$ctrl.address&&$ctrl.attence.name" type="button" class="sigBut siBack" value="快点我!" ng-click="$ctrl.signInOrOutClick('sign')">
     </div>
 
 </div>
@@ -59,11 +59,30 @@
         <h4 class="modal-title" id="show-title">提示</h4>
     </div>
     <div class="modal-body" id="show-body">
-        是否确认签退！
+        是否确认考勤！
     </div>
 
     <div class="modal-footer">
         <button class="btn btn-warning-1" ng-click="$confirmctrl.ok()">是</button>
         <button class="btn btn-warning-1" type="button" ng-click="$confirmctrl.cancel()">否</button>
     </div>
+</script>
+
+<script type="text/ng-template" id="myModalContent.html">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-title">考勤地址微调</h4>
+    </div>
+    <div class="modal-body" id="modal-body">
+        <ul>
+            <li ng-repeat="item in $ctrl.items">
+                <a href="#" ng-click="$event.preventDefault(); $ctrl.selected.item = item">{{ item }}</a>
+            </li>
+        </ul>
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">确定</button>
+        <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">取消</button>
+    </div>
+
 </script>

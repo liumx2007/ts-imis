@@ -162,7 +162,10 @@ public class BaiDuUtil {
         }
 
 
-        Integer radius = 300;
+        String radius = PropertiesUtils.getProperty("radius");
+        if(radius==null){
+            radius = "300";
+        }
 
 
         String baiduurl="http://api.map.baidu.com/place/v2/search?query=医院&page_size=10&page_num=0&scope=1&location="+locationCoordinate+"&radius="+radius+"&output=json&ak=TTYEcxv5asPAMZ8ZBIMtuqIyXLOjrGhM";
