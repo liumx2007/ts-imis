@@ -17,7 +17,7 @@
         signout_time as signoutTime,
         work_hours as workHours,
         `type`,remark,week
-        from tb_attence where work_num=#{workNum} and attence_date=#{attenceDate}
+        from tb_attence where work_num=#{workNum} and attence_date=#{attenceDate} limit 1
     </select>
 
     <insert id="insertAttence" parameterType="com.trasen.imis.model.AttenceVo">
