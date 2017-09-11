@@ -269,6 +269,38 @@ public class WeixinService {
 
 
 
+                if (content.contains("公司考勤")) {
+                    String attenceUrl = PropertiesUtils.getProperty("attence_url");
+                    if(attenceUrl==null){
+                        attenceUrl = "http://bpmtest01.trasen.cn/src/index.html#/mobile";
+                    }
+                    TextMessage tm = new TextMessage();
+                    tm.setToUserName(FromUserName);
+                    tm.setFromUserName(ToUserName);
+                    tm.setMsgType(MessageUtil.MESSAGG_TYPE_TEXT);
+                    tm.setCreateTime(System.currentTimeMillis());
+                    tm.setContent("公司考勤无缓存地址\n" +attenceUrl);
+                    return MessageUtil.textMessageToXml(tm);
+                }
+
+                if (content.contains("外出考勤")) {
+                    String attenceUrl = PropertiesUtils.getProperty("attence_url");
+                    if(attenceUrl==null){
+                        attenceUrl = "http://bpmtest01.trasen.cn/src/index.html#/mobile";
+                    }
+                    attenceUrl = attenceUrl+"?attType=1";
+                    TextMessage tm = new TextMessage();
+                    tm.setToUserName(FromUserName);
+                    tm.setFromUserName(ToUserName);
+                    tm.setMsgType(MessageUtil.MESSAGG_TYPE_TEXT);
+                    tm.setCreateTime(System.currentTimeMillis());
+                    tm.setContent("外出考勤无缓存地址\n" +attenceUrl);
+                    return MessageUtil.textMessageToXml(tm);
+                }
+
+
+
+
 
                 // 响应
                 TextMessage tm = new TextMessage();
