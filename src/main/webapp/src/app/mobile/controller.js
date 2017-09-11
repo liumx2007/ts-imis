@@ -224,9 +224,10 @@
                     $http.get("/baidumap/getAddressForCoordinateList/?coordinate=" + GPSStr).success(function (result) {
                         selt.addressList = result;
 
-                        selt.address = result[0];
+                        selt.address = result[0].address;
                     });
                 };
+
 
                 this.open = function (size, parentSelector) {
                     var parentElem = parentSelector ?
@@ -248,7 +249,8 @@
                     });
 
                     modalInstance.result.then(function (selectedItem) {
-                        selt.address = selectedItem;
+                        selt.address = selectedItem.address;
+                        selt.baidumapurl="/baidumap/addressFineTune/?coordinate="+selectedItem.GPSStr;
                     }, function () {
                         $log.info('Modal dismissed at: ' + new Date());
                     });
@@ -295,7 +297,6 @@ angular.module('WEBAPP.MOBILE.CONTROLLER').controller('ModalInstanceCtrl', funct
     $ctrl.selected = {
         item: $ctrl.items[0]
     };
-
     $ctrl.ok = function () {
         $uibModalInstance.close($ctrl.selected.item);
     };

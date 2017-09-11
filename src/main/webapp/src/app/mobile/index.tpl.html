@@ -75,7 +75,9 @@
     <div class="modal-body" id="modal-body">
         <ul>
             <li ng-repeat="item in $ctrl.items">
-                <a href="#" ng-click="$event.preventDefault(); $ctrl.selected.item = item">{{ item }}</a>
+                <label class="checkbox-inline i-checks" ng-click="$ctrl.selected.item = item">
+                    <input type="radio" name="address">{{ item.address }}
+                </label>
             </li>
         </ul>
 

@@ -10,7 +10,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author luoyun
@@ -142,23 +144,27 @@ public class BaiDuUtil {
     /*
     * 利用百度地图，通过坐标点获取地址
     * */
-    public static List<String> getAddressForCoordinateList(String address,String coordinate){
-        List<String> list = new ArrayList<>();
+    public static List<Map<String,String>> getAddressForCoordinateList(String address, String coordinate){
+        List<Map<String,String>> list = new ArrayList<>();
         String addressFujin = "";
-        if(address!=null){
-            list.add(address);
-            addressFujin = address.substring(0,address.indexOf("["));
-        }
-
-
-        String locationCoordinate=null;
+        String locationCoordinate="";
+        String coordinabdo9ll = "";
         try {
-            String coordinabdo9ll=getCoordinateForbd09ll(coordinate);
+            coordinabdo9ll=getCoordinateForbd09ll(coordinate);
             String[] coordinabdo9llArrayy=coordinabdo9ll.split(",");
             locationCoordinate=coordinabdo9llArrayy[1]+","+coordinabdo9llArrayy[0];
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
+        }
+
+        if(address!=null){
+            Map<String,String> first = new HashMap<>();
+            first.put("address",address);
+            first.put("GPSStr",coordinabdo9ll);
+
+            list.add(first);
+            addressFujin = address.substring(0,address.indexOf("["));
         }
 
 
@@ -191,8 +197,15 @@ public class BaiDuUtil {
                     if(results!=null&&results.size()>0){
                         for(JSONObject jsonObject : results){
                             String name = jsonObject.getString("name");
-                            if(name!=null){
-                                list.add(addressFujin+"["+name+"]");
+                            JSONObject location = jsonObject.getJSONObject("location");
+                            if(name!=null&&location!=null){
+                                float lat = location.getFloat("lat");
+                                float lng = location.getFloat("lng");
+                                String GPSStr = lng+","+lat;
+                                Map<String,String> map = new HashMap<>();
+                                map.put("address",addressFujin+"["+name+"]");
+                                map.put("GPSStr",GPSStr);
+                                list.add(map);
                             }
                         }
 
@@ -226,9 +239,9 @@ public class BaiDuUtil {
 
         System.out.println(address);
 
-        List<String> list = BaiDuUtil.getAddressForCoordinateList(address,"115.61130,33.17476");
-        for(String str : list){
-            System.out.println(str);
+        List<Map<String,String>> list = BaiDuUtil.getAddressForCoordinateList(address,"115.61130,33.17476");
+        for(Map<String,String> map : list){
+            System.out.println(map.get("address")+"=="+map.get("GPSStr"));
         }
     }
 

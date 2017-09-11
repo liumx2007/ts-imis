@@ -16,6 +16,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author luoyun
@@ -66,6 +67,40 @@ public class BaiduMapController {
         }
         return null;
     }
+
+
+    /*
+    * 通过坐标点，在百度地图上显示
+    * */
+    @RequestMapping(value="/addressFineTune",method = RequestMethod.GET)
+    public String addressFineTune(@QueryParam("coordinate") String coordinate, HttpServletRequest request, HttpServletResponse response) throws MalformedURLException {
+
+        String width = PropertiesUtils.getProperty("width");
+        if(width==null){
+            width = "400";
+        }
+        String height = PropertiesUtils.getProperty("height");
+        if(height==null){
+            height = "350";
+        }
+        String baiduurl="http://api.map.baidu.com/staticimage/v2?ak=TTYEcxv5asPAMZ8ZBIMtuqIyXLOjrGhM&width="+width+"&height="+height+"&center="+coordinate+"&markers="+coordinate+"&zoom=14&markerStyles=s,A,0xff0000";
+        try {
+            InputStream is = new URL(baiduurl).openStream();
+
+            // String line = null;
+            byte[] b = new byte[1024];
+            int len = -1;
+            while((len = is.read(b, 0, 1024)) != -1) {
+                response.getOutputStream().write(b, 0, len);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
     /*
     * 通过坐标点获取地址
     * */
@@ -86,9 +121,9 @@ public class BaiduMapController {
     * */
     @RequestMapping(value="/getAddressForCoordinateList",method = RequestMethod.GET)
     @ResponseBody
-    public List<String> getAddressForCoordinateList(@QueryParam("coordinate") String coordinate){
+    public List<Map<String,String>> getAddressForCoordinateList(@QueryParam("coordinate") String coordinate){
         String  address=BaiDuUtil.getAddressForCoordinate(coordinate);
-        List<String> list = BaiDuUtil.getAddressForCoordinateList(address,coordinate);
+        List<Map<String,String>> list = BaiDuUtil.getAddressForCoordinateList(address,coordinate);
         return list;
     }
 
