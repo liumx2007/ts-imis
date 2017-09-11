@@ -65,5 +65,9 @@ public interface TbAttenceMapper {
     List<TbPersonnel> getSubPerson(AttenceVo attenceVo);
 
     Integer getUserIdToOPenId(String openId);
+
+    AttenceVo getBuQianAttence(String workNum);
+
+    void insertBuQianAttence(AttenceVo attenceVo);
 }
 

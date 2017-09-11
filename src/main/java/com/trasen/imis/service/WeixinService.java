@@ -6,6 +6,7 @@ import com.trasen.imis.dao.TbAttenceLogMapper;
 import com.trasen.imis.dao.TbAttenceMapper;
 import com.trasen.imis.model.*;
 import com.trasen.imis.model.resp.*;
+import com.trasen.imis.utils.DateUtils;
 import com.trasen.imis.utils.HttpUtil;
 import com.trasen.imis.utils.MessageUtil;
 import com.trasen.imis.utils.PropertiesUtils;
@@ -214,31 +215,41 @@ public class WeixinService {
                         xml_tmt = MessageUtil.textMessageToXml(tmt);
                         logger.info("xml:" + xml_tmt);
                     }else{
-                        String name = ArrayString[1];
-                        // TODO: 17/9/8
+                        String workNum = ArrayString[1];
                         //补签到逻辑
-                        /*AttenceVo attenceVoT = null;
-                        //open_id as openId,work_num as workNum,tag_id as tagId,tag_name as tagName,`name`,`position`
-                        if(attenceVoT!=null){
-                            tmt.setContent(name+"当天已签到,无需补签操作!");
+                        AttenceVo attenceVoT = new AttenceVo();
+                        attenceVoT.setWorkNum(workNum);
+                        attenceVoT.setAttenceDate(DateUtil.getDateTime("yyyy-MM-dd"));
+                        AttenceVo attenceVoToday = tbAttenceMapper.getAttenceToday(attenceVoT);
+                        if(attenceVoToday!=null){
+                            tmt.setContent("工号:"+workNum+"已签到,无需补签操作\n" +
+                                    "姓名:"+attenceVoToday.getName()+"\n" +
+                                    "时间:"+attenceVoToday.getSigninTime()+"\n" +
+                                    "地址:"+attenceVoToday.getSigninAddress());
                             xml_tmt = MessageUtil.textMessageToXml(tmt);
                             logger.info("xml:" + xml_tmt);
                         }else{
-                            //#{openId},#{longitude},#{latitude},#{accuracy},now(),#{attenceDate},#{attenceWeek},
-                            // #{name},#{workNum},#{remark},#{address},#{type}
-                            AttenceLogVo attenceLogVo = new AttenceLogVo();
-                            tbAttenceLogMapper.insertAttenceLog(attenceLogVo);
+                            String today = DateUtil.getDateTime("yyyy-MM-dd");
+                            String singInTimeStr = today+" 08:00:00";
+                            String singOutTimeStr = today+" 18:00:00";
+                            Date inTime = DateUtil.stringToDate(singInTimeStr);
+                            Date outTime = DateUtil.stringToDate(singOutTimeStr);
 
-                            //#{workNum},#{tagId},#{tagName},#{name},#{position},#{attenceDate},#{signinTime},#{week},now(),
-                            // #{lateTime},#{type},#{signinAddress},#{signinType},#{remark}
-                            AttenceVo attenceVo = new AttenceVo();
-                            tbAttenceMapper.insertAttence(attenceVo);
+                            AttenceVo buQian = tbAttenceMapper.getBuQianAttence(workNum);
+                            buQian.setAttenceDate(DateUtil.getDateTime("yyyy-MM-dd"));
+                            buQian.setSigninTime(inTime);
+                            buQian.setSigninAddress("湖南省长沙市岳麓区麓云路[湖南创星科技股份有限公司]");
+                            buQian.setSignoutTime(outTime);
+                            buQian.setSignoutAddress("湖南省长沙市岳麓区麓云路[湖南创星科技股份有限公司]");
 
-
-                            //signout_time = #{signoutTime},signout_address=#{signoutAddress},work_hours=#{workHours},updated=now(),
-                            // operator=#{operator},back_time=#{backTime}
-                            tbAttenceMapper.updateAttenceSignoutTime(attenceVo);
-                        }*/
+                            buQian.setWorkNum("8");
+                            buQian.setType(0);
+                            buQian.setRemark("补签到");
+                            buQian.setWeek(DateUtils.getWeek(new Date()));
+                            buQian.setOperator(FromUserName);
+                            buQian.setSigninType("signIn");
+                            tbAttenceMapper.insertBuQianAttence(buQian);
+                        }
 
                     }
                     return xml_tmt;
