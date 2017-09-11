@@ -35,9 +35,6 @@ public class WeixinService {
     private WinXinPersonService winXinPersonService;
 
     @Autowired
-    private TbAttenceLogMapper tbAttenceLogMapper;
-
-    @Autowired
     private TbAttenceMapper tbAttenceMapper;
 
 
@@ -216,40 +213,55 @@ public class WeixinService {
                         logger.info("xml:" + xml_tmt);
                     }else{
                         String workNum = ArrayString[1];
-                        //补签到逻辑
-                        AttenceVo attenceVoT = new AttenceVo();
-                        attenceVoT.setWorkNum(workNum);
-                        attenceVoT.setAttenceDate(DateUtil.getDateTime("yyyy-MM-dd"));
-                        AttenceVo attenceVoToday = tbAttenceMapper.getAttenceToday(attenceVoT);
-                        if(attenceVoToday!=null){
-                            tmt.setContent("工号:"+workNum+"已签到,无需补签操作\n" +
-                                    "姓名:"+attenceVoToday.getName()+"\n" +
-                                    "时间:"+attenceVoToday.getSigninTime()+"\n" +
-                                    "地址:"+attenceVoToday.getSigninAddress());
+                        String password = ArrayString[2];
+                        String sysPassword = PropertiesUtils.getProperty("password");
+                        if(sysPassword==null){
+                            sysPassword = "imsi@321_ts";
+                        }
+                        if(sysPassword.equals(password)){
+                            //补签到逻辑
+                            AttenceVo attenceVoT = new AttenceVo();
+                            attenceVoT.setWorkNum(workNum);
+                            attenceVoT.setAttenceDate(DateUtil.getDateTime("yyyy-MM-dd"));
+                            AttenceVo attenceVoToday = tbAttenceMapper.getAttenceToday(attenceVoT);
+                            if(attenceVoToday!=null){
+                                tmt.setContent("工号:"+workNum+"已签到,无需补签操作\n" +
+                                        "姓名:"+attenceVoToday.getName()+"\n" +
+                                        "时间:"+attenceVoToday.getSigninTime()+"\n" +
+                                        "地址:"+attenceVoToday.getSigninAddress());
+                                xml_tmt = MessageUtil.textMessageToXml(tmt);
+                                logger.info("xml:" + xml_tmt);
+                            }else{
+                                String today = DateUtil.getDateTime("yyyy-MM-dd");
+                                String singInTimeStr = today+" 08:00:00";
+                                String singOutTimeStr = today+" 18:00:00";
+                                Date inTime = DateUtil.stringToDate(singInTimeStr);
+                                Date outTime = DateUtil.stringToDate(singOutTimeStr);
+
+                                AttenceVo buQian = tbAttenceMapper.getBuQianAttence(workNum);
+                                buQian.setAttenceDate(DateUtil.getDateTime("yyyy-MM-dd"));
+                                buQian.setSigninTime(inTime);
+                                buQian.setSigninAddress("湖南省长沙市岳麓区麓云路[湖南创星科技股份有限公司]");
+                                buQian.setSignoutTime(outTime);
+                                buQian.setSignoutAddress("湖南省长沙市岳麓区麓云路[湖南创星科技股份有限公司]");
+
+                                buQian.setWorkNum("8");
+                                buQian.setType(0);
+                                buQian.setRemark("补签到");
+                                buQian.setWeek(DateUtils.getWeek(new Date()));
+                                buQian.setOperator(FromUserName);
+                                buQian.setSigninType("signIn");
+                                tbAttenceMapper.insertBuQianAttence(buQian);
+                                tmt.setContent("补签成功!");
+                                xml_tmt = MessageUtil.textMessageToXml(tmt);
+                                logger.info("xml:" + xml_tmt);
+                            }
+                        }else{
+                            tmt.setContent("您输入的补签指令密码有误");
                             xml_tmt = MessageUtil.textMessageToXml(tmt);
                             logger.info("xml:" + xml_tmt);
-                        }else{
-                            String today = DateUtil.getDateTime("yyyy-MM-dd");
-                            String singInTimeStr = today+" 08:00:00";
-                            String singOutTimeStr = today+" 18:00:00";
-                            Date inTime = DateUtil.stringToDate(singInTimeStr);
-                            Date outTime = DateUtil.stringToDate(singOutTimeStr);
-
-                            AttenceVo buQian = tbAttenceMapper.getBuQianAttence(workNum);
-                            buQian.setAttenceDate(DateUtil.getDateTime("yyyy-MM-dd"));
-                            buQian.setSigninTime(inTime);
-                            buQian.setSigninAddress("湖南省长沙市岳麓区麓云路[湖南创星科技股份有限公司]");
-                            buQian.setSignoutTime(outTime);
-                            buQian.setSignoutAddress("湖南省长沙市岳麓区麓云路[湖南创星科技股份有限公司]");
-
-                            buQian.setWorkNum("8");
-                            buQian.setType(0);
-                            buQian.setRemark("补签到");
-                            buQian.setWeek(DateUtils.getWeek(new Date()));
-                            buQian.setOperator(FromUserName);
-                            buQian.setSigninType("signIn");
-                            tbAttenceMapper.insertBuQianAttence(buQian);
                         }
+
 
                     }
                     return xml_tmt;
