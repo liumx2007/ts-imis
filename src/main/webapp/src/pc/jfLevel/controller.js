@@ -337,6 +337,9 @@ app.controller('JfLevelInfoCtrl', ['$scope', '$modalInstance','$http', 'data',fu
             alert("请填写原因!");
             return;
         }
+        if(!confirm("你确认保存么？")){
+            return;
+        };
 
         $http.post("/jfLevel/addJfRecord",angular.toJson(seltInfo.jfRecord)).success(function (result) {
             alert(result.message);
