@@ -268,12 +268,14 @@ public class WeixinService {
                 }
 
 
+                long v = new Date().getTime();
 
                 if (content.contains("公司考勤")) {
                     String attenceUrl = PropertiesUtils.getProperty("attence_url");
                     if(attenceUrl==null){
                         attenceUrl = "http://bpmtest01.trasen.cn/src/index.html#/mobile";
                     }
+                    attenceUrl =attenceUrl +"?v="+v;
                     TextMessage tm = new TextMessage();
                     tm.setToUserName(FromUserName);
                     tm.setFromUserName(ToUserName);
@@ -288,7 +290,7 @@ public class WeixinService {
                     if(attenceUrl==null){
                         attenceUrl = "http://bpmtest01.trasen.cn/src/index.html#/mobile";
                     }
-                    attenceUrl = attenceUrl+"?attType=1";
+                    attenceUrl = attenceUrl+"?attType=1&v="+v;
                     TextMessage tm = new TextMessage();
                     tm.setToUserName(FromUserName);
                     tm.setFromUserName(ToUserName);
