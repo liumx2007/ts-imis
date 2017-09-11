@@ -216,18 +216,18 @@ public class WeixinService {
                         String password = ArrayString[2];
                         String sysPassword = PropertiesUtils.getProperty("password");
                         if(sysPassword==null){
-                            sysPassword = "imsi@321_ts";
+                            sysPassword = "imis@321_ts";
                         }
                         if(sysPassword.equals(password)){
                             //补签到逻辑
                             AttenceVo attenceVoT = new AttenceVo();
                             attenceVoT.setWorkNum(workNum);
                             attenceVoT.setAttenceDate(DateUtil.getDateTime("yyyy-MM-dd"));
-                            AttenceVo attenceVoToday = tbAttenceMapper.getAttenceToday(attenceVoT);
+                            AttenceVo attenceVoToday = tbAttenceMapper.getBuQianAttenceToday(attenceVoT);
                             if(attenceVoToday!=null){
                                 tmt.setContent("工号:"+workNum+"已签到,无需补签操作\n" +
                                         "姓名:"+attenceVoToday.getName()+"\n" +
-                                        "时间:"+attenceVoToday.getSigninTime()+"\n" +
+                                        "时间:"+DateUtils.getDate(attenceVoToday.getSigninTime(),"HH:mm:ss")+"\n" +
                                         "地址:"+attenceVoToday.getSigninAddress());
                                 xml_tmt = MessageUtil.textMessageToXml(tmt);
                                 logger.info("xml:" + xml_tmt);
@@ -245,7 +245,7 @@ public class WeixinService {
                                 buQian.setSignoutTime(outTime);
                                 buQian.setSignoutAddress("湖南省长沙市岳麓区麓云路[湖南创星科技股份有限公司]");
 
-                                buQian.setWorkNum("8");
+                                buQian.setWorkHours(8);
                                 buQian.setType(0);
                                 buQian.setRemark("补签到");
                                 buQian.setWeek(DateUtils.getWeek(new Date()));

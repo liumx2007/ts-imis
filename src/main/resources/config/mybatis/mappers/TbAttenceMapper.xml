@@ -322,6 +322,10 @@
     </select>
 
     <!-- 补签到  -->
+    <select id="getBuQianAttenceToday" parameterType="com.trasen.imis.model.AttenceVo" resultType="com.trasen.imis.model.AttenceVo">
+        select * from tb_attence where work_num=#{workNum} and attence_date=#{attenceDate} limit 1
+    </select>
+
     <select id="getBuQianAttence" parameterType="String" resultType="com.trasen.imis.model.AttenceVo">
         select open_id as openId,work_num as workNum,tag_id as tagId,tag_name as tagName,`name`,`position`
         from tb_weixin_user where work_num=#{workName} and open_id is not null limit 1
@@ -331,11 +335,11 @@
         insert into tb_attence (work_num,tag_id,tag_name,`name`,`position`,
         attence_date,signin_time,signin_address,signout_time,signout_address,
         work_hours,`type`,remark,week,
-        created,updated,operator,signin_type
+        created,updated,operator,signin_type)
         VALUES (#{workNum},#{tagId},#{tagName},#{name},#{position},
         #{attenceDate},#{signinTime},#{signinAddress},#{signoutTime},#{signoutAddress},
         #{workHours},#{type},#{remark},#{week},
-        now(),now(),#{operator},#{signin_type}
+        now(),now(),#{operator},#{signinType})
     </insert>
 
 
