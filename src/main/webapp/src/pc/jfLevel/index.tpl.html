@@ -152,7 +152,12 @@
                                     <!--<td><label class="i-checks m-b-none"><input type="checkbox" name="id" ng-model="item.check"><i></i></label></td>-->
                                     <td ng-bind="item.created| date:'yyyy-MM-dd'"></td>
                                     <td ng-bind="item.score"></td>
-                                    <td ng-bind="item.status | resordStatus"></td>
+                                    <td ng-if="item.status==0" >
+                                        <span class="label bg-primary" title="待审批">待审批</span>
+                                    </td>
+                                    <td ng-if="item.status==1" >
+                                        <span class="label bg-info" title="正常">正常</span>
+                                    </td>
                                     <td ng-bind="item.remark"></td>
                                     <td>
                                         <a class="text-info" ng-click="ctrl.showInfo('info',item)">详情</a>
