@@ -75,29 +75,16 @@ public class WeiXinPromotionController {
             result.setSuccess(false);
             return result;
         }
-        int score;
-        if(param.get("score")==null){
-            score=0;
-        }else{
-            score =Integer.valueOf(param.get("score"));
-        }
         List<TbJfRecord> tbJfRecordList=weiXinPromotionService.getJfRecordByOpendId(param.get("openId"));
         if(tbJfRecordList==null){
             result.setMessage("数据查询失败");
             result.setSuccess(false);
         }else{
-            int score_=0;
-            for(TbJfRecord tbJfRecord:tbJfRecordList){
-                score_=score_+tbJfRecord.getScore();
-            }
-            if(score_==score){
-                result.setMessage("数据查询成功");
-                result.setSuccess(true);
-                result.setObject(tbJfRecordList);
-            }else{
-                result.setMessage("积分记录中积分总数和人员积分比匹配，请联系管理员");
-                result.setSuccess(false);
-            }
+
+            result.setMessage("数据查询成功");
+            result.setSuccess(true);
+            result.setObject(tbJfRecordList);
+
         }
         return result;
     }
