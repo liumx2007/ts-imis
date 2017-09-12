@@ -57,7 +57,7 @@ WHERE
 	</select>
 
 	<select id="getJfRecordByOpendId" resultType="com.trasen.imis.model.TbJfRecord" parameterType="String">
-		select re.* from tb_weixin_user wei left join tb_jf_record re on wei.work_num=re.work_num where wei.open_id=#{openId} and is_show=1 and status=1
+		select re.* from tb_weixin_user wei left join tb_jf_record re on wei.work_num=re.work_num where wei.open_id=#{openId} and is_show=1 and status=1 order by re.created desc
 	</select>
 
 	<select id="getPersonByopenId" parameterType="String" resultType="com.trasen.imis.model.TbJfPerson">
