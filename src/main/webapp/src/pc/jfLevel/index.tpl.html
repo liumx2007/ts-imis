@@ -136,6 +136,9 @@
                                     <th style="width: 15%;">
                                         分数
                                     </th>
+                                    <th style="width: 15%;">
+                                        状态
+                                    </th>
                                     <th style="width: 30%;" data-sort-ignore="true">
                                         原因
                                     </th>
@@ -149,13 +152,13 @@
                                     <!--<td><label class="i-checks m-b-none"><input type="checkbox" name="id" ng-model="item.check"><i></i></label></td>-->
                                     <td ng-bind="item.created| date:'yyyy-MM-dd'"></td>
                                     <td ng-bind="item.score"></td>
+                                    <td ng-bind="item.status | resordStatus"></td>
                                     <td ng-bind="item.remark"></td>
                                     <td>
                                         <a class="text-info" ng-click="ctrl.showInfo('info',item)">详情</a>
                                         <a class="text-info" ng-click="ctrl.showInfo('edit',item)" ng-show="ctrl.isShowOpe('update')">编辑</a>
 
-                                        <a class="text-danger" ng-show="item.isShow==0&&ctrl.isShowOpe('delete')" ng-click="ctrl.isShowRecord(item,1)">显示</a>
-                                        <a class="text-danger" ng-show="item.isShow==1&&ctrl.isShowOpe('delete')" ng-click="ctrl.isShowRecord(item,0)">隐藏</a>
+                                        <a class="text-danger" ng-show="item.isShow==1&&item.status==1&&ctrl.isShowOpe('delete')" ng-click="ctrl.cancelJfRecord(item)">冲账</a>
                                     </td>
                                 </tr>
                                 </tbody>

@@ -20,8 +20,7 @@
     </select>
 
     <select id="seachJfRecord" parameterType="Map" resultType="com.trasen.imis.model.TbJfRecord">
-        select * from tb_jf_record where status=1
-        and work_num=#{workNum}
+        select * from tb_jf_record where  work_num=#{workNum}
         <if test="startDate!='' and startDate != null">
             <![CDATA[ AND date(created) >= #{startDate} ]]>
         </if>
@@ -76,6 +75,11 @@
         update tb_jf_record set is_show=#{isShow},operator=#{operator},updated=now()
         where pkid = #{pkid}
     </update>
+
+    <insert id="addCancelJfRecord" parameterType="com.trasen.imis.model.TbJfRecord">
+        insert into tb_jf_record (work_num,score,`type`,status,remark,create_user,created,is_show)
+        values (#{workNum},#{score},#{type},#{status},#{remark},#{createUser},now(),0)
+    </insert>
 
 
 

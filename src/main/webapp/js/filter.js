@@ -275,3 +275,21 @@ app.filter('dateTOsun',['$filter',function($filter){
         }
     }
 }]);
+
+app.filter('resordStatus',function(){
+    return function(result){
+        var name = "";
+        switch(result)
+        {
+            case 0:
+                name = "未审批";
+                break;
+            case 1:
+                name = "已审批";
+                break;
+            default:
+                name = "";
+        };
+        return name;
+    }
+});

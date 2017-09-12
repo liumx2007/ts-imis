@@ -26,7 +26,7 @@
   <name>TS-IMIS</name>
   <groupId>com.trasen.imis</groupId>
   <artifactId>TS-IMIS</artifactId>
-  <version>1.2.17</version>
+  <version>1.2.18</version>
 
   <properties>
     <spring.version>4.1.6.RELEASE</spring.version>

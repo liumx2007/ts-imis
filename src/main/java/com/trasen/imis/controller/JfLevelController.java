@@ -203,22 +203,29 @@ public class JfLevelController {
 
     }
 
+
     /**
-     * 移动的展示隐藏积分记录
+     * 积分冲账
      * */
     @ResponseBody
-    @RequestMapping(value="/isShowRecord", method = RequestMethod.POST)
-    public Result isShowRecord(@RequestBody TbJfRecord tbJfRecord)  {
+    @RequestMapping(value="/cancelJfRecord", method = RequestMethod.POST)
+    public Result cancelJfRecord(@RequestBody TbJfRecord tbJfRecord)  {
         Result result=new Result();
         result.setSuccess(false);
+        result.setMessage("失败");
         try {
             //数据更新
             if(tbJfRecord!=null){
-                boolean boo = jfLevelService.isShowRecord(tbJfRecord);
-                result.setSuccess(boo);
+                if(tbJfRecord.getWorkNum()!=null){
+                    jfLevelService.cancelJfRecord(tbJfRecord);
+                    Integer score = jfLevelService.getScoreFromWorkNum(tbJfRecord.getWorkNum());
+                    result.setObject(score);
+                }
+                result.setSuccess(true);
+                result.setMessage("成功");
             }
         }catch (Exception e) {
-            logger.error("移动的展示隐藏积分记录异常" + e.getMessage(), e);
+            logger.error("积分冲账异常" + e.getMessage(), e);
             result.setSuccess(false);
             result.setMessage("失败");
         }

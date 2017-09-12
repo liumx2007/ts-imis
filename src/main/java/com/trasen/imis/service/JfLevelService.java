@@ -1,5 +1,6 @@
 package com.trasen.imis.service;
 
+import cn.trasen.commons.util.DateUtil;
 import cn.trasen.commons.util.StringUtil;
 import cn.trasen.core.feature.orm.mybatis.Page;
 import com.trasen.imis.common.AppCons;
@@ -7,6 +8,7 @@ import com.trasen.imis.common.VisitInfoHolder;
 import com.trasen.imis.dao.TbJfRecordMapper;
 import com.trasen.imis.model.TbJfPerson;
 import com.trasen.imis.model.TbJfRecord;
+import com.trasen.imis.utils.DateUtils;
 import org.apache.ibatis.ognl.InappropriateExpressionException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -136,6 +138,35 @@ public class JfLevelService {
         if(num>0){
             boo = true;
         }
+        return boo;
+    }
+
+    public boolean cancelJfRecord(TbJfRecord tbJfRecord){
+        boolean boo = false;
+        if(tbJfRecord!=null&&tbJfRecord.getPkid()!=null){
+            tbJfRecord.setCreateUser(VisitInfoHolder.getUserId());
+            tbJfRecord.setOperator(VisitInfoHolder.getUserId());
+            tbJfRecord.setIsShow(0);
+            tbJfRecordMapper.isShowRecord(tbJfRecord);
+            if(tbJfRecord.getScore()!=null){
+                tbJfRecord.setRemark("冲账:ID["+tbJfRecord.getPkid()+"]时间["+DateUtils.getDate(tbJfRecord.getCreated(),"yyyy-MM-dd")+"]积分["+tbJfRecord.getScore()+"]的记录");
+                Integer score = tbJfRecord.getScore();
+                if(score>0){
+                    tbJfRecord.setScore(-score);
+                }else{
+                    tbJfRecord.setScore(Math.abs(score));
+                }
+                tbJfRecord.setStatus(1);
+
+                tbJfRecordMapper.addCancelJfRecord(tbJfRecord);
+                TbJfPerson tbJfPerson = new TbJfPerson();
+                tbJfPerson.setWorkNum(tbJfRecord.getWorkNum());
+                tbJfPerson.setScore(tbJfRecord.getScore());
+                tbJfPerson.setOperator(VisitInfoHolder.getUserId());
+                boo = saveJfPersonToScoreAndRank(tbJfPerson,AppCons.SCORE);
+            }
+        }
+
         return boo;
     }
 

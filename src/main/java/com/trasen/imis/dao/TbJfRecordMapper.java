@@ -36,6 +36,8 @@ public interface TbJfRecordMapper {
 
     int isShowRecord(TbJfRecord tbJfRecord);
 
+    int addCancelJfRecord(TbJfRecord tbJfRecord);
+
 
 
 

@@ -218,16 +218,14 @@ app.controller('JfLevelCtrl', ['$scope','$http','$log','$modal','$filter', funct
 
     };
 
-    this.isShowRecord = function (item,isShow) {
-        if(isShow==1&&!confirm("你确定显示吗？")){
+    this.cancelJfRecord = function (item) {
+        if(!confirm("你确定冲账吗？")){
             return;
         };
-        if(isShow==0&&!confirm("你确定隐藏吗？")){
-            return;
-        };
-        item.isShow = isShow;
-        $http.post("/jfLevel/isShowRecord",angular.toJson(item)).success(function (result) {
+
+        $http.post("/jfLevel/cancelJfRecord",angular.toJson(item)).success(function (result) {
             if(result.success){
+                selt.person.score = result.object;
                 selt.selectPerson(selt.person);
             }
         });
