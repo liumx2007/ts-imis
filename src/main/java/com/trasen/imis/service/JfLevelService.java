@@ -1,7 +1,5 @@
 package com.trasen.imis.service;
 
-import cn.trasen.commons.util.DateUtil;
-import cn.trasen.commons.util.StringUtil;
 import cn.trasen.core.feature.orm.mybatis.Page;
 import com.trasen.imis.common.AppCons;
 import com.trasen.imis.common.VisitInfoHolder;
@@ -9,7 +7,6 @@ import com.trasen.imis.dao.TbJfRecordMapper;
 import com.trasen.imis.model.TbJfPerson;
 import com.trasen.imis.model.TbJfRecord;
 import com.trasen.imis.utils.DateUtils;
-import org.apache.ibatis.ognl.InappropriateExpressionException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
