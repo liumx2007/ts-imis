@@ -395,6 +395,9 @@ app.controller('attenceToLeaveSingle', ['$scope', '$modalInstance','$http', 'dat
     this.attenceToLeavesave=function(valid,invalid,attenceLeave){
         if(valid){
             if (!invalid) {
+                if(!confirm("你确定操作请假吗？")){
+                    return;
+                };
                 seltSin.attenceLeavearray = [];
                 var riqidate;
                 if (seltSin.riqi == 3 || seltSin.riqi == 4 || seltSin.riqi == 8) {
@@ -483,6 +486,9 @@ app.controller('attenceToLeaveMultiple', ['$scope', '$modalInstance','$http', 'd
     this.attenceToLeaveMulsave=function(valid,invalid,attenceLeave){
         if (valid) {
             if (!invalid) {
+                if(!confirm("你确定操作请假吗？")){
+                    return;
+                };
                 seltMul.attenceLeavearray = [];
                 var riqidate;
                 if (seltMul.riqi == 3 ||seltMul.riqi == 4 || seltMul.riqi == 8) {

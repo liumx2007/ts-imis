@@ -231,15 +231,16 @@ public class BaiDuUtil {
         //公司:112.87425,28.21533
 
 
-        address = new BaiDuUtil().getAddressForCoordinate("115.61130,33.17476");
+        address = new BaiDuUtil().getAddressForCoordinate("112.66410,26.87190");
 
         //115.61130,33.17476
         //113.11034,29.14915
         //112.85190,26.42187
+        //112.66410,26.87190
 
         System.out.println(address);
 
-        List<Map<String,String>> list = BaiDuUtil.getAddressForCoordinateList(address,"115.61130,33.17476");
+        List<Map<String,String>> list = BaiDuUtil.getAddressForCoordinateList(address,"112.66410,26.87190");
         for(Map<String,String> map : list){
             System.out.println(map.get("address")+"=="+map.get("GPSStr"));
         }

@@ -157,6 +157,7 @@ public class MobileAttenceService {
                         tbAttenceMapper.updateAttenceSignoutTime(attenceVo);
                         return attenceVo;
                     }else{
+                        attenceVo.setIsVaild(1);
                         Date inTime = DateUtil.stringToDate(singInTimeStr);
                         Date attinTime = new Date();
                         if(inTime.before(attinTime)){
@@ -164,6 +165,12 @@ public class MobileAttenceService {
                             attenceVo.setLateTime(time);
                             if(attenceLogVo.getType()!=null&&!"sign".equals(attenceLogVo.getType())){
                                 attenceLogVo.setType("inEx");
+                            }
+                            //迟到处理
+                            //查该同学有没有请假,如果请假自动改状态
+                            Integer ifLeave = tbAttenceMapper.ifLeave(attenceVo.getName());
+                            if(ifLeave>0){
+                                attenceVo.setIsVaild(0);
                             }
                         }
                         attenceVo.setAttenceDate(attenceLogVo.getAttenceDate());

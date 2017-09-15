@@ -71,5 +71,7 @@ public interface TbAttenceMapper {
     void insertBuQianAttence(AttenceVo attenceVo);
 
     AttenceVo getBuQianAttenceToday(AttenceVo attenceVo);
+
+    Integer ifLeave(String name);
 }
 

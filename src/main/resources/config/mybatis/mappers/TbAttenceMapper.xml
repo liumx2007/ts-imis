@@ -21,8 +21,8 @@
     </select>
 
     <insert id="insertAttence" parameterType="com.trasen.imis.model.AttenceVo">
-        insert into tb_attence (work_num,tag_id,tag_name,`name`,`position`,attence_date,signin_time,week,created,late_time,`type`,signin_address,signin_type,remark)
-        VALUES (#{workNum},#{tagId},#{tagName},#{name},#{position},#{attenceDate},#{signinTime},#{week},now(),#{lateTime},#{type},#{signinAddress},#{signinType},#{remark})
+        insert into tb_attence (work_num,tag_id,tag_name,`name`,`position`,attence_date,signin_time,week,created,late_time,`type`,signin_address,signin_type,remark,is_vaild)
+        VALUES (#{workNum},#{tagId},#{tagName},#{name},#{position},#{attenceDate},#{signinTime},#{week},now(),#{lateTime},#{type},#{signinAddress},#{signinType},#{remark},#{isVaild})
     </insert>
 
     <update id="updateAttenceSignoutTime" parameterType="com.trasen.imis.model.AttenceVo">
@@ -341,6 +341,10 @@
         #{workHours},#{type},#{remark},#{week},
         now(),now(),#{operator},#{signinType})
     </insert>
+    
+    <select id="ifLeave" parameterType="String" resultType="Integer">
+        select count(*) from tb_attence_leave where name=#{name} and attence_date = date(now())
+    </select>
 
 
 </mapper>

@@ -61,4 +61,6 @@ public class AttenceVo {
 
     private String createUser;
 
+    private Integer isVaild;
+
 }
