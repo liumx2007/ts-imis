@@ -40,12 +40,12 @@
         <i class="fa fa-fw fa-angle-down text-active"></i>
       </span>
       <i ng-class="menu.icon"></i><!-- 图标样式不同 -->
-      <span class="font-bold" translate="{{menu.translate}}" ng-bind="menu.name"></span><!-- 国际化 -->
+      <span class="font-bold"  ng-bind="menu.name"></span><!-- 国际化 -->
     </a>
     <ul class="nav nav-sub dk">
       <li class="nav-sub-header">
         <a href>
-          <span translate="{{menu.translate}}" ng-bind="menu.name"></span><!-- 国际化 -->
+          <span  ng-bind="menu.name"></span><!-- 国际化 -->
         </a>
       </li>
       <li ui-sref-active="active" ng-repeat="child in menu.childrens">
@@ -59,8 +59,30 @@
   <!-- 权限菜单测试========end======= -->
 
 
-
   <!--<li>
+    <a href class="auto">
+      <span class="pull-right text-muted">
+        <i class="fa fa-fw fa-angle-right text"></i>
+        <i class="fa fa-fw fa-angle-down text-active"></i>
+      </span>
+      <i class="glyphicon icon-clock icon text-danger"></i>
+      <span class="font-bold">项目模版</span>
+    </a>
+    <ul class="nav nav-sub dk">
+      <li class="nav-sub-header">
+        <a href>
+          <span>项目模版</span>
+        </a>
+      </li>
+      <li ui-sref-active="active">
+        <a ui-sref="apps.template">
+          <span>模版管理</span>
+        </a>
+      </li>
+    </ul>
+  </li>
+
+  <li>
     <a href class="auto">
       <span class="pull-right text-muted">
         <i class="fa fa-fw fa-angle-right text"></i>
@@ -159,13 +181,13 @@
         </a>
       </li>
     </ul>
-  </li>-->
+  </li>
 
 
 
 
 
-  <!--<li ui-sref-active="active">
+  <li ui-sref-active="active">
     <a ui-sref="app.calendar">
       <i class="glyphicon glyphicon-calendar icon text-info-dker"></i>
       <span class="font-bold" translate="aside.nav.CALENDAR">Calendar</span>

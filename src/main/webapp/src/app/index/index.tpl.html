@@ -86,6 +86,56 @@
 		<button type="button" class='btn btn-default' ng-click="$ctrl.addAlert()">Add Alert</button>
 
 	</div>
+
+
+	<div class="container">
+
+		<div class="row">
+
+			<h3>AngularJS Dynamic Form Fields</h3>
+
+			<hr/>
+			<div>
+				<fieldset  data-ng-repeat="choice in $ctrl.choices">
+					<select>
+						<option>Mobile</option>
+						<option>Office</option>
+						<option>Home</option>
+					</select>
+
+
+					<label class="checkbox-inline i-checks" ng-if="choice.type==1">
+						<input type="text" ng-model="choice.name" name="" placeholder="Enter mobile number">
+					</label>
+
+					<label class="checkbox-inline i-checks" ng-if="choice.type==2">
+						<input type="radio" name="choice.id" value="1" ng-model="choice.name" ><i></i> 男
+						<input type="radio" name="choice.id" value="2" ng-model="choice.name"><i></i> 女
+					</label>
+
+
+
+
+
+					<button class="remove" ng-show="$last" ng-click="$ctrl.removeChoice()">-</button>
+				</fieldset>
+				<button class="addfields" ng-click="$ctrl.addNewChoice()">Add fields</button>
+
+				<div id="choicesDisplay">
+					{{ $ctrl.choices }}
+				</div>
+			</div>
+			</div>
+		</div>
+
+
+
+
+
+
+
+
+
 </div>
 <script type="text/ng-template" id="myModalContent.html">
 	<div class="modal-header">
