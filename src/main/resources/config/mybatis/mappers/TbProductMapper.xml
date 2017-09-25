@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trasen.imis.dao.TbProductMapper">
+    <select id="selectProductCount" resultType="com.trasen.imis.model.TbProduct" parameterType="String">
+        select * from tb_product where pkid=#{pkid}
+    </select>
+    <insert id="saveProduct" parameterType="com.trasen.imis.model.TbProduct">
+        insert into tb_product(pkid,`name`,identifier,dep_id,code,created,version,is_latest)
+         values(#{pkid},#{name},#{identifier},#{depId},#{code},#{created},#{version},#{isLatest})
+    </insert>
+    <update id="updateProduct" parameterType="com.trasen.imis.model.TbProduct">
+        update tb_product set is_latest=#{isLatest} where pkid=#{pkid}
+    </update>
+</mapper>

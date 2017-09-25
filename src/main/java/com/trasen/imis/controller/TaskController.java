@@ -5,10 +5,7 @@ import cn.trasen.core.entity.Result;
 import com.alibaba.fastjson.JSONObject;
 import com.trasen.imis.cache.GlobalCache;
 import com.trasen.imis.model.TbAttenceLocation;
-import com.trasen.imis.service.AttenceCountService;
-import com.trasen.imis.service.AttenceService;
-import com.trasen.imis.service.ContractService;
-import com.trasen.imis.service.JfRecordService;
+import com.trasen.imis.service.*;
 import com.trasen.imis.task.WeiXinPersonTask;
 import com.trasen.imis.utils.DateUtils;
 import com.trasen.imis.utils.HttpUtil;
@@ -49,6 +46,9 @@ public class TaskController {
 
     @Autowired
     JfRecordService jfRecordService;
+
+    @Autowired
+    ProductService productService;
 
 
     @ResponseBody
@@ -154,6 +154,18 @@ public class TaskController {
         result.setSuccess(true);
         result.setStatusCode(1);
         result.setMessage("生成["+date+"]考勤积分");
+        return result;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/saveOrUpdateProductList", method = RequestMethod.GET, produces = "application/json")
+    public Result saveOrUpdateProductList() {
+        Result result = new Result();
+        logger.info("======================同步产品数据开始");
+        productService.saveOrUpdateProductList();
+        result.setSuccess(true);
+        result.setStatusCode(1);
+        result.setMessage("======================同步产品数据结束");
         return result;
     }
 }
