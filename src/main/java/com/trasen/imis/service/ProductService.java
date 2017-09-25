@@ -46,7 +46,7 @@ public class ProductService {
                             TbProduct tbProductSave=new TbProduct();
                             tbProductSave.setPkid(productId);
                             if(jsonObject.getInteger("type")!=null)tbProductSave.setCode(jsonObject.getInteger("type"));
-                            if(jsonObject.getString("productNo")!=null&&jsonObject.getString("productNo")!="") tbProductSave.setIdentifier(jsonObject.getString("productNo"));
+                            if(jsonObject.getString("productNo")!=null&&jsonObject.getString("productNo")!="") tbProductSave.setNo(jsonObject.getString("productNo"));
                             if(jsonObject.getDate("createDate")!=null) {
                                 tbProductSave.setCreated(jsonObject.getDate("createDate"));
                             }else{
