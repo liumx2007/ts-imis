@@ -728,6 +728,19 @@ angular.module('app')
                       }]
                   }
               })
+
+              .state('apps.template', {
+                  url: '/template',
+                  templateUrl: 'src/pc/template/index.tpl.html',
+                  controller: 'TemplateCtrl as ctrl',
+                  resolve: {
+                      deps: ['uiLoad',
+                          function( uiLoad ){
+                              return uiLoad.load( ['src/pc/template/controller.js',
+                                  'vendor/libs/moment.min.js'] );
+                          }]
+                  }
+              })
       }
     ]
   );

@@ -129,6 +129,27 @@
 			this.closeAlert = function(index) {
 				selt.alerts.splice(index, 1);
 			};
+
+
+			this.choices = [{id: 'choice1',type:1}, {id: 'choice2',type:2}];
+
+			this.addNewChoice = function() {
+				var newItemNo = selt.choices.length+1;
+				selt.choices.push({'id':'choice'+newItemNo,type:2});
+			};
+
+			this.removeChoice = function() {
+				var lastItem = selt.choices.length-1;
+				selt.choices.splice(lastItem);
+			};
+
+
+
+
+
+
+
+
 		}]);
 
 	angular.module('WEBAPP.INDEX.CONTROLLER').controller('ModalInstanceCtrl', function ($uibModalInstance, items) {
