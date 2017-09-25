@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.trasen.imis.dao.TbProductMapper;
 import com.trasen.imis.model.TbProduct;
 import com.trasen.imis.utils.HttpUtil;
+import com.trasen.imis.utils.PropertiesUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.Date;
@@ -25,7 +26,13 @@ public class ProductService {
         wxParam.put("appid", appid);
         wxParam.put("touser", toUser);
         String parameterJson = JSONObject.toJSONString(wxParam);*/
-        String json=HttpUtil.connectURL("http://localhost:9090/contract/getProductList","","POST");
+
+        //定时计算缺勤数据
+        String product_imis = PropertiesUtils.getProperty("product_imis");
+        if(product_imis==null){
+            return 1;
+        }
+        String json=HttpUtil.connectURL(product_imis,"","POST");
         JSONObject dataJson = (JSONObject) JSONObject.parse(json);
         boolean boo=dataJson.getBoolean("success");
         if(boo){
