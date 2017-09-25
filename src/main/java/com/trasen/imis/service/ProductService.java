@@ -27,7 +27,6 @@ public class ProductService {
         wxParam.put("touser", toUser);
         String parameterJson = JSONObject.toJSONString(wxParam);*/
 
-        //定时计算缺勤数据
         String product_imis = PropertiesUtils.getProperty("product_imis");
         if(product_imis==null){
             return 1;
