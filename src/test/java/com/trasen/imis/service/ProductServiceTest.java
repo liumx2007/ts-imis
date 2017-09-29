@@ -1,5 +1,6 @@
 package com.trasen.imis.service;
 
+import com.trasen.imis.model.ContractInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author luoyun
@@ -24,10 +29,26 @@ public class ProductServiceTest {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private ContractProductService contractProductService;
+
     @Test
     @Rollback(false)
     public void saveOrUpdateProductList(){
         System.out.println("========productService:"+productService.saveOrUpdateProductList());
+    }
+
+    @Test
+    public void getcontractTransenList(){
+        Map<String,String> param=new HashMap<String,String>();
+        param.put("rows","10");
+        param.put("page","1");
+        Map<String,Object> params=contractProductService.getcontractTransenList(param);
+        List<ContractInfo> contractInfoList= (List<ContractInfo>) params.get("list");
+        for(ContractInfo contractInfo:contractInfoList){
+            System.out.println(contractInfo.getContractNo());
+        }
+
     }
 
 

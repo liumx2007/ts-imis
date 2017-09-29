@@ -43,8 +43,6 @@ public class AttenceBootstrap  implements ApplicationListener<ApplicationEvent> 
     @Autowired
     JfRecordTask jfRecordTask;
 
-    @Autowired
-    ProductTask productTask;
 
 
     @Override
@@ -110,7 +108,7 @@ public class AttenceBootstrap  implements ApplicationListener<ApplicationEvent> 
                     logger.info("===========任务启动完成=========");
 
 
-                    //产品和产品数据字典同步
+                   /* //产品和产品数据字典同步
                     String product_time = PropertiesUtils.getProperty("product_time");
                     if (product_time == null) {
                         product_time = "03:00:00";
@@ -118,7 +116,7 @@ public class AttenceBootstrap  implements ApplicationListener<ApplicationEvent> 
                     String endProduct_time = endDate + " " + product_time.trim();
                     long product_timeDiffCount = DateUtils.dateDiff(startTime, endProduct_time, "yyyy-MM-dd HH:mm:ss", "m");
                     scheduler.scheduleAtFixedRate(productTask,product_timeDiffCount, 24 * 60, TimeUnit.MINUTES);
-                    logger.info("===========任务启动完成=========");
+                    logger.info("===========任务启动完成=========");*/
 
 
                 } catch (Exception e) {
