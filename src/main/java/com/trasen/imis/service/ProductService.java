@@ -3,7 +3,7 @@ package com.trasen.imis.service;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.trasen.imis.dao.TbProductMapper;
-import com.trasen.imis.model.TbProduct;
+import com.trasen.imis.model.TbProModule;
 import com.trasen.imis.utils.HttpUtil;
 import com.trasen.imis.utils.PropertiesUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,35 +41,29 @@ public class ProductService {
                     JSONObject jsonObject = (JSONObject)tor.next();
                     Integer productId=jsonObject.getInteger("productId");
                     if(productId!=null){
-                        TbProduct tbProduct=tbProductMapper.selectProductCount(String.valueOf(productId));
+                        TbProModule tbProduct=tbProductMapper.selectProductCount(String.valueOf(productId));
                         if(tbProduct==null){
-                            TbProduct tbProductSave=new TbProduct();
-                            tbProductSave.setPkid(productId);
-                            if(jsonObject.getInteger("type")!=null)tbProductSave.setCode(jsonObject.getInteger("type"));
-                            if(jsonObject.getString("productNo")!=null&&jsonObject.getString("productNo")!="") tbProductSave.setNo(jsonObject.getString("productNo"));
+                            TbProModule tbProductSave=new TbProModule();
+                            tbProductSave.setModId(String.valueOf(productId));
+                            tbProductSave.setModName(jsonObject.getString("productName"));
+                            if(jsonObject.getString("type")!=null)tbProductSave.setProCode(jsonObject.getString("type"));
+                            if(jsonObject.getString("productNo")!=null&&jsonObject.getString("productNo")!="") tbProductSave.setModNo(jsonObject.getString("productNo"));
                             if(jsonObject.getDate("createDate")!=null) {
                                 tbProductSave.setCreated(jsonObject.getDate("createDate"));
                             }else{
                                 tbProductSave.setCreated(new Date());
                             }
                             if(jsonObject.getInteger("versionCode")!=null){
-                                tbProductSave.setVersion(jsonObject.getInteger("versionCode"));
+                                tbProductSave.setVersion(jsonObject.getString("versionCode"));
                             } else{
-                                tbProductSave.setVersion(1);
+                                tbProductSave.setVersion("1");
                             }
                             if(jsonObject.getInteger("latest")!=null){
-                                tbProductSave.setIsLatest(jsonObject.getInteger("latest"));
+                                tbProductSave.setIsVaild(jsonObject.getInteger("latest"));
                             }else{
-                                tbProductSave.setIsLatest(0);
+                                tbProductSave.setIsVaild(0);
                             }
-                            if(jsonObject.getString("imisid")!=null) tbProductSave.setDepId(jsonObject.getString("imisid"));
-                            if(jsonObject.getString("productName")!=null) tbProductSave.setName(jsonObject.getString("productName"));
                             tbProductMapper.saveProduct(tbProductSave);
-                        }else{
-                            if(tbProduct.getIsLatest()!=jsonObject.getInteger("latest")&&jsonObject.getInteger("latest")==0){
-                                tbProduct.setIsLatest(0);
-                                tbProductMapper.updateProduct(tbProduct);
-                            }
                         }
                     }
                 }

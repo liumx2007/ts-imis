@@ -1,6 +1,6 @@
 package com.trasen.imis.dao;
 
-import com.trasen.imis.model.TbProduct;
+import com.trasen.imis.model.TbProModule;
 
 /**
  * @author luoyun
@@ -9,7 +9,7 @@ import com.trasen.imis.model.TbProduct;
  * @date 2017/9/22
  */
 public interface TbProductMapper {
-    TbProduct selectProductCount(String pkid);
-    void saveProduct(TbProduct tbProduct);
-    void updateProduct(TbProduct tbProduct);
+    TbProModule selectProductCount(String pkid);
+    void saveProduct(TbProModule tbProduct);
+    void updateProduct(TbProModule tbProduct);
 }
