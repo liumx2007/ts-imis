@@ -25,8 +25,8 @@ public class ProductServiceTest {
     @Autowired
     private ProductService productService;
 
-    @Autowired
-    private ContractProductService contractProductService;
+   /* @Autowired
+    private ContractProductService contractProductService;*/
 
     @Test
     @Rollback(false)
@@ -43,9 +43,9 @@ public class ProductServiceTest {
         List<ContractInfo> contractInfoList= (List<ContractInfo>) params.get("list");
         for(ContractInfo contractInfo:contractInfoList){
             System.out.println(contractInfo.getContractNo());
-        }*/
+        }
 
-    }
+    }*/
 
 
 }
