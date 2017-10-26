@@ -29,9 +29,9 @@ public class ProductServiceTest {
     private ContractProductService contractProductService;*/
 
     @Test
-    @Rollback(false)
+    @Rollback
     public void saveOrUpdateProductList(){
-        System.out.println("========productService:"+productService.saveOrUpdateProductList());
+        //System.out.println("========productService:"+productService.saveOrUpdateProductList());
     }
 
     /*@Test
