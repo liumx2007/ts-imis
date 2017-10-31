@@ -6,7 +6,8 @@
         select p.per_id,p.work_num,p.name,sex,dep_id,dep_name,phone,tag_code,`position`,entry_date,picture,
         id_card,birthday,birthday_type,household_registe,house_address,
         province,city,district,school,major,education,graduate_date,linkman,link_phone,remark,
-        rank,re_entry,regular_date,quit_date,try_salary,salary,salary_remark,shb_date,gjj_date
+        rank,re_entry,regular_date,quit_date,try_salary,salary,salary_remark,shb_date,gjj_date,
+        idCard_file,separation_file,school_file
         from tb_personnel p
         left join tb_personnel_basic b on p.per_id = b.per_id
         left join tb_personnel_file f on p.per_id = f.per_id
