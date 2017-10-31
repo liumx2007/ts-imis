@@ -60,6 +60,7 @@
         <if test="endTime!='' and endTime != null">
             <![CDATA[ AND attence_date <= #{endTime} ]]>
         </if>
+        order by signin_time desc
 
 
     </select>

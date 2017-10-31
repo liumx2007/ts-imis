@@ -42,7 +42,7 @@ public class TbUserService {
                     String secret = PropertiesUtils.getProperty("CONTENT_SECRET");
                     String sign = SignConvertUtil.generateMD5Sign(secret, parameters);
                     String parameterJson = JSONObject.toJSONString(parameters);
-                    String asB64 = Base64.getEncoder().encodeToString(parameterJson.getBytes());
+                    String asB64 = Base64.getEncoder().encodeToString(parameterJson.getBytes("utf-8"));
                     String xtoken = sign+"."+asB64;
                     user.setXtoken(xtoken);
                 } catch(NoSuchAlgorithmException e) {
