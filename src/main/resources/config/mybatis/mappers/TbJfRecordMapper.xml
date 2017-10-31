@@ -7,7 +7,7 @@
         from tb_personnel per
         left join tb_personnel_jf jf on per.work_num = jf.work_num
         left join tb_jf_rank r on jf.rank = r.pkid
-        where 1=1
+        where 1=1 and per.is_vaild=1
         <if test="tagCode!=null and tagCode!=''">
             and per.tag_code LIKE CONCAT('%',#{tagCode},'%')
         </if>

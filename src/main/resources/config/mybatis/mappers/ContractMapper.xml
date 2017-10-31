@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.trasen.imis.dao.ContractMapper">
     <select id="getTbContractList" parameterType="java.util.Map" resultType="com.trasen.imis.model.TbContract">
-        select con.* from tb_contract con left join tb_personnel per on con.work_num=per.work_num where con.is_vaild=1
+        select con.* from tb_contract con left join tb_personnel per on con.work_num=per.work_num where con.is_vaild=1 and per.is_vaild=1
         <if test="name!= 'undefined'.toString() and name!=null and name!=''"> and con.`name` like CONCAT('%',#{name},'%')</if>
         <if test="workNum!= 'undefined'.toString() and workNum!=null and workNum!=''"> and con.work_num like CONCAT('%',#{workNum},'%')</if>
         <if test="depName!= 'undefined'.toString() and depName!=null and depName!=''"> and per.dep_name like CONCAT('%',#{depName},'%')</if>
