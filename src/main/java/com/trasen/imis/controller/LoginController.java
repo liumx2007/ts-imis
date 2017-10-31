@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * Created by zhangxiahui on 17/7/26.
  */
@@ -30,7 +33,7 @@ public class LoginController {
     //Sign in
     @RequestMapping(value="/signIn",method = RequestMethod.POST)
     @ResponseBody
-    public Result signIn(@RequestBody TbUser tbuser){
+    public Result signIn(HttpServletResponse response,@RequestBody TbUser tbuser){
         Result result=new Result();
         if(tbuser==null||tbuser.getName()==null||tbuser.getPassword()==null){
             result.setMessage("用户名或密码为空");
@@ -47,6 +50,9 @@ public class LoginController {
             result.setMessage("登录成功");
             result.setSuccess(true);
             result.setObject(user);
+            Cookie cookie = new Cookie("userSign", user.getXtoken());
+            cookie.setPath("/");
+            response.addCookie(cookie);
             return result;
         }
     }

@@ -145,11 +145,14 @@
             <div class="form-group RuleInput">
                 <label for="idCardFile" class="RuleName">身份证附件：</label>
                 <input type="text" class="form-control Rinput60" id="idCardFile" ng-model="ctrl.person.idCardFile" readonly >
-                <button ng-show="ctrl.fileItem" type="button" class="btn RSerBut" ng-click="ctrl.fileItem.upload()"
+                <button  type="button" class="btn RSerBut" ng-click="ctrl.fileItem.upload()"
                         ng-disabled="ctrl.fileItem.isReady
                         || ctrl.fileItem.isUploading
                         || ctrl.fileItem.isSuccess">
                     上传
+                </button>
+                <button  type="button" class="btn RSerBut" ng-show="ctrl.person.idCardFile">
+                    <a href="/download/file?filePath={{ctrl.person.idCardFile}}&isOnLine=true" target="_blank">查看</a>
                 </button>
                 <input type="file" nv-file-select="" uploader="uploader" />
             </div>
@@ -186,11 +189,14 @@
             <div class="form-group RuleInput">
                 <label for="SchoolFile" class="RuleName">毕业证明：</label>
                 <input type="text" class="form-control Rinput60" id="SchoolFile" ng-model="ctrl.person.schoolFile" readonly >
-                <button ng-show="ctrl.fileSchoolItem" type="button" class="btn RSerBut" ng-click="ctrl.fileSchoolItem.upload()"
+                <button  type="button" class="btn RSerBut" ng-click="ctrl.fileSchoolItem.upload()"
                         ng-disabled="ctrl.fileSchoolItem.isReady
                         || ctrl.fileSchoolItem.isUploading
                         || ctrl.fileSchoolItem.isSuccess">
                     上传
+                </button>
+                <button  type="button" class="btn RSerBut" ng-show="ctrl.person.schoolFile">
+                    <a href="/download/file?filePath={{ctrl.person.idCardFile}}&isOnLine=true" target="_blank">查看</a>
                 </button>
                 <input type="file" nv-file-select="" uploader="uploaderSchool" />
             </div>
@@ -233,11 +239,14 @@
             <div class="form-group RuleInput">
                 <label for="SeparationFile" class="RuleName">离职证明：</label>
                 <input type="text" class="form-control Rinput60" id="SeparationFile" ng-model="ctrl.person.separationFile" readonly >
-                <button ng-show="ctrl.fileSeparationItem" type="button" class="btn RSerBut" ng-click="ctrl.fileSeparationItem.upload()"
+                <button  type="button" class="btn RSerBut" ng-click="ctrl.fileSeparationItem.upload()"
                         ng-disabled="ctrl.fileSeparationItem.isReady
                         || ctrl.fileSeparationItem.isUploading
                         || ctrl.fileSeparationItem.isSuccess">
                     上传
+                </button>
+                <button  type="button" class="btn RSerBut" ng-show="ctrl.person.separationFile">
+                    <a href="/download/file?filePath={{ctrl.person.idCardFile}}&isOnLine=true" target="_blank">查看</a>
                 </button>
                 <input type="file" nv-file-select="" uploader="uploaderSeparation" />
             </div>
