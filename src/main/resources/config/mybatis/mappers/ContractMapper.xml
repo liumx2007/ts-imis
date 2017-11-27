@@ -6,7 +6,9 @@
         select con.* from tb_contract con left join tb_personnel per on con.work_num=per.work_num where con.is_vaild=1 and per.is_vaild=1
         <if test="name!= 'undefined'.toString() and name!=null and name!=''"> and con.`name` like CONCAT('%',#{name},'%')</if>
         <if test="workNum!= 'undefined'.toString() and workNum!=null and workNum!=''"> and con.work_num like CONCAT('%',#{workNum},'%')</if>
-        <if test="depName!= 'undefined'.toString() and depName!=null and depName!=''"> and per.dep_name like CONCAT('%',#{depName},'%')</if>
+        <if test="deptCode!= 'undefined'.toString() and deptCode!=null and deptCode!=''"> and per.tag_code like CONCAT('%',#{deptCode},'%')</if>
+        <if test="qdStatus==0 and qdStatus!=''"> and con.status=0</if>
+        <if test="qdStatus==1 and qdStatus!=''"><![CDATA[ and  Datediff(con.end_date,NOW())>0 and Datediff(con.end_date,NOW())<30 ]]></if>
         <if test="dtStart!= 'undefined'.toString() and dtStart!=null and dtStart!=''"> <![CDATA[ and str_to_date(con.sign_date, '%Y-%m-%d') >= str_to_date(#{dtStart}, '%Y-%m-%d') ]]></if>
         <if test="dtEnd!= 'undefined'.toString() and dtEnd!=null and dtEnd!=''"><![CDATA[ and str_to_date(con.sign_date, '%Y-%m-%d') <= str_to_date(#{dtEnd}, '%Y-%m-%d') ]]></if>
         <if test="years!=null and years!=''"> and years=#{years}</if>

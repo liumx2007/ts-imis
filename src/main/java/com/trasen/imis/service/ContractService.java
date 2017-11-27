@@ -2,12 +2,14 @@ package com.trasen.imis.service;
 
 import cn.trasen.core.feature.orm.mybatis.Page;
 import com.trasen.imis.dao.ContractMapper;
+import com.trasen.imis.dao.TbAttenceMapper;
 import com.trasen.imis.model.TbContract;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author luoyun
@@ -20,7 +22,14 @@ public class ContractService {
     @Autowired
     private ContractMapper contractMapper;
 
+    @Autowired
+    TbAttenceMapper tbAttenceMapper;
+
     public List<TbContract> getTbContractList(Map<String,String> param,Page page){
+        if(Optional.ofNullable(param.get("depName")).isPresent()&&!Optional.ofNullable(param.get("depName")).get().equals("")){
+            String deptCode=tbAttenceMapper.getDeptCode(param.get("depName"));
+            param.put("deptCode",deptCode);
+        }
         return contractMapper.getTbContractList(param,page);
     }
 
