@@ -347,5 +347,9 @@
         select count(*) from tb_attence_leave where name=#{name} and attence_date = date(now())
     </select>
 
+    <select id="getDeptCode" parameterType="String" resultType="String">
+        select dep_id from tb_dept where dep_name = #{depName} and is_vaild=1 limit 1
+    </select>
+
 
 </mapper>

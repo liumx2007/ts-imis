@@ -73,5 +73,7 @@ public interface TbAttenceMapper {
     AttenceVo getBuQianAttenceToday(AttenceVo attenceVo);
 
     Integer ifLeave(String name);
+
+    String getDeptCode(String depName);
 }
 
