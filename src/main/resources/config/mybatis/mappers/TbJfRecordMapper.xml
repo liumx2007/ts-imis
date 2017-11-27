@@ -15,7 +15,7 @@
             and per.name LIKE CONCAT('%',#{name},'%')
         </if>
         <if test="depName!=null and depName!=''">
-            and per.dep_name = #{depName}
+            and per.tag_code LIKE CONCAT('%',#{depName},'%')
         </if>
     </select>
 

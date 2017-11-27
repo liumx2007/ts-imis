@@ -255,4 +255,11 @@ public class AttenceService {
     public void deleLackAttence(Long pkid){
         tbAttenceMapper.deleLackAttence(pkid);
     }
+
+    public String getDeptCode(String depName){
+        if(depName!=null){
+            return tbAttenceMapper.getDeptCode(depName);
+        }
+        return null;
+    }
 }

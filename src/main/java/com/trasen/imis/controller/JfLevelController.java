@@ -9,6 +9,7 @@ import com.trasen.imis.model.TbJfPerson;
 import com.trasen.imis.model.TbJfRecord;
 import com.trasen.imis.model.TbPersonnel;
 import com.trasen.imis.model.TbTalentPool;
+import com.trasen.imis.service.AttenceService;
 import com.trasen.imis.service.JfLevelService;
 import org.apache.commons.collections.MapUtils;
 import org.apache.log4j.Logger;
@@ -38,6 +39,9 @@ public class JfLevelController {
     @Autowired
     JfLevelService jfLevelService;
 
+    @Autowired
+    AttenceService attenceService;
+
 
 
     @RequestMapping(value="/queryJfPersonnel",method = RequestMethod.POST)
@@ -63,7 +67,10 @@ public class JfLevelController {
             }
             if(!StringUtil.isEmpty(depName)){
                 tagCode = null;
-                param.put("depName",depName);
+                String tagId = attenceService.getDeptCode(depName);
+                if(!StringUtil.isEmpty(tagId)){
+                    param.put("depName",tagId);
+                }
             }
             param.put("tagCode",tagCode);
             param.put("name",name);

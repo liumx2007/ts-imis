@@ -74,6 +74,10 @@ public class AttenceController {
             }
             if(!StringUtil.isEmpty(tagName)){
                 attenceVo.setTagName(tagName);
+                String tagId = attenceService.getDeptCode(tagName);
+                if(!StringUtil.isEmpty(tagId)){
+                    attenceVo.setTagId(tagId);
+                }
             }
             if(type!=null){
                 attenceVo.setType(type);

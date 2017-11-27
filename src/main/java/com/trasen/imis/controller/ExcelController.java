@@ -363,6 +363,10 @@ public class ExcelController {
         }
         if(!tagName.equals("undefined")){
             count.setTagName(tagName);
+            String tagId = attenceService.getDeptCode(tagName);
+            if(!StringUtil.isEmpty(tagId)){
+                count.setTagId(tagId);
+            }
         }
 
         List<TbAttenceCount> list = attenceCountService.queryAttenceCountList(count);
