@@ -5,6 +5,7 @@ import cn.trasen.core.feature.orm.mybatis.Page;
 import com.trasen.imis.model.AttenceVo;
 import com.trasen.imis.model.TbAttenceCount;
 import com.trasen.imis.service.AttenceCountService;
+import com.trasen.imis.service.AttenceService;
 import org.apache.commons.collections.MapUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class AttenceCountController {
 
     @Autowired
     AttenceCountService attenceCountService;
+
+    @Autowired
+    AttenceService attenceService;
 
     @ResponseBody
     @RequestMapping(value = "/attCountData", method = RequestMethod.POST)
@@ -61,6 +65,10 @@ public class AttenceCountController {
             }
             if(!StringUtil.isEmpty(tagName)){
                 count.setTagName(tagName);
+                String tagId = attenceService.getDeptCode(tagName);
+                if(!StringUtil.isEmpty(tagId)){
+                    count.setTagId(tagId);
+                }
             }
             if(!StringUtil.isEmpty(countDate)){
                 count.setCountDate(countDate);

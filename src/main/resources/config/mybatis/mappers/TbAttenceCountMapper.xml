@@ -59,8 +59,8 @@
 
     <select id="queryAttenceCountList" parameterType="com.trasen.imis.model.TbAttenceCount" resultType="com.trasen.imis.model.TbAttenceCount">
         select * from tb_attence_count where 1=1
-        <if test="tagName!='' and tagName != null">
-            AND tag_name LIKE CONCAT('%',#{tagName},'%')
+        <if test="tagId!='' and tagId != null">
+            AND tag_id LIKE CONCAT('%',#{tagId},'%')
         </if>
         <if test="name!='' and name != null">
             AND name LIKE CONCAT('%',#{name},'%')

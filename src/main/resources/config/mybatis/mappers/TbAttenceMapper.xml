@@ -33,8 +33,8 @@
     <select id="searchAttList" parameterType="com.trasen.imis.model.AttenceVo" resultType="com.trasen.imis.model.AttenceVo">
         select *
         from tb_attence where  1 =1
-        <if test="tagName!='' and tagName != null">
-            AND tag_name LIKE CONCAT('%',#{tagName},'%')
+        <if test="tagId!='' and tagId != null">
+            AND tag_id LIKE CONCAT('%',#{tagId},'%')
         </if>
         <if test="name!='' and name != null">
             AND name LIKE CONCAT('%',#{name},'%')
@@ -94,8 +94,8 @@
         from tb_weixin_user where is_vaild=1
         and work_num not in (select work_num from tb_attence where attence_date=#{attenceDate})
         and work_num not in (select work_num from tb_attence_leave where attence_date=#{attenceDate})
-        <if test="tagName!='' and tagName != null">
-            AND tag_name LIKE CONCAT('%',#{tagName},'%')
+        <if test="tagId!='' and tagId != null">
+            AND tag_id LIKE CONCAT('%',#{tagId},'%')
         </if>
         <if test="name!='' and name != null">
             AND name LIKE CONCAT('%',#{name},'%')
@@ -107,8 +107,8 @@
         from tb_weixin_user where is_vaild=1
         and work_num not in (select work_num from tb_attence where attence_date=#{attenceDate})
         and work_num not in (select work_num from tb_attence_leave where attence_date=#{attenceDate})
-        <if test="tagName!='' and tagName != null">
-            AND tag_name LIKE CONCAT('%',#{tagName},'%')
+        <if test="tagId!='' and tagId != null">
+            AND tag_id LIKE CONCAT('%',#{tagId},'%')
         </if>
         <if test="name!='' and name != null">
             AND name LIKE CONCAT('%',#{name},'%')
@@ -118,8 +118,8 @@
     <select id="searchLackAttList" parameterType="com.trasen.imis.model.AttenceVo" resultType="com.trasen.imis.model.AttenceVo">
         select *,lack_date as attenceDate
         from tb_attence_lack where  1 =1 and is_vaild =1
-        <if test="tagName!='' and tagName != null">
-            AND tag_name LIKE CONCAT('%',#{tagName},'%')
+        <if test="tagId!='' and tagId != null">
+            AND tag_id LIKE CONCAT('%',#{tagId},'%')
         </if>
         <if test="name!='' and name != null">
             AND name LIKE CONCAT('%',#{name},'%')
@@ -139,8 +139,8 @@
     <select id="searchLeaveAttList" parameterType="com.trasen.imis.model.AttenceVo" resultType="com.trasen.imis.model.AttenceVo">
         select *
         from tb_attence_leave where  1 =1
-        <if test="tagName!='' and tagName != null">
-            AND tag_name LIKE CONCAT('%',#{tagName},'%')
+        <if test="tagId!='' and tagId != null">
+            AND tag_id LIKE CONCAT('%',#{tagId},'%')
         </if>
         <if test="name!='' and name != null">
             AND name LIKE CONCAT('%',#{name},'%')
@@ -171,8 +171,8 @@
     <select id="signInNum" resultType="Integer" parameterType="com.trasen.imis.model.AttenceVo">
         select count(*)
         from tb_attence where  1 =1 AND type = 0
-        <if test="tagName!='' and tagName != null">
-            AND tag_name LIKE CONCAT('%',#{tagName},'%')
+        <if test="tagId!='' and tagId != null">
+            AND tag_id LIKE CONCAT('%',#{tagId},'%')
         </if>
         <if test="name!='' and name != null">
             AND name LIKE CONCAT('%',#{name},'%')
@@ -194,8 +194,8 @@
     <select id="lateNum" resultType="Integer" parameterType="com.trasen.imis.model.AttenceVo">
         select count(*)
         from tb_attence where  1 =1  AND late_time is not null and is_vaild =1
-        <if test="tagName!='' and tagName != null">
-            AND tag_name LIKE CONCAT('%',#{tagName},'%')
+        <if test="tagId!='' and tagId != null">
+            AND tag_id LIKE CONCAT('%',#{tagId},'%')
         </if>
         <if test="name!='' and name != null">
             AND name LIKE CONCAT('%',#{name},'%')
@@ -217,8 +217,8 @@
     <select id="backNum" resultType="Integer" parameterType="com.trasen.imis.model.AttenceVo">
         select count(*)
         from tb_attence where  1 =1  AND back_time is not null and is_vaild =1
-        <if test="tagName!='' and tagName != null">
-            AND tag_name LIKE CONCAT('%',#{tagName},'%')
+        <if test="tagId!='' and tagId != null">
+            AND tag_id LIKE CONCAT('%',#{tagId},'%')
         </if>
         <if test="name!='' and name != null">
             AND name LIKE CONCAT('%',#{name},'%')
@@ -240,8 +240,8 @@
     <select id="lackNum" resultType="Integer" parameterType="com.trasen.imis.model.AttenceVo">
         select count(*)
         from tb_attence_lack where  1 =1 and is_vaild =1
-        <if test="tagName!='' and tagName != null">
-            AND tag_name LIKE CONCAT('%',#{tagName},'%')
+        <if test="tagId!='' and tagId != null">
+            AND tag_id LIKE CONCAT('%',#{tagId},'%')
         </if>
         <if test="name!='' and name != null">
             AND name LIKE CONCAT('%',#{name},'%')
@@ -260,8 +260,8 @@
     <select id="addWorkNum" resultType="Integer" parameterType="com.trasen.imis.model.AttenceVo">
         select count(*)
         from tb_attence where  1 =1 AND type = 1
-        <if test="tagName!='' and tagName != null">
-            AND tag_name LIKE CONCAT('%',#{tagName},'%')
+        <if test="tagId!='' and tagId != null">
+            AND tag_id LIKE CONCAT('%',#{tagId},'%')
         </if>
         <if test="name!='' and name != null">
             AND name LIKE CONCAT('%',#{name},'%')
@@ -283,8 +283,8 @@
     <select id="leaveNum" resultType="Integer" parameterType="com.trasen.imis.model.AttenceVo">
         select count(*)
         from tb_attence_leave where  1 =1
-        <if test="tagName!='' and tagName != null">
-            AND tag_name LIKE CONCAT('%',#{tagName},'%')
+        <if test="tagId!='' and tagId != null">
+            AND tag_id LIKE CONCAT('%',#{tagId},'%')
         </if>
         <if test="name!='' and name != null">
             AND name LIKE CONCAT('%',#{name},'%')
