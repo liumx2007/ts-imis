@@ -201,6 +201,70 @@ app.controller('Contact', ['$scope','$modal','$http','$filter', function($scope,
         });
 
     };
+
+
+
+
+    this.setDetailPage = function (pageNo,count,type,countType) {
+        selt.countDetail = count;
+        selt.detailType = type;
+        selt.countType =countType;
+        var attenceMap = {
+            name:count.name,
+            workNum: count.workNum,
+            date: this.countDate,
+            type:type,
+            countType:countType,
+            pageNo: pageNo,
+            pageSize: 5
+
+        };
+
+        $http.post("/count/attenceDtail", angular.toJson(attenceMap)).success(function (result) {
+            if (result.code == "1") {
+                selt.detailList = result.list;
+                selt.detailTotalCount = result.totalCount;
+                selt.detailPageSize = result.pageSize;
+                selt.detailPageNo = result.pageNo;
+            } else {
+                selt.detailList = [];
+            }
+        });
+    };
+
+    this.detailPageChanged = function () {
+        var attenceMap = {
+            name:selt.countDetail.name,
+            workNum: selt.countDetail.workNum,
+            date: this.countDate,
+            type:selt.detailType,
+            countType:selt.countType,
+            pageNo: selt.detailPageNo,
+            pageSize: 5
+
+        };
+
+        $http.post("/count/attenceDtail", angular.toJson(attenceMap)).success(function (result) {
+            if (result.code == "1") {
+                selt.detailList = result.list;
+                selt.detailTotalCount = result.totalCount;
+                selt.detailPageSize = result.pageSize;
+                selt.detailPageNo = result.pageNo;
+            } else {
+                selt.detailList = [];
+            }
+        });
+
+    };
+
+
+
+
+
+
+
+
+
     this.maxSize=5;
 
 
@@ -305,6 +369,15 @@ app.controller('Contact', ['$scope','$modal','$http','$filter', function($scope,
     };
     this.closePanel = function () {
         selt.panelClass = "contact panel panel-default";
+    };
+
+    this.panelClass2 = "person panel panel-default";
+
+    this.openPanel2 = function () {
+        selt.panelClass2 = "person panel panel-default active";
+    };
+    this.closePanel2 = function () {
+        selt.panelClass2 = "person panel panel-default";
     };
 
 

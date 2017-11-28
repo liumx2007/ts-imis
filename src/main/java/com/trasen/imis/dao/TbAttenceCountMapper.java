@@ -1,6 +1,7 @@
 package com.trasen.imis.dao;
 
 import cn.trasen.core.feature.orm.mybatis.Page;
+import com.trasen.imis.model.AttenceDetailVo;
 import com.trasen.imis.model.AttenceLeave;
 import com.trasen.imis.model.TbAttenceCount;
 import com.trasen.imis.model.TbWeixinUser;
@@ -36,4 +37,10 @@ public interface TbAttenceCountMapper {
     List<TbAttenceCount> queryAttenceCountList(TbAttenceCount tbAttenceCount, Page page);
 
     List<TbAttenceCount> queryAttenceCountList(TbAttenceCount tbAttenceCount);
+
+    List<AttenceDetailVo> queryAttenceDetail(Map<String,Object> param, Page page);
+
+    List<AttenceDetailVo> queryLackDetail(Map<String,Object> param, Page page);
+
+    List<AttenceDetailVo> queryLeaveDetail(Map<String,Object> param, Page page);
 }

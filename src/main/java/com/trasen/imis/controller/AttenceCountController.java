@@ -2,6 +2,7 @@ package com.trasen.imis.controller;
 
 import cn.trasen.commons.util.StringUtil;
 import cn.trasen.core.feature.orm.mybatis.Page;
+import com.trasen.imis.model.AttenceDetailVo;
 import com.trasen.imis.model.AttenceVo;
 import com.trasen.imis.model.TbAttenceCount;
 import com.trasen.imis.service.AttenceCountService;
@@ -105,4 +106,40 @@ public class AttenceCountController {
         }
         return result;
     }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/attenceDtail", method = RequestMethod.POST)
+    public Map<String,Object> attenceDtail(@RequestBody Map<String, Object> params){
+        //结果集
+        Map<String,Object> result = new HashMap<>();
+        result.put("code", 1);
+        result.put("pageNo",1);
+        result.put("pageSize", 0);
+        result.put("totalCount",0);
+        result.put("totalPages",1);
+        try {
+            checkArgument(MapUtils.isNotEmpty(params), "参数对象params不可为空!");
+            Integer pageNo = MapUtils.getInteger(params, "pageNo");
+            Integer pageSize = MapUtils.getInteger(params, "pageSize");
+            Page page = new Page(pageNo,pageSize);
+            List<AttenceDetailVo> list = attenceCountService.queryAttenceDetail(params,page);
+            result.put("list",list);
+            result.put("pageNo",page.getPageNo());
+            result.put("pageSize", page.getPageSize());
+            result.put("totalCount",page.getTotalCount());
+            result.put("totalPages",page.getTotalPages());
+        } catch (IllegalArgumentException e) {
+            logger.error("获取考勤明细数据异常" + e.getMessage(), e);
+            result.put("code",0);
+            result.put("msg",e.getMessage());
+        } catch (Exception e) {
+            logger.error("获取考勤明细数据异常" + e.getMessage(), e);
+            result.put("code",0);
+            result.put("msg",e.getMessage());
+        }
+        return result;
+    }
+
+
 }

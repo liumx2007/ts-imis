@@ -453,28 +453,27 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="count in ctrl.countList" ng-click="ctrl.setPage(1,count.workNum)"
-                    ng-dblclick="ctrl.openPanel()">
+                <tr ng-repeat="count in ctrl.countList">
 
                     <td ng-bind="count.name" ng-show="ctrl.showname"></td>
                     <td ng-bind="count.tagName" ng-show="ctrl.showtagName"></td>
                     <td ng-bind="count.shouldSignNum" ng-show="ctrl.showshouldSignNum"></td>
-                    <td ng-bind="count.factSignNum" ng-show="ctrl.showfactSignNum"></td>
+                    <td ng-bind="count.factSignNum" ng-show="ctrl.showfactSignNum" ng-dblclick="ctrl.setDetailPage(1,count,3,'attence');ctrl.openPanel2()"></td>
 
-                    <td ng-bind="count.attNum" ng-show="ctrl.showattNum"></td>
-                    <td ng-bind="count.lateNum" ng-show="ctrl.showlateNum"></td>
-                    <td ng-bind="count.backNum" ng-show="ctrl.showbackNum"></td>
-                    <td ng-bind="count.lackNum" ng-show="ctrl.showlackNum"></td>
+                    <td ng-bind="count.attNum" ng-show="ctrl.showattNum" ng-dblclick="ctrl.setDetailPage(1,count,0,'attence');ctrl.openPanel2()"></td>
+                    <td ng-bind="count.lateNum" ng-show="ctrl.showlateNum" ng-dblclick="ctrl.setDetailPage(1,count,1,'attence');ctrl.openPanel2()"></td>
+                    <td ng-bind="count.backNum" ng-show="ctrl.showbackNum" ng-dblclick="ctrl.setDetailPage(1,count,2,'attence');ctrl.openPanel2()"></td>
+                    <td ng-bind="count.lackNum" ng-show="ctrl.showlackNum" ng-dblclick="ctrl.setDetailPage(1,count,3,'lack');ctrl.openPanel2()"></td>
 
-                    <td ng-bind="count.annualLeave" ng-show="ctrl.showannualLeave"></td>
-                    <td ng-bind="count.maternityLeave" ng-show="ctrl.showmaternityLeave"></td>
-                    <td ng-bind="count.peternituLeave" ng-show="ctrl.showpeternituLeave"></td>
-                    <td ng-bind="count.maritalLeave" ng-show="ctrl.showmaritalLeave"></td>
-                    <td ng-bind="count.funeralLeave" ng-show="ctrl.showfuneralLeave"></td>
+                    <td ng-bind="count.annualLeave" ng-show="ctrl.showannualLeave" ng-dblclick="ctrl.setDetailPage(1,count,4,'leave');ctrl.openPanel2()"></td>
+                    <td ng-bind="count.maternityLeave" ng-show="ctrl.showmaternityLeave" ng-dblclick="ctrl.setDetailPage(1,count,5,'leave');ctrl.openPanel2()"></td>
+                    <td ng-bind="count.peternituLeave" ng-show="ctrl.showpeternituLeave" ng-dblclick="ctrl.setDetailPage(1,count,6,'leave');ctrl.openPanel2()"></td>
+                    <td ng-bind="count.maritalLeave" ng-show="ctrl.showmaritalLeave" ng-dblclick="ctrl.setDetailPage(1,count,7,'leave');ctrl.openPanel2()"></td>
+                    <td ng-bind="count.funeralLeave" ng-show="ctrl.showfuneralLeave" ng-dblclick="ctrl.setDetailPage(1,count,8,'leave');ctrl.openPanel2()"></td>
 
-                    <td ng-bind="count.affairLeave" ng-show="ctrl.showaffairLeave"></td>
-                    <td ng-bind="count.sickLeave" ng-show="ctrl.showsickLeave"></td>
-                    <td ng-bind="count.otherLeave" ng-show="ctrl.showotherLeave"></td>
+                    <td ng-bind="count.affairLeave" ng-show="ctrl.showaffairLeave" ng-dblclick="ctrl.setDetailPage(1,count,1,'leave');ctrl.openPanel2()"></td>
+                    <td ng-bind="count.sickLeave" ng-show="ctrl.showsickLeave" ng-dblclick="ctrl.setDetailPage(1,count,3,'leave');ctrl.openPanel2()"></td>
+                    <td ng-bind="count.otherLeave" ng-show="ctrl.showotherLeave" ng-dblclick="ctrl.setDetailPage(1,count,9,'leave');ctrl.openPanel2()"></td>
                     <td>
                         <button  class="btn btn-default no-shadow" ng-click="ctrl.setPage(1,count.workNum);ctrl.openPanel()" >查看明细</button>
                     </td>
@@ -498,4 +497,5 @@
         </footer>
     </div>
     <div data-ng-include=" 'src/pc/contact/contactsettings.html' " ng-class="ctrl.panelClass"></div>
+    <div data-ng-include=" 'src/pc/contact/countDetail.html' " ng-class="ctrl.panelClass2"></div>
 </div>

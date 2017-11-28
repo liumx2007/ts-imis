@@ -8,31 +8,31 @@
 
     <!-- 实际签到天数 -->
     <select id="getFactSignNum" resultType="Integer" parameterType="Map">
-        select count(*) from tb_attence where name=#{name} and date_format(attence_date,'%Y%m')=#{date}
+        select count(*) from tb_attence where `name`=#{name} and work_num = #{workNum} and date_format(attence_date,'%Y%m')=#{date}
     </select>
     <!-- 正常出勤 -->
     <select id="getAttNum" resultType="Integer" parameterType="Map">
-        select count(*) from tb_attence where name=#{name} and date_format(attence_date,'%Y%m')=#{date}
+        select count(*) from tb_attence where `name`=#{name} and work_num = #{workNum} and date_format(attence_date,'%Y%m')=#{date}
         and late_time is null and back_time is null and is_vaild=1
     </select>
     <!-- 迟到天数 -->
     <select id="getLateNum" resultType="Integer" parameterType="Map">
-        select count(*) from tb_attence where name=#{name} and date_format(attence_date,'%Y%m')=#{date}
+        select count(*) from tb_attence where `name`=#{name} and work_num = #{workNum} and date_format(attence_date,'%Y%m')=#{date}
         and late_time is not null and is_vaild=1
     </select>
     <!-- 早退天数 -->
     <select id="getBackNum" resultType="Integer" parameterType="Map">
-        select count(*) from tb_attence where name=#{name} and date_format(attence_date,'%Y%m')=#{date}
+        select count(*) from tb_attence where `name`=#{name} and work_num = #{workNum} and date_format(attence_date,'%Y%m')=#{date}
         and back_time is not null and is_vaild=1
     </select>
     <!-- 旷工天数 -->
     <select id="getLackNum" resultType="Integer" parameterType="Map">
-        select count(*) from tb_attence_lack where name=#{name} and date_format(lack_date,'%Y%m')=#{date}
+        select count(*) from tb_attence_lack where `name`=#{name} and work_num = #{workNum} and date_format(lack_date,'%Y%m')=#{date}
         and is_vaild=1
     </select>
     
     <select id="queryAttenceLeaveList" parameterType="Map" resultType="com.trasen.imis.model.AttenceLeave">
-        select * from tb_attence_leave where name=#{name} and date_format(attence_date,'%Y%m')=#{date}
+        select * from tb_attence_leave where `name`=#{name} and work_num = #{workNum} and date_format(attence_date,'%Y%m')=#{date}
     </select>
 
     <insert id="saveAttenceCount" parameterType="com.trasen.imis.model.TbAttenceCount">
@@ -50,11 +50,11 @@
         ,maternity_leave=#{maternityLeave} ,peternitu_leave=#{peternituLeave} ,marital_leave=#{maritalLeave}
         ,funeral_leave=#{funeralLeave} ,affair_leave=#{affairLeave} ,sick_leave=#{sickLeave}
         ,other_leave=#{otherLeave} ,updated=now()
-        where `name`=#{name} and count_date=#{countDate}
+        where `name`=#{name} and work_num = #{workNum} and count_date=#{countDate}
     </update>
 
     <select id="getAttenceCount" resultType="com.trasen.imis.model.TbAttenceCount" parameterType="Map">
-        select * from tb_attence_count where `name`=#{name} and count_date=#{date}
+        select * from tb_attence_count where `name`=#{name} and work_num = #{workNum} and count_date=#{date}
     </select>
 
     <select id="queryAttenceCountList" parameterType="com.trasen.imis.model.TbAttenceCount" resultType="com.trasen.imis.model.TbAttenceCount">
@@ -102,5 +102,43 @@
             AND other_leave>0
         </if>
     </select>
+
+
+    <!-- 2017-11-28 新需求 考勤统计查看具体明细 -->
+    <!-- 实际签到天数 -->
+    <select id="queryAttenceDetail" resultType="com.trasen.imis.model.AttenceDetailVo" parameterType="Map">
+        select * from tb_attence where `name`=#{name} and work_num = #{workNum}
+        and date_format(attence_date,'%Y%m')=#{date}
+        <![CDATA[  and attence_date < date(now()) ]]>
+        <!-- 正常出勤 -->
+        <if test="type!=null and type==0">
+            and late_time is null and back_time is null and is_vaild=1
+        </if>
+        <!-- 迟到 -->
+        <if test="type!=null and type==1">
+            and late_time is not null and is_vaild=1
+        </if>
+        <!-- 早退 -->
+        <if test="type!=null and type==2">
+            and back_time is not null and is_vaild=1
+        </if>
+    </select>
+
+    <!-- 旷工天数 -->
+    <select id="queryLackDetail" resultType="com.trasen.imis.model.AttenceDetailVo" parameterType="Map">
+        select lack_date as attenceDate,week,remark from tb_attence_lack where `name`=#{name} and work_num = #{workNum} and date_format(lack_date,'%Y%m')=#{date}
+        and is_vaild=1
+    </select>
+
+    <select id="queryLeaveDetail" parameterType="com.trasen.imis.model.AttenceDetailVo" resultType="Map">
+        select attence_date as attenceDate,week,remark from tb_attence_leave where `name`=#{name} and work_num = #{workNum}
+        and date_format(attence_date,'%Y%m')=#{date} and `type`=#{type}
+        <![CDATA[  and attence_date < date(now()) ]]>
+    </select>
+
+
+
+
+
 
 </mapper>

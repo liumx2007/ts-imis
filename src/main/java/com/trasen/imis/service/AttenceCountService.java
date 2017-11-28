@@ -3,10 +3,7 @@ package com.trasen.imis.service;
 import cn.trasen.core.feature.orm.mybatis.Page;
 import com.trasen.imis.common.AppCons;
 import com.trasen.imis.dao.TbAttenceCountMapper;
-import com.trasen.imis.model.AttenceLeave;
-import com.trasen.imis.model.AttenceVo;
-import com.trasen.imis.model.TbAttenceCount;
-import com.trasen.imis.model.TbWeixinUser;
+import com.trasen.imis.model.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -35,6 +32,7 @@ public class AttenceCountService {
             for(TbWeixinUser user : userList){
                 Map<String,Object> paraMap = new HashMap<>();
                 paraMap.put("name",user.getName());
+                paraMap.put("workNum",user.getWorkNum());
                 paraMap.put("date",date);
                 logger.info("====开始统计["+user.getName()+"]的考勤数据");
                 //通过date+name查询统计表
@@ -120,6 +118,21 @@ public class AttenceCountService {
         List<TbAttenceCount> list = new ArrayList<>();
         if(count!=null){
             list = tbAttenceCountMapper.queryAttenceCountList(count);
+        }
+        return list;
+    }
+
+    public List<AttenceDetailVo> queryAttenceDetail(Map<String,Object> param, Page page){
+        List<AttenceDetailVo> list = new ArrayList<>();
+        if(param!=null&&param.get("countType")!=null){
+            logger.info("===查看考勤明细==["+param.get("countType")+"]===["+param.get("type")+"]===["+param.get("date")+"]===");
+            if("attence".equals(param.get("countType"))){
+                list = tbAttenceCountMapper.queryAttenceDetail(param,page);
+            }else if("lack".equals(param.get("countType"))){
+                list = tbAttenceCountMapper.queryLackDetail(param,page);
+            }else if("leave".equals(param.get("countType"))){
+                list = tbAttenceCountMapper.queryLeaveDetail(param,page);
+            }
         }
         return list;
     }
