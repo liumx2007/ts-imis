@@ -138,7 +138,7 @@ public class TbHolidayService {
                 Collections.addAll(listoutDay, outDate);
             }
             if(rule.getWorkingDay()!=null&&rule.getWorkingDay()!=""){
-                listworkingDay=getWorkDayForRue("周一,周二,周三,周四,周五",yearMonth);
+                listworkingDay=getWorkDayForRue(rule.getWorkingDay(),yearMonth);
             }
 
         }
