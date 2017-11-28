@@ -161,7 +161,8 @@ app.controller('Contact', ['$scope','$modal','$http','$filter', function($scope,
 
 
 
-    this.setPage = function (pageNo,workNum) {
+    this.setPage = function (pageNo,workNum,name) {
+        selt.logName = name;
         selt.workNum = workNum;
         var attenceMap = {
             workNum: workNum,

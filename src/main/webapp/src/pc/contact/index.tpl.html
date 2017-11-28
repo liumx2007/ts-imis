@@ -475,7 +475,7 @@
                     <td ng-bind="count.sickLeave" ng-show="ctrl.showsickLeave" ng-dblclick="ctrl.setDetailPage(1,count,3,'leave');ctrl.openPanel2()"></td>
                     <td ng-bind="count.otherLeave" ng-show="ctrl.showotherLeave" ng-dblclick="ctrl.setDetailPage(1,count,9,'leave');ctrl.openPanel2()"></td>
                     <td>
-                        <button  class="btn btn-default no-shadow" ng-click="ctrl.setPage(1,count.workNum);ctrl.openPanel()" >查看明细</button>
+                        <button  class="btn btn-default no-shadow" ng-click="ctrl.setPage(1,count.workNum,count.name);ctrl.openPanel()" >查看明细</button>
                     </td>
                 </tr>
                 </tbody>
