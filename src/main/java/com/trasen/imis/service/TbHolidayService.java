@@ -65,23 +65,51 @@ public class TbHolidayService {
                             JSONObject jsonObject4= (JSONObject) jsonArray1.get(k);
                             if(jsonObject4.getString("status").equals("1")){
                                 if(buffer.indexOf(jsonObject4.getString("date"))<0){
-                                    if(jsonObject4.getString("date").indexOf(year_Month)>=0) buffer.append(jsonObject4.getString("date"));
-                                }
-                                if(k+1!=jsonArray1.size()){
-                                    buffer.append(",");
+                                    if(jsonObject4.getString("date").indexOf(year_Month)>=0){
+                                        buffer.append(jsonObject4.getString("date"));
+                                        buffer.append(",");
+                                    }
                                 }
                             }else{
                                 if(bufferwork.indexOf(jsonObject4.getString("date"))<0){
-                                    if(jsonObject4.getString("date").indexOf(year_Month)>=0) bufferwork.append(jsonObject4.getString("date"));
-                                }
-                                if(k+1!=jsonArray1.size()){
-                                    bufferwork.append(",");
+                                    if(jsonObject4.getString("date").indexOf(year_Month)>=0) {
+                                        bufferwork.append(jsonObject4.getString("date"));
+                                        bufferwork.append(",");
+                                    }
                                 }
                             }
                         }
                     }
-                    workDay=bufferwork.toString();
-                    holiday=buffer.toString();
+                    String[] holidayArray=buffer.toString().split(",");
+                    List<String> holidayList=Arrays.asList(holidayArray);
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                    holidayList=holidayList.stream().filter(h->!h.equals("")).map(ho->{
+                        Date date= null;
+                        try {
+                            date = format.parse(ho);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        String name1=format.format(date);
+                        return name1;
+                    }).collect(Collectors.toList());
+                    holiday = String.join(",",holidayList);
+
+                    String[] workDayArray=bufferwork.toString().split(",");
+                    List<String> workDayList=Arrays.asList(workDayArray);
+                    workDayList=workDayList.stream().filter(w->!w.equals("")).map(work->{
+                        Date date= null;
+                        try {
+                            date = format.parse(work);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        String wo=format.format(date);
+                        return wo;
+                    }).collect(Collectors.toList());
+                    workDay = String.join(",",workDayList);
+                    /*workDay=bufferwork.toString();
+                    holiday=buffer.toString();*/
                     tbHoliday.setYearMonth(year_Month);
                     tbHoliday.setHoliday(holiday);
                     tbHoliday.setWorkDay(workDay);
