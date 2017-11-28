@@ -50,6 +50,9 @@ public class ExcelController {
     @Autowired
     TbTagPersonnelService tbTagPersonnelService;
 
+    @Autowired
+    AttenceLogService attenceLogService;
+
 
     @RequestMapping(value = "/excelExport", method = RequestMethod.GET)
     public void excelExport(HttpServletResponse response, HttpServletRequest request) throws IOException, WriteException {
@@ -1060,6 +1063,74 @@ public class ExcelController {
                     downloadExcelUtil.addCell(5,i+1,"",CellType.LABEL,dateFormat,false,false);
                 }else{
                     downloadExcelUtil.addCell(5,i+1,list.get(i).getIdCard(),CellType.LABEL,dateFormat,false,false);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                downloadExcelUtil.close();
+            } catch (WriteException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @RequestMapping(value = "/excelAttenceLogExprot",method = RequestMethod.GET)
+    private void  excelAttenceLogExprot(HttpServletRequest request, HttpServletResponse response){
+        String workNum=request.getParameter("workNum");
+        String countDate=request.getParameter("countDate");
+        TbPersonnel tbPersonnel=personnelService.findWorkNumForPersonnel(workNum);
+        String fileName=tbPersonnel.getName()+"考情明细"+".xls";
+        Map<String,Object> param=new HashMap<>();
+        param.put("workNum",workNum);
+        param.put("countDate",countDate);
+        List<AttenceLogVo> logVoList=attenceLogService.getAttenceLogList(param);
+        String result="";
+        DownloadExcelUtil downloadExcelUtil= null;
+        try {
+            downloadExcelUtil = new DownloadExcelUtil(response,fileName,"考情明细");
+            DateFormat dateFormat=new DateFormat("yyyy-mm-dd");
+
+            downloadExcelUtil.addCell(0,0,"姓名", CellType.LABEL,dateFormat,false,false);
+            downloadExcelUtil.addCell(1,0,"考勤时间",CellType.LABEL,dateFormat,false,false);
+            downloadExcelUtil.addCell(2,0,"考勤日期",CellType.LABEL,dateFormat,false,false);
+            downloadExcelUtil.addCell(3,0,"星期",CellType.LABEL,dateFormat,false,false);
+            downloadExcelUtil.addCell(4,0,"签到地址",CellType.LABEL,dateFormat,false,false);
+            downloadExcelUtil.addCell(5,0,"备注",CellType.LABEL,dateFormat,false,false);
+
+            for(int i=0;i<logVoList.size();i++){
+                if(logVoList.get(i).getName()==null){
+                    downloadExcelUtil.addCell(0,i+1,"",CellType.LABEL,dateFormat,false,false);
+                }else{
+                    downloadExcelUtil.addCell(0,i+1,logVoList.get(i).getName(),CellType.LABEL,dateFormat,false,false);
+                }
+                if(logVoList.get(i).getAttenceTime()==null){
+                    downloadExcelUtil.addCell(1,i+1,"",CellType.LABEL,dateFormat,false,false);
+                }else{
+                    downloadExcelUtil.addCell(1,i+1,DateUtils.getTimes(logVoList.get(i).getAttenceTime()),CellType.LABEL,dateFormat,false,false);
+                }
+                if(logVoList.get(i).getAttenceDate()==null){
+                    downloadExcelUtil.addCell(2,i+1,"",CellType.LABEL,dateFormat,false,false);
+                }else{
+                    downloadExcelUtil.addCell(2,i+1,logVoList.get(i).getAttenceDate(),CellType.LABEL,dateFormat,false,false);
+                }
+                if(logVoList.get(i).getAttenceWeek()==null){
+                    downloadExcelUtil.addCell(3,i+1,"",CellType.LABEL,dateFormat,false,false);
+                }else{
+                    downloadExcelUtil.addCell(3,i+1,logVoList.get(i).getAttenceWeek(),CellType.LABEL,dateFormat,false,false);
+                }
+                if(logVoList.get(i).getAddress()==null){
+                    downloadExcelUtil.addCell(4,i+1,"",CellType.LABEL,dateFormat,false,false);
+                }else{
+                    downloadExcelUtil.addCell(4,i+1,logVoList.get(i).getAddress(),CellType.LABEL,dateFormat,false,false);
+                }
+                if(logVoList.get(i).getRemark()==null){
+                    downloadExcelUtil.addCell(5,i+1,"",CellType.LABEL,dateFormat,false,false);
+                }else{
+                    downloadExcelUtil.addCell(5,i+1,logVoList.get(i).getRemark(),CellType.LABEL,dateFormat,false,false);
                 }
             }
         } catch (Exception e) {

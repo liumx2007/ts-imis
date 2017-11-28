@@ -16,4 +16,5 @@ public interface TbAttenceLogMapper {
     List<AttenceLogVo> queryAttLogList(AttenceLogVo attenceLogVo);
 
     public List<AttenceLogVo> getAttenceLogList(Map<String,Object> attenceLogMap, Page page);
+    List<AttenceLogVo> getAttenceLogList(Map<String,Object> attenceLogMap);
 }

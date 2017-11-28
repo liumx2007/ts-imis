@@ -24,4 +24,8 @@ public class AttenceLogService {
     public List<AttenceLogVo> getAttenceLogList(Map<String,Object> attenceLogMap, Page page){
         return tbAttenceLogMapper.getAttenceLogList(attenceLogMap,page);
     }
+
+    public List<AttenceLogVo> getAttenceLogList(Map<String,Object> attenceLogMap){
+        return tbAttenceLogMapper.getAttenceLogList(attenceLogMap);
+    }
 }
