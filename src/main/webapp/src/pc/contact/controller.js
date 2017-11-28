@@ -169,7 +169,7 @@ app.controller('Contact', ['$scope','$modal','$http','$filter', function($scope,
             pageSize: 5,
             countDate: this.countDate
         };
-
+        selt.excelAttenceLogExprot="/excel/excelAttenceLogExprot?workNum="+workNum+"&countDate="+this.countDate;
         $http.post("/attencelog/getAttenceLogList", angular.toJson(attenceMap)).success(function (result) {
             if (result.code == "1") {
                 selt.acctenceLogList = result.list;
