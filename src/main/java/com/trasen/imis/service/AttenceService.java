@@ -258,7 +258,10 @@ public class AttenceService {
 
     public String getDeptCode(String depName){
         if(depName!=null){
-            return tbAttenceMapper.getDeptCode(depName);
+            String tagId =  tbAttenceMapper.getDeptCode(depName);
+            if(tagId!=null){
+                return "|"+tagId+"|";
+            }
         }
         return null;
     }
