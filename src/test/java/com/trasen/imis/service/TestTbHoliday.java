@@ -28,7 +28,7 @@ public class TestTbHoliday {
     private TbHolidayService tbHolidayService;
 
     @Test
-    @Rollback(true)
+    @Rollback(false)
     public void saveByList(){
         String result=tbHolidayService.saveByList("2017");
         System.out.println(result);
@@ -37,14 +37,14 @@ public class TestTbHoliday {
     @Test
     @Rollback(false)
     public void getDaysforYearMonth(){
-        int result=tbHolidayService.getDaysforYearMonth("2017-7","|12|");
+        int result=tbHolidayService.getDaysforYearMonth("2017-11","|12|");
         System.out.println("=============="+result);
     }
 
     @Test
     @Rollback(false)
     public void getWorkDayForRue(){
-        List<String> list=tbHolidayService.getWorkDayForRue("周一,周二,周三,周四,周五","2017-08");
+        List<String> list=tbHolidayService.getWorkDayForRue("周一,周二,周三,周四,周五","2017-11");
         System.out.println(list);
     }
 }

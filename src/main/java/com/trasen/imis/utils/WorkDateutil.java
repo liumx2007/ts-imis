@@ -10,6 +10,8 @@ import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author luoyun
@@ -164,13 +166,7 @@ public class WorkDateutil {
     }
 
     public static void main(String[] args){
-       // getRequest2("2017-5");
-
-        /*String[] name="2017-1-2".split(",");
-
-        System.out.println("周一".length()+"周一".split("")[1]);*/
-        List<String> workList=getWorkDayForRue("周一,周二,周三","2017-7");
-        System.out.println(workList.size());
+        //测试用
     }
 
     public static List<String> getWorkDayForRue(String workingDay, String yearMonth){
