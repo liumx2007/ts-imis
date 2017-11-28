@@ -18,6 +18,7 @@ ul,ol{padding: 0;margin: 0;}
 .NkYew{color: #C4C400;}
 .NkBu{color: #3683DB;}
 .NkGray{color: #4A4A4A;}
+.Font-graufont9{color:#999}
 i{font-style: normal;}
 /*考勤异常*/
 .Nk-tab-CheckWork em{position:absolute;bottom:-5px;left:50%;margin-left:-10px;width:20px;height:15px;border: 6px solid transparent;display:none}
@@ -35,7 +36,7 @@ i{font-style: normal;}
 .Nk-tab-CheckWork .Nkselect em#show_0{display:block}
 .Nk-tab-CheckWork .Nkselect{cursor:pointer}
 .Nk-tab-CheckWork .Nkselect em{ display:block;animation:myfirst 0.5s;-moz-animation:myfirst 0.5s; -webkit-animation:myfirst 0.5s; -o-animation:myfirst 0.5s; }
-
+.w100{width: 100%}
 /*鼠标经过箭头滑动css
 .Nk-tab-CheckWork .Nkselect:hover em{ display:block;animation:myfirst 0.5s;-moz-animation:myfirst 0.5s; -webkit-animation:myfirst 0.5s; -o-animation:myfirst 0.5s; }
 */
@@ -71,6 +72,7 @@ i{font-style: normal;}
 .bgRed{background-image:url(../img/ic_timer_off.png);background-color: #FF524D;border: 1px solid #FF524D;}
 .bgBu{background-image:url(../img/ic_add_alarm.png);background-color:#3683DB ;border: 1px solid #3683DB;}
 .bgYew{background-image:url(../img/ic_settings_backup_restore.png);background-color:#C4C400;border: 1px solid #C4C400;}
+.bgwh{background-color: #fff;;border: 1px solid #EFEFEF;}
 .CheckWorkbody{height: 58px;padding: 12px;width: 70%;background: #fff;}
 .CheckWorkbody i{width: 100%; display: block;font-size: 14px;font-weight: bold}
 .CheckWorkbody span{font-weight: bold;font-size: 16px;}
@@ -119,6 +121,9 @@ button.xguize{background: url(../img/fa-add.png)15% 50% no-repeat;background-siz
 .col-px-70{width: 70px;position: relative; min-height: 1px;}
 .col-px-50{width: 50px;position: relative; min-height: 1px;}
 .col-px-60{width: 60px;position: relative; min-height: 1px;}
+.col-px-420{width: 420px;position: relative; min-height: 1px;}
+.col-px-560{width: 560px;position: relative; min-height: 1px;}
+.col-px-700{width: 700px;position: relative; min-height: 1px;}
 /*********考勤统计************/
 .Nkkqtol{width: 15%;margin-left: 20px;padding-left: 5px; }
 .Nkkqtol i{font-size: 20px;font-weight: bold;padding-right: 5px;}
@@ -164,6 +169,7 @@ button.xguize{background: url(../img/fa-add.png)15% 50% no-repeat;background-siz
 
 /*搜索按钮*/
 .NkSearinput{padding-right: 30px;}
+.NkSearContract{background: url(../img/fa-search.png) 50% 50% no-repeat; width: 20px; height: 34px; background-size: 20px;}
 .NkSearBut{background: url(../img/fa-search.png) 50% 50% no-repeat; width: 20px; height: 20px; background-size: 20px;}
 .NkSea{position: absolute; top: 7px; right: 21px;border: 0px;}
 
@@ -171,11 +177,13 @@ button.xguize{background: url(../img/fa-add.png)15% 50% no-repeat;background-siz
 /*新规则弹出-*/
 .NkNewRule{position: fixed; overflow-y:scroll; top: 52px; bottom: 0;width: 50%;display: block;right: 0;background-color: #fff;z-index: 12;}
 .RuleTit{height: 35px;line-height: 35px;background-image: linear-gradient(-180deg, #FFFFFF 3%, #F5F5F5 98%);padding-left: 10px;width: 100%;box-shadow: 0px 0px 2px #ddd;border-left: 1px solid #e7e7e7;}
-.RuleCont{padding: 40px 15px 0 30px;}
+.RuleCont{padding: 40px 15px 0 30px;overflow: hidden;}
 .RuleForm{margin-top: 30px;}
 .RuleInput{float: left;width: 100%;}
 .RuleInput .RuleName{float: left; width: 110px;padding: 10px 0px;text-align: right;padding-right: 10px;}
+.RuleInput .RuleName130{float: left; width: 130px;padding: 10px 0px;text-align: right;padding-right: 10px;}
 .RuleInput .Rinput{float: left; width: 80%;}
+.RuleInput .Rinput29{float: left; width: 29%;}
 .RuleInput .Rinput40{float: left; width: 39%; margin-right: 1%;}
 .RuleInput .Rinput41{float: left; width: 40%;}
 .RuleInput .Rinput50{float: left; width: 50%;}
@@ -237,6 +245,7 @@ button.xguize{background: url(../img/fa-add.png)15% 50% no-repeat;background-siz
 /*假期设置*/
 .Nkcol-xs-2{width: 10%;}
 .Nkcol-xs-3{width: 30%;}
+.Nkcol-xs-4{width: 44%;}
 .Nkcol-xs-5{width: 60%;}
 .NKcol-xs-10{width: 100%;}
 .Nkcol-lg-12{width: 98%;margin-left: 1%;margin-right: 1%;}
@@ -268,3 +277,75 @@ button.xguize{background: url(../img/fa-add.png)15% 50% no-repeat;background-siz
 .LoginLable{font-weight: normal; color: #999;}
 .LoginBorder{border: 1px solid #efefef;}
 .ImgTit{color: rgba(255, 255, 255, 0.6);font-size: 16px;position: absolute;left: 20px;bottom: 10px;}
+
+/*任命书*/
+.btn-RenForm .btn{margin-right:10px }
+.RenForm{width:100%;background: #fff;padding-bottom: 40px; float: left;margin-top: -4px;border-top: 1px solid #e5e5e5;}
+.FormTable{outline: double 3px;width: 90%;margin: 5% }
+.FormTable .Tit{font-weight: bold;font-size: 22px;text-align: center;padding: 20px 0;}
+.tableCont{width:100%;}
+.tableCont table{width: 100%;}
+.tableCont table td{padding: 15px 20px; border-top: 1px solid #0a1015;border-left: 1px solid #0a1015;font-size: 16px;}
+.tableCont table tr td:first-child{border-left: none}
+.TableCo{border-top:1px solid #0a1015;width: 100%;padding: 20px;line-height: 30px; }
+.TableCo h3{margin-bottom: 20px}
+.TableCo h5{text-indent: 60px;font-weight: bold;}
+.TableCo p{text-indent: 30px;font-size: 16px}
+.TableCo span{text-decoration: underline;font-size: 16px}
+.Btn-renm{height: 34px;margin-left: 10px; float: left;}
+
+/*查看计划*/
+.TabFimte{}
+.TabFimte table tr td:first-child{width: 1%}
+.TabFimte tbody td{padding: 0}
+.TableSF{width: 100%;padding-left: 7%;max-height: 220px;overflow-y: scroll; background: #fafbfc;}
+.TableSF tbody th{font-weight: normal;padding: 8px 15px}
+.TableSF table.table{background: #fafbfc !important;}
+.TableSF > tbody > tr > td, .table > tfoot > tr > td{padding: 0}
+.TableSF .table > thead > tr > th{padding: 8px}
+.CliTab{background-color: #eae7ff;}
+
+
+/*合同变更*/
+.fisJi{width: 19.5%;float: left;border: 1px solid #eeeeee; margin-right: 5px;height: 300px;overflow-y: scroll;padding: 5px}
+.LastBg{background-color: #eeeeee;}
+.LastBg ul li{padding-bottom: 10px}
+.fisJi ul li .checkbox{width: 100%;}
+.fisJi .i-checks{padding-left: 27px;}
+.fisJi .i-checks > i{margin-left: -26px;}
+
+
+/*合同变更*/
+.newfisJi{width: 25%;float: left;border: 1px solid #eeeeee; margin-right: 5px;height: 300px;overflow-y: scroll;padding: 5px}
+.newLastBg{background-color: #eeeeee;}
+.newLastBg ul li{padding-bottom: 10px}
+.newfisJi ul li .checkbox{width: 100%;}
+.newfisJi .i-checks{padding-left: 27px;}
+.newfisJi .i-checks > i{margin-left: -26px;}
+/*.fisJi::-webkit-scrollbar{width: 0;}*/
+
+
+/*日期按钮*/
+.datBut{position: absolute;right: 10px; top:9px;background-color: #eee;padding: 5px}
+/*计划模板*/
+.labLiLe{width: 65%; display: block; padding-left:5%;float: left}
+.labCenter{text-align: center;}
+.labLiRi{width:15%; display: block;text-align: center;float: left}
+.pt10{padding-top: 10px}
+.LastBg li:first-child{height: 20px}
+.pore{position: relative}
+.poabsBot{position: absolute;bottom: 0;width: 98%;}
+.thisBut{width: 100%;margin-left: 10%}
+.thisBut ul li{float: left;width: 26%;border-right: 1px solid #efefef}
+.thisBut ul li .panel-footer{width: 100%;height: 50px}
+
+.pad7-15{padding: 7px 15px !important;}
+.bawiMtop{background-color: #fff;margin-top: -15px}
+.pw60{width: 53% !important;}
+
+.chaTime{border-bottom: 1px solid #edf1f2 !important;float: left;width: 100%;margin-left: 10px;}
+.chaTime p{margin-top: 5px}
+.chaTime p span{width: 100% ;float:left;margin-top: 5px}
+.chaTime p a{margin-top: 5px;float: left}
+
+.tabLeft{text-align: left!important;}
