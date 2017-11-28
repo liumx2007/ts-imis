@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author luoyun
@@ -137,29 +138,19 @@ public class TbHolidayService {
                 Collections.addAll(listoutDay, outDate);
             }
             if(rule.getWorkingDay()!=null&&rule.getWorkingDay()!=""){
-                listworkingDay=getWorkDayForRue(rule.getWorkingDay(),yearMonth);
+                listworkingDay=getWorkDayForRue("周一,周二,周三,周四,周五",yearMonth);
             }
 
         }
 
         listHoliday.addAll(listoutDay);
         logger.info("==================listHoliday"+listHoliday.size());
-        for(int i=0;i<listHoliday.size();i++){
-            for(int j=0;j<listworkingDay.size();j++){
-                if(listworkingDay.get(j).equals(listHoliday.get(i))){
-                    listworkingDay.remove(j);
-                    j--;
-                }
-            }
-        }
+        listworkingDay=listworkingDay.stream().filter(n->!listHoliday.contains(n)).collect(Collectors.toList());
         logger.info("==================listHoliday"+listHoliday.size());
-        for(int i=0;i<listworDay.size();i++){
-            if(!listworkingDay.contains(listworDay.get(i))){
-                listworkingDay.add(listworDay.get(i));
-            }
-        }
-        logger.info("==================listworkingDay"+listworkingDay.size());
-        return listworkingDay.size();
+        listworkingDay.addAll(listworDay);
+        List<String> listAllDistinct = listworkingDay.stream().distinct().filter(n->!n.equals("")).collect(Collectors.toList());
+        logger.info("==================listworkingDay"+listAllDistinct.size());
+        return listAllDistinct.size();
     }
 
     public List<String> getWorkDayForRue(String workingDay, String yearMonth) {
