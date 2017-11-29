@@ -65,13 +65,13 @@ app.controller('Contract', ['$scope', '$modal', '$http', '$filter','$log', funct
             name:selt.name,
             workNum:selt.workNum,
             depName:selt.depName,
-            dtStart:selt.dtStart,
-            dtEnd:selt.dtEnd,
+            dtStart:$filter("date")(selt.dtStart, "yyyy-MM-dd"),
+            dtEnd:$filter("date")(selt.dtEnd, "yyyy-MM-dd"),
             years:selt.years,
             type:type,
             qdStatus:selt.qdStatus
         };
-        this.excelContractExprot="/excel/excelContractExprot?name="+selt.name+"&workNum="+selt.workNum+"&depName="+selt.depName+"&dtStart="+selt.dtStart+"&dtEnd="+selt.dtEnd+"&years="+selt.years+"&type="+type;
+        this.excelContractExprot="/excel/excelContractExprot?name="+selt.name+"&workNum="+selt.workNum+"&depName="+selt.depName+"&dtStart="+$filter("date")(selt.dtStart, "yyyy-MM-dd")+"&dtEnd="+$filter("date")(selt.dtEnd, "yyyy-MM-dd")+"&years="+selt.years+"&type="+type+"&qdStatus="+selt.qdStatus;
         $http.post("/contract/getTbContractList",angular.toJson(parm)).success(function (result) {
             selt.contractList = result.list;
             selt.totalCount = result.totalCount;
@@ -92,8 +92,8 @@ app.controller('Contract', ['$scope', '$modal', '$http', '$filter','$log', funct
             name:selt.name,
             workNum:selt.workNum,
             depName:selt.depName,
-            dtStart:selt.dtStart,
-            dtEnd:selt.dtEnd,
+            dtStart:$filter("date")(selt.dtStart, "yyyy-MM-dd"),
+            dtEnd:$filter("date")(selt.dtEnd, "yyyy-MM-dd"),
             years:selt.years,
             type:type,
             qdStatus:selt.qdStatus
