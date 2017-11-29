@@ -34,6 +34,10 @@ public class ContractService {
     }
 
     public List<TbContract> getTbContractList(Map<String,String> param){
+        if(Optional.ofNullable(param.get("depName")).isPresent()&&!Optional.ofNullable(param.get("depName")).get().equals("")){
+            String deptCode=tbAttenceMapper.getDeptCode(param.get("depName"));
+            param.put("deptCode",deptCode);
+        }
         return contractMapper.getTbContractList(param);
     }
 
