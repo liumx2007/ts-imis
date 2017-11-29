@@ -750,6 +750,12 @@ public class ExcelController {
     private void  excelContractExprot(HttpServletRequest request,HttpServletResponse response){
         String name=request.getParameter("name");
         String workNum=request.getParameter("workNum");
+        String depName=request.getParameter("depName");
+        String dtStart=request.getParameter("dtStart");
+        String dtEnd=request.getParameter("dtEnd");
+        String years=request.getParameter("years");
+        String ReType=request.getParameter("type");
+        String qdStatus=request.getParameter("qdStatus");
         Map<String,String> param=new HashMap<String,String>();
 
         if(!name.equals("undefined")){
@@ -757,6 +763,24 @@ public class ExcelController {
         }
         if(!workNum.equals("undefined")){
             param.put("workNum",workNum);
+        }
+        if(!depName.equals("undefined")){
+            param.put("depName",depName);
+        }
+        if(!dtStart.equals("undefined")){
+            param.put("dtStart",dtStart);
+        }
+        if(!dtEnd.equals("undefined")){
+            param.put("dtEnd",dtEnd);
+        }
+        if(!years.equals("undefined")){
+            param.put("years",years);
+        }
+        if(!ReType.equals("undefined")){
+            param.put("type",ReType);
+        }
+        if(!qdStatus.equals("undefined")){
+            param.put("qdStatus",qdStatus);
         }
         List<TbContract> tbContractList=contractService.getTbContractList(param);
         String fileName="劳动合同"+".xls";
@@ -777,7 +801,7 @@ public class ExcelController {
             String status="未签",type="";
             for(int i=0;i<tbContractList.size();i++){
 
-                if(tbContractList.get(i).getRegularDate()==null){
+                if(tbContractList.get(i).getName()==null){
                     downloadExcelUtil.addCell(0,i+1,"",CellType.LABEL,dateFormat,false,false);
                 }else{
                     downloadExcelUtil.addCell(0,i+1,tbContractList.get(i).getName(),CellType.LABEL,dateFormat,false,false);
@@ -832,6 +856,8 @@ public class ExcelController {
                     type="竞业协议";
                 }else if(tbContractList.get(i).getType()==4){
                     type="培训协议";
+                }else if(tbContractList.get(i).getType()==5){
+                    type="劳动合同,保密协议";
                 }
 
                 downloadExcelUtil.addCell(9,i+1,type,CellType.LABEL,dateFormat,false,false);
