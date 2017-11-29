@@ -206,10 +206,11 @@ app.controller('Contact', ['$scope','$modal','$http','$filter', function($scope,
 
 
 
-    this.setDetailPage = function (pageNo,count,type,countType) {
+    this.setDetailPage = function (pageNo,count,type,countType,typeName) {
         selt.countDetail = count;
         selt.detailType = type;
         selt.countType =countType;
+        selt.typeName = typeName;
         var attenceMap = {
             name:count.name,
             workNum: count.workNum,
