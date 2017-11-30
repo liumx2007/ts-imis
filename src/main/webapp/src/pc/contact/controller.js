@@ -140,6 +140,7 @@ app.controller('Contact', ['$scope','$modal','$http','$filter', function($scope,
         var attenceMap = {
             name: selt.countName,
             tagName: selt.tagName,
+            tagId:selt.tagId,
             countDate: selt.countDate,
             pageNo: this.copageNo,
             pageSize: 10
