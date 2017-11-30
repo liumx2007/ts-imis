@@ -25,4 +25,13 @@
     <select id="getTagNameforWorNum" parameterType="String" resultType="String">
          select group_concat(tag_name) from tb_tag_personnel where work_num=#{workNum}
     </select>
+
+    <select id="getPersonnelTags" parameterType="String" resultType="Map">
+        select t.tag_id as tagId,t.tag_name as tagName from tb_tag_personnel t
+        left join tb_personnel p on p.work_num = t.work_num
+        left join t_user u on u.per_id = p.per_id
+        where u.pkid = #{uid} and t.tag_id not like '|tag_handover_%'
+        and t.tag_id not like '|tag_check_%'
+        and t.tag_id not like '|other_%'
+    </select>
 </mapper>

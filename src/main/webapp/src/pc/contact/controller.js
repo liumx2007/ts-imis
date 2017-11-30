@@ -106,15 +106,21 @@ app.controller('Contact', ['$scope','$modal','$http','$filter', function($scope,
 
 
     this.setCountPage = function (pageNo) {
+        var tagIdExcel;
+        if(selt.tagId != undefined){
+            tagIdExcel = selt.tagId.replace('|','');
+            tagIdExcel = tagIdExcel.replace('|','');
+        }
         var attenceMap = {
             name: selt.countName,
             tagName: selt.tagName,
+            tagId:selt.tagId,
             countDate: selt.countDate,
             selctCx:selt.selectedCx,
             pageNo: pageNo,
             pageSize: 10
         };
-        selt.excelCountExprot="/excel/excelContactExport?name="+selt.countName+"&tagName="+selt.tagName+"&countDate="+selt.countDate+"&column="+selt.selected+"&selectCx="+selt.selectedCx;
+        selt.excelCountExprot="/excel/excelContactExport?name="+selt.countName+"&tagName="+selt.tagName+"&tagId="+tagIdExcel+"&countDate="+selt.countDate+"&column="+selt.selected+"&selectCx="+selt.selectedCx;
         $http.post("/count/attCountData", angular.toJson(attenceMap)).success(function (result) {
             if (result.code == "1") {
                 selt.countList = result.list;
@@ -397,14 +403,41 @@ app.controller('Contact', ['$scope','$modal','$http','$filter', function($scope,
         if (result.success) {
             selt.opCodes = result.object;
             if(!selt.isShowOpe("all")){
-                selt.tagName = result.message;
+                if(selt.isShowOpe("tag")){
+                    $http.get("/personnel/tags").success(function (r) {
+                        if(r.success){
+                            selt.tagList = r.object;
+                            selt.tagList[0].checked = true;
+                            selt.tagId = selt.tagList[0].tagId;
+                            selt.setCountPage(1);
+                        }else{
+                            selt.tagName = result.message;
+                            selt.tagList = [];
+                        }
+                    });
+                }else{
+                    selt.tagName = result.message;
+                    selt.setCountPage(1);
+                }
+
+            }else{
+                selt.setCountPage(1);
             }
-            selt.setCountPage(1);
         } else {
             alert(result.message);
         }
     });
     //-------------------end---
+    this.checkedTagId = function (tagId) {
+        angular.forEach(selt.tagList, function(tag) {
+            if(tag.tagId == tagId){
+                tag.checked = true;
+            }else{
+                tag.checked = false;
+            }
+        });
+        selt.tagId = tagId;
+    }
 
 
 

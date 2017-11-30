@@ -8,6 +8,7 @@ import com.trasen.imis.utils.DateUtils;
 import jxl.CellType;
 import jxl.write.DateFormat;
 import jxl.write.WriteException;
+import org.apache.commons.collections.MapUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -58,6 +59,7 @@ public class ExcelController {
     public void excelExport(HttpServletResponse response, HttpServletRequest request) throws IOException, WriteException {
 
         String tagName=request.getParameter("tagName");
+        String tagId = request.getParameter("tagId");
         String name=request.getParameter("name");
         String attenceDate=request.getParameter("attenceDate");
         String export=request.getParameter("export");
@@ -78,8 +80,15 @@ public class ExcelController {
         if(attenceDate!=null&&!attenceDate.equals("undefined")){
             attenceVo.setAttenceDate(attenceDate.substring(0,10));
         }
-        if(tagName!=null&&!tagName.equals("undefined")){
+
+        if(tagId!=null&&!tagId.equals("undefined")){
+            attenceVo.setTagId("|"+tagId+"|");
+        }else if(tagName!=null&&!tagName.equals("undefined")){
             attenceVo.setTagName(tagName);
+            String depTagId = attenceService.getDeptCode(tagName);
+            if(!StringUtil.isEmpty(depTagId)){
+                attenceVo.setTagId(depTagId);
+            }
         }
         if(type!=null&&!type.equals("undefined")){
             attenceVo.setType(Integer.valueOf(type));
@@ -319,6 +328,7 @@ public class ExcelController {
         String countDate=request.getParameter("countDate");
         String name=request.getParameter("name");
         String tagName=request.getParameter("tagName");
+        String tagId = request.getParameter("tagId");
         String column=request.getParameter("column");
         String selectCx=request.getParameter("selectCx");
         List<String> columnList = new ArrayList<>();
@@ -364,13 +374,20 @@ public class ExcelController {
         if(!countDate.equals("undefined")){
             count.setCountDate(countDate);
         }
-        if(!tagName.equals("undefined")){
+
+        if(tagId!=null&&!tagId.equals("undefined")){
+            count.setTagId("|"+tagId+"|");
+        }else if(tagName!=null&&!tagName.equals("undefined")){
             count.setTagName(tagName);
-            String tagId = attenceService.getDeptCode(tagName);
-            if(!StringUtil.isEmpty(tagId)){
-                count.setTagId(tagId);
+            String depTagId = attenceService.getDeptCode(tagName);
+            if(!StringUtil.isEmpty(depTagId)){
+                count.setTagId(depTagId);
             }
         }
+
+
+
+
 
         List<TbAttenceCount> list = attenceCountService.queryAttenceCountList(count);
         Date d = new Date();

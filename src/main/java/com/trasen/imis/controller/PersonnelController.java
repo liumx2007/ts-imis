@@ -4,6 +4,7 @@ import cn.trasen.commons.util.StringUtil;
 import cn.trasen.core.entity.Result;
 import cn.trasen.core.feature.orm.mybatis.Page;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.trasen.imis.common.VisitInfoHolder;
 import com.trasen.imis.model.TbDeptLog;
 import com.trasen.imis.model.TbPersonnel;
 import com.trasen.imis.service.PersonnelService;
@@ -281,6 +282,28 @@ public class PersonnelController {
             logger.error("获取离职人员信息列表异常" + e.getMessage(), e);
             result.put("code",0);
             result.put("msg",e.getMessage());
+        }
+        return result;
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/tags", method = RequestMethod.GET)
+    public Result getOperList() {
+        logger.info("===查询用户["+ VisitInfoHolder.getUserId()+"]的权限标签=======");
+        Result result = new Result();
+        result.setStatusCode(1);
+        result.setSuccess(true);
+        try {
+            List<Map<String,Object>> list = personnelService.getPersonnelTags();
+            for(Map<String,Object> map : list){
+                map.put("checked",false);
+            }
+            result.setObject(list);
+        } catch (Exception e) {
+            logger.error("获取用户的权限标签" + e.getMessage(), e);
+            result.setStatusCode(0);
+            result.setMessage(e.getMessage());
         }
         return result;
     }

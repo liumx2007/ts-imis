@@ -53,6 +53,7 @@ public class AttenceCountController {
             String countDate = MapUtils.getString(params, "countDate");
             String name = MapUtils.getString(params, "name");
             String tagName = MapUtils.getString(params, "tagName");
+            String tagId = MapUtils.getString(params, "tagId");
             List selectCx= (List) params.get("selctCx");
 
             Integer pageNo = MapUtils.getInteger(params, "pageNo");
@@ -64,13 +65,18 @@ public class AttenceCountController {
             if(!StringUtil.isEmpty(name)){
                 count.setName(name);
             }
-            if(!StringUtil.isEmpty(tagName)){
+
+
+            if(!StringUtil.isEmpty(tagId)){
+                count.setTagId(tagId);
+            }else if(!StringUtil.isEmpty(tagName)){
                 count.setTagName(tagName);
-                String tagId = attenceService.getDeptCode(tagName);
-                if(!StringUtil.isEmpty(tagId)){
-                    count.setTagId(tagId);
+                String depTagId = attenceService.getDeptCode(tagName);
+                if(!StringUtil.isEmpty(depTagId)){
+                    count.setTagId(depTagId);
                 }
             }
+
             if(!StringUtil.isEmpty(countDate)){
                 count.setCountDate(countDate);
             }
