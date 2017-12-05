@@ -74,6 +74,9 @@ public class MobileAttenceService {
                     if(addresses[1].indexOf("麓谷国际工业园")!=-1&&!"sign".equals(attenceLogVo.getType())){
                         attenceLogVo.setAddress(addresses[0]+"[湖南创星科技股份有限公司]");
                     }
+                    if(addresses[1].indexOf("湖南远越农业信息化科技有限公司")!=-1&&!"sign".equals(attenceLogVo.getType())){
+                        attenceLogVo.setAddress(addresses[0]+"[湖南创星科技股份有限公司]");
+                    }
                 }
             }
             //获取考勤规则
