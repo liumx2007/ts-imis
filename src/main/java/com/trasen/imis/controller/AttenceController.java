@@ -46,6 +46,7 @@ public class AttenceController {
         try {
             checkArgument(MapUtils.isNotEmpty(params), "参数对象params不可为空!");
             String tagName = MapUtils.getString(params, "tagName");
+            String tagId = MapUtils.getString(params, "tagId");
             String name = MapUtils.getString(params, "name");
             String attenceDate = MapUtils.getString(params, "attenceDate");
             Integer type = MapUtils.getInteger(params,"type");
@@ -72,13 +73,19 @@ public class AttenceController {
             if(!StringUtil.isEmpty(attenceDate)){
                 attenceVo.setAttenceDate(attenceDate.substring(0,10));
             }
-            if(!StringUtil.isEmpty(tagName)){
+
+
+            if(!StringUtil.isEmpty(tagId)){
+                attenceVo.setTagId(tagId);
+            }else if(!StringUtil.isEmpty(tagName)){
                 attenceVo.setTagName(tagName);
-                String tagId = attenceService.getDeptCode(tagName);
-                if(!StringUtil.isEmpty(tagId)){
-                    attenceVo.setTagId(tagId);
+                String depTagId = attenceService.getDeptCode(tagName);
+                if(!StringUtil.isEmpty(depTagId)){
+                    attenceVo.setTagId(depTagId);
                 }
             }
+
+
             if(type!=null){
                 attenceVo.setType(type);
             }

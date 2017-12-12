@@ -12,6 +12,8 @@ public class VisitInfoHolder {
 
     protected static final ThreadLocal<String> userId = new ThreadLocal<>();
 
+    protected static final ThreadLocal<String> uid = new ThreadLocal<>();
+
 
 
     public static String getUserId() {
@@ -20,6 +22,14 @@ public class VisitInfoHolder {
 
     public static void setUserId(String userId) {
         VisitInfoHolder.userId.set(userId);
+    }
+
+    public static String getUid() {
+        return VisitInfoHolder.uid.get();
+    }
+
+    public static void setUid(String uid) {
+        VisitInfoHolder.uid.set(uid);
     }
 
 

@@ -22,4 +22,6 @@ public interface TbTagPersonnelMapper {
 
     public String getTagNameforWorNum(String workNum);
 
+    List<Map<String,Object>> getPersonnelTags(String uid);
+
 }

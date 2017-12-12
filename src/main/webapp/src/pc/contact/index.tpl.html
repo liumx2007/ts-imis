@@ -72,6 +72,21 @@
                             </ul>
 
                         </div>
+                        <!--部门标签-->
+                        <div class="brbotP NKwrapper Nkcont" ng-show="ctrl.isShowOpe('tag')">
+                            <p>部门标签</p>
+                            <ul>
+                                <li ng-repeat="tag in ctrl.tagList">
+                                    <div class="checkbox">
+                                        <label class="i-checks">
+                                            <input type="checkbox" ng-checked="tag.checked" ng-click="ctrl.checkedTagId(tag.tagId)">
+                                            <i></i>
+                                            {{tag.tagName}}
+                                        </label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
                         <div class="brbotP NKwrapper Nkcont">
                             <p>签到情况</p>
                             <ul>

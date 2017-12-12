@@ -323,4 +323,8 @@ public class PersonnelService {
         list = tbPersonnelMapper.queryQuitPersonnelList(params);
         return list;
     }
+
+    public List<Map<String,Object>> getPersonnelTags(){
+        return tbTagPersonnelMapper.getPersonnelTags(VisitInfoHolder.getUid());
+    }
 }
