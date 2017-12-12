@@ -12,6 +12,7 @@ import com.trasen.imis.utils.WorkDateutil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -36,43 +37,69 @@ public class TbHolidayService {
 
     private GlobalCache globalCache = GlobalCache.getGlobalCache();
 
-    public String saveByList(String yearMonth){
-        String workDay="";
-        String holiday="";
-        if(yearMonth==null){
+    @Transactional(rollbackFor = Exception.class)
+    public String saveByList(String yearMonth) {
+        String workDay = "";
+        String holiday = "";
+        if (yearMonth == null) {
             return "参数错误";
-        }else{
-            int count=tbHolidayMapper.deleteByYearMonth(yearMonth);
-            if(count<0) return "删除失败";
-            List<TbHoliday> tbHolidayList=new ArrayList<TbHoliday>();
-            for(int i=1;i<=12;i++){
-                TbHoliday tbHoliday=new TbHoliday();
-                String year_Month=yearMonth+"-"+i;
-                JSONObject jsonObject=WorkDateutil.getRequest2(year_Month);
-                if(jsonObject==null) return "接口错误";
-                JSONObject jsonObject1=jsonObject.getJSONObject("result");
-                if (jsonObject1==null){
+        } else {
+            int count = tbHolidayMapper.deleteByYearMonth(yearMonth);
+            if (count < 0) return "删除失败";
+            List<TbHoliday> tbHolidayList = new ArrayList<TbHoliday>();
+            for (int i = 1; i <= 12; i++) {
+                TbHoliday tbHoliday = new TbHoliday();
+                String year_Month = yearMonth + "-" + i;
+                JSONObject jsonObject = WorkDateutil.getRequest2(year_Month);
+                if (jsonObject == null) return "接口错误";
+                JSONObject jsonObject1 = jsonObject.getJSONObject("result");
+                if (jsonObject1 == null) {
                     tbHoliday.setYearMonth(year_Month);
-                }else{
-                    JSONObject jsonObject2=jsonObject1.getJSONObject("data");
-                    JSONArray jsonArray=JSONObject.parseArray(jsonObject2.getString("holiday"));
-                    StringBuffer buffer=new StringBuffer();
-                    StringBuffer bufferwork=new StringBuffer();
-                    for(int j=0;j<jsonArray.size();j++){
-                        JSONObject jsonObject3= (JSONObject) jsonArray.get(j);
-                        JSONArray jsonArray1=jsonObject3.getJSONArray("list");
-                        for(int k=0;k<jsonArray1.size();k++){
-                            JSONObject jsonObject4= (JSONObject) jsonArray1.get(k);
-                            if(jsonObject4.getString("status").equals("1")){
-                                if(buffer.indexOf(jsonObject4.getString("date"))<0){
-                                    if(jsonObject4.getString("date").indexOf(year_Month)>=0){
+                } else {
+                    JSONObject jsonObject2 = jsonObject1.getJSONObject("data");
+                    String holidayT=jsonObject2.getString("holiday");
+                    StringBuffer buffer = new StringBuffer();
+                    StringBuffer bufferwork = new StringBuffer();
+                    if(holidayT.substring(0,1).equals("[")){
+                        JSONArray jsonArray = JSONObject.parseArray(jsonObject2.getString("holiday"));
+                        for (int j = 0; j < jsonArray.size(); j++) {
+
+                            JSONObject jsonObject3 = (JSONObject) jsonArray.get(j);
+                            JSONArray jsonArray1 = jsonObject3.getJSONArray("list");
+                            for (int k = 0; k < jsonArray1.size(); k++) {
+                                JSONObject jsonObject4 = (JSONObject) jsonArray1.get(k);
+                                if (jsonObject4.getString("status").equals("1")) {
+                                    if (buffer.indexOf(jsonObject4.getString("date")) < 0) {
+                                        if (jsonObject4.getString("date").indexOf(year_Month) >= 0) {
+                                            buffer.append(jsonObject4.getString("date"));
+                                            buffer.append(",");
+                                        }
+                                    }
+                                } else {
+                                    if (bufferwork.indexOf(jsonObject4.getString("date")) < 0) {
+                                        if (jsonObject4.getString("date").indexOf(year_Month) >= 0) {
+                                            bufferwork.append(jsonObject4.getString("date"));
+                                            bufferwork.append(",");
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }else{
+                        JSONObject jsons = JSONObject.parseObject(jsonObject2.getString("holiday"));
+                        JSONArray jsonArray2 = jsons.getJSONArray("list");
+                        for (int k = 0; k < jsonArray2.size(); k++) {
+                            JSONObject jsonObject4 = (JSONObject) jsonArray2.get(k);
+                            if (jsonObject4.getString("status").equals("1")) {
+                                if (buffer.indexOf(jsonObject4.getString("date")) < 0) {
+                                    if (jsonObject4.getString("date").indexOf(year_Month) >= 0) {
                                         buffer.append(jsonObject4.getString("date"));
                                         buffer.append(",");
                                     }
                                 }
-                            }else{
-                                if(bufferwork.indexOf(jsonObject4.getString("date"))<0){
-                                    if(jsonObject4.getString("date").indexOf(year_Month)>=0) {
+                            } else {
+                                if (bufferwork.indexOf(jsonObject4.getString("date")) < 0) {
+                                    if (jsonObject4.getString("date").indexOf(year_Month) >= 0) {
                                         bufferwork.append(jsonObject4.getString("date"));
                                         bufferwork.append(",");
                                     }
@@ -80,34 +107,35 @@ public class TbHolidayService {
                             }
                         }
                     }
-                    String[] holidayArray=buffer.toString().split(",");
-                    List<String> holidayList=Arrays.asList(holidayArray);
+
+                    String[] holidayArray = buffer.toString().split(",");
+                    List<String> holidayList = Arrays.asList(holidayArray);
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                    holidayList=holidayList.stream().filter(h->!h.equals("")).map(ho->{
-                        Date date= null;
+                    holidayList = holidayList.stream().filter(h -> !h.equals("")).map(ho -> {
+                        Date date = null;
                         try {
                             date = format.parse(ho);
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                        String name1=format.format(date);
+                        String name1 = format.format(date);
                         return name1;
                     }).collect(Collectors.toList());
-                    holiday = String.join(",",holidayList);
+                    holiday = String.join(",", holidayList);
 
-                    String[] workDayArray=bufferwork.toString().split(",");
-                    List<String> workDayList=Arrays.asList(workDayArray);
-                    workDayList=workDayList.stream().filter(w->!w.equals("")).map(work->{
-                        Date date= null;
+                    String[] workDayArray = bufferwork.toString().split(",");
+                    List<String> workDayList = Arrays.asList(workDayArray);
+                    workDayList = workDayList.stream().filter(w -> !w.equals("")).map(work -> {
+                        Date date = null;
                         try {
                             date = format.parse(work);
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                        String wo=format.format(date);
+                        String wo = format.format(date);
                         return wo;
                     }).collect(Collectors.toList());
-                    workDay = String.join(",",workDayList);
+                    workDay = String.join(",", workDayList);
                     /*workDay=bufferwork.toString();
                     holiday=buffer.toString();*/
                     tbHoliday.setYearMonth(year_Month);
@@ -116,10 +144,10 @@ public class TbHolidayService {
                 }
                 tbHolidayList.add(tbHoliday);
             }
-            int insertCount=tbHolidayMapper.saveByList(tbHolidayList);
-            if(insertCount>0){
+            int insertCount = tbHolidayMapper.saveByList(tbHolidayList);
+            if (insertCount > 0) {
                 return "保存成功";
-            }else{
+            } else {
                 return "保存失败";
             }
         }
