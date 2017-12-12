@@ -351,5 +351,9 @@
         select dep_id from tb_dept where dep_name = #{depName} and is_vaild=1 limit 1
     </select>
 
+    <select id="getTbHolidat" parameterType="String" resultType="com.trasen.imis.model.TbHoliday">
+        select * from tb_holiday where `year_month` like CONCAT(#{year},'%')
+    </select>
+
 
 </mapper>

@@ -18,9 +18,12 @@ public class GlobalCache {
 
     private  Map<String,TbHoliday> tbHolidayMap;
 
+    private  Map<String,String> holiday;
+
 
     private GlobalCache() {
         attRuleMap = new HashMap<>();
+        holiday = new HashMap<>();
     }
 
 
@@ -45,4 +48,11 @@ public class GlobalCache {
         return tbHolidayMap;
     }
 
+    public Map<String, String> getHoliday() {
+        return holiday;
+    }
+
+    public void setHoliday(Map<String, String> holiday) {
+        this.holiday = holiday;
+    }
 }

@@ -89,16 +89,19 @@ public class MobileAttenceService {
                 }
                 Integer type = 0;
                 String today = DateUtil.getDateTime("yyyy-MM-dd");
-                String todayT = DateUtil.getDateTime("yyyyMMdd");
                 String outDate = rule.getOutDate();
                 if(outDate!=null&&outDate.indexOf(today)>0){
                     type = 1;//在排除日期内为加班
-                }else if(isHoliday(todayT)
-                        ||(rule.getWorkingDay()!=null&&rule.getWorkingDay().indexOf(attenceLogVo.getAttenceWeek())==-1)){
-                    type = 1;//在法定节假日,或者非工作日时间算加班
+                }else if(isHoliday(today)){
+                    type = 1;//在法定节假日算加班
+                }else if(isWorkDay(today)){
+                    type = 0;//在法定工作日算上班
+                }else if(rule.getWorkingDay()!=null&&rule.getWorkingDay().indexOf(attenceLogVo.getAttenceWeek())==-1){
+                    type = 1;//在非工作日时间算加班
                 }else{
                     type = 0;
                 }
+                logger.info("======考勤=====验证工作日==type["+type+"]");
 
                 String singInTimeStr = today+" 08:45:00";
                 String singOutTimeStr = today+" 17:45:00";
@@ -208,16 +211,44 @@ public class MobileAttenceService {
 
     public boolean isHoliday(String date){
         logger.info("==获取节假日["+date+"]");
-        String requestUrl = PropertiesUtils.getProperty("holiday_url").replace("DATE",date);
-
-        String result = HttpUtil.connectURL(requestUrl,"","GET");
-        logger.info("==获取节假日["+result+"]");
-        JSONObject jsonObject = (JSONObject) JSONObject.parse(result);
-        Integer data = jsonObject.getInteger("data");
-        if(data!=null&&data.intValue()!=2){
-            return false;
+        String holiday = "";
+        if(date!=null){
+            String [] year = date.split("-");
+            String key = year[0]+"holiday";
+            Map<String,String> holidayMap = globalCache.getHoliday();
+            if(holidayMap.get(key)!=null){
+                holiday = holidayMap.get(key);
+            }else{
+                List<TbHoliday> list = tbAttenceMapper.getTbHolidat(year[0]);
+                for(TbHoliday tbHoliday : list){
+                    holiday = holiday + tbHoliday.getHoliday() + ",";
+                }
+                holidayMap.put(key,holiday);
+                globalCache.setHoliday(holidayMap);
+            }
         }
-        return true;
+        return holiday.indexOf(date)>0;
+    }
+
+    public boolean isWorkDay(String date){
+        logger.info("==获取工作日["+date+"]");
+        String workday = "";
+        if(date!=null){
+            String [] year = date.split("-");
+            String key = year[0]+"workday";
+            Map<String,String> workdayMap = globalCache.getHoliday();
+            if(workdayMap.get(key)!=null){
+                workday = workdayMap.get(key);
+            }else{
+                List<TbHoliday> list = tbAttenceMapper.getTbHolidat(year[0]);
+                for(TbHoliday tbHoliday : list){
+                    workday = workday + tbHoliday.getWorkDay() + ",";
+                }
+                workdayMap.put(key,workday);
+                globalCache.setHoliday(workdayMap);
+            }
+        }
+        return workday.indexOf(date)>0;
     }
 
     public List<TbPersonnel> getSubPerson(String openId,String name){

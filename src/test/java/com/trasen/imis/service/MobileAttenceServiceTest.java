@@ -32,4 +32,18 @@ public class MobileAttenceServiceTest {
         }
     }
 
+    @Test
+    public void isHoliday(){
+        System.out.println("============"+mobileAttenceService.isHoliday("2017-10-01"));;
+        System.out.println("============"+mobileAttenceService.isWorkDay("2017-10-01"));;
+        System.out.println("============"+mobileAttenceService.isHoliday("2017-12-12"));;
+        System.out.println("============"+mobileAttenceService.isWorkDay("2017-12-12"));;
+        System.out.println("============"+mobileAttenceService.isHoliday("2017-12-11"));;
+        System.out.println("============"+mobileAttenceService.isWorkDay("2017-12-11"));;
+        System.out.println("============"+mobileAttenceService.isHoliday("2017-12-10"));;
+        System.out.println("============"+mobileAttenceService.isWorkDay("2017-12-10"));;
+
+
+    }
+
 }

@@ -3,6 +3,7 @@ package com.trasen.imis.dao;
 import cn.trasen.core.feature.orm.mybatis.Page;
 import com.trasen.imis.model.AttenceVo;
 import com.trasen.imis.model.TbAttenceLocation;
+import com.trasen.imis.model.TbHoliday;
 import com.trasen.imis.model.TbPersonnel;
 
 import java.util.List;
@@ -75,5 +76,7 @@ public interface TbAttenceMapper {
     Integer ifLeave(String name);
 
     String getDeptCode(String depName);
+
+    List<TbHoliday> getTbHolidat(String year);
 }
 
