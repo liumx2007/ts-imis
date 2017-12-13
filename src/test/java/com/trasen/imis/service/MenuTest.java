@@ -208,8 +208,12 @@ public class MenuTest {
         cb1List.add(cb14);
 
         cb1.setSub_button(cb1List);
-        //https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx883815fb0da06f3d&redirect_uri=http%3a%2f%2fplattesting09.trasen.cn%2fsrc%2fmobile%2fimitationLogin%2flogin.html&response_type=code&scope=snsapi_base&state=TS-IMIS#wechat_redirect
 
+
+        ViewButton cb2 = new ViewButton();
+        cb2.setName("信息平台");
+        cb2.setType("view");
+        cb2.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx883815fb0da06f3d&redirect_uri=http%3a%2f%2fplattesting09.trasen.cn%2fsrc%2fmobile%2fimitationLogin%2flogin.html&response_type=code&scope=snsapi_base&state=TS-IMIS#wechat_redirect");
 
 
 
@@ -218,6 +222,7 @@ public class MenuTest {
         List<Button> cbList = new ArrayList<>();
         cbList.add(cb0);
         cbList.add(cb1);
+        cbList.add(cb2);
         menu.setButton(cbList);
         String menuJsonString = JSONObject.toJSONString(menu);
 
