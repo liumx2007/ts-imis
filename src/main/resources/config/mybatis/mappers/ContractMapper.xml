@@ -56,7 +56,7 @@
         con.*,per.dep_name
         FROM
         tb_contract con left join tb_personnel per on per.work_num=con.work_num where (Datediff(con.end_date,#{dateStrat})>0 and
-        Datediff(con.end_date,#{dateEnd})<0) or Datediff(con.entry_date,#{dateEntry})>0 and con.send_status=0 ]]>
+        Datediff(con.end_date,#{dateEnd})<0 and con.status=1) or (Datediff(con.entry_date,#{dateEntry})>0 and con.status=0) and con.send_status=0 ]]>
     </select>
 
     <select id="TbContratCount" parameterType="String" resultType="Integer">
