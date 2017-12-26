@@ -33,4 +33,7 @@ public class TbContract {
     private String operator;// '操作人'
     private Integer isVaild; //是否有效 1:有效，0：无效
     private String signDate; //合同签订时间
+    private  Integer sendStatus;
+
+    private String depName;
 }

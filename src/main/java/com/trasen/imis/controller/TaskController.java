@@ -95,50 +95,18 @@ public class TaskController {
     @RequestMapping(value = "/sendContract", method = RequestMethod.GET, produces = "application/json")
     public Result countAttence() {
         Result result=new Result();
-        String appid = PropertiesUtils.getProperty("appid");
-        String templateId = PropertiesUtils.getProperty("templateId");
-        String toUser = PropertiesUtils.getProperty("toUser");
-        String openName = PropertiesUtils.getProperty("openName");
-        String messageUrl=PropertiesUtils.getProperty("send_template_message");
-        System.out.println("===============发送劳动合同");
-        if (appid == null || templateId == null || toUser == null || openName == null||messageUrl==null) {
-            logger.info("参数错误:" + "参数错误");
-        } else {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = new Date();
-            String dateStr = sdf.format(date);
-            String contractDate = null;
-            try {
-                Calendar rightNow = Calendar.getInstance();
-                String contractMouth = PropertiesUtils.getProperty("contractMouth");
-                rightNow.setTime(date);
-                rightNow.add(Calendar.MONTH, Integer.valueOf(contractMouth));// 日期加3个月
-                Date dt1 = rightNow.getTime();
-                contractDate = sdf.format(dt1);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            Map<String, String> dateMap = new HashMap<String, String>();
-            dateMap.put("dateStrat", dateStr);
-            dateMap.put("dateEnd", contractDate);
-            String contractName = contractService.getTbContratListByDate(dateMap);
-            if(contractName != null) {
-                Map<String, String> wxParam = new HashMap<String, String>();
-                wxParam.put("appid", appid);
-                wxParam.put("touser", toUser);
-                wxParam.put("templateId", templateId);
-                wxParam.put("name", "尹中贵");
-                wxParam.put("code", contractName);
-                String parameterJson = JSONObject.toJSONString(wxParam);
-                String message = HttpUtil.connectURL(messageUrl, parameterJson, "POST");
-                JSONObject dataJson = (JSONObject) JSONObject.parse(message);
-                String resultmeg = dataJson.getString("msg");
-                logger.info("劳动合同发送:" + resultmeg);
-            }
+        try{
+            contractService.sendTbContract();
+            result.setSuccess(true);
+            result.setStatusCode(1);
+            result.setMessage("劳动合同发送任务成功");
+        }catch (Exception e){
+            logger.error("劳动合同发送失败"+e.getMessage(),e);
+            result.setSuccess(false);
+            result.setStatusCode(0);
+            result.setMessage("劳动合同发送失败");
         }
-        result.setSuccess(true);
-        result.setStatusCode(1);
-        result.setMessage("劳动合同发送任务成功");
+
         return result;
     }
 

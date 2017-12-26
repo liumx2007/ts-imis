@@ -61,8 +61,8 @@ public class WeixinAuthorizeController {
     public Map<String,Object> oauth2(@QueryParam("code") String code){
         if("1234".equals(code)){
             // TODO: 17/8/2  设置下属考勤权限
-            Integer check = winXinPersonService.checkWeixinOpenId("ofzbj0uh4TG4xwrp4rHKW8kmMx-o");
-            return new ImmutableMap.Builder<String, Object>().put("openid", "ofzbj0uh4TG4xwrp4rHKW8kmMx-o")
+            Integer check = winXinPersonService.checkWeixinOpenId("o8qZCwTmN3MkN6G253uHaeIBmJIQ");
+            return new ImmutableMap.Builder<String, Object>().put("openid", "o8qZCwTmN3MkN6G253uHaeIBmJIQ")
                     .put("status", 1).put("check",check).build();
         }
         UserToken userToken = weixinService.getUserToken(code);

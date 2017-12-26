@@ -23,8 +23,12 @@ public interface ContractMapper {
 
     public int deleteContractforWorkNum(String workNum);
 
-    public String getTbContratListByDate(Map<String,String> date);
+    public List<TbContract> getTbContratListByDate(Map<String,String> date);
 
     public TbContract getTbContract(String workNum);
+
+    int TbContratCount(String workNum);
+
+    int updateSendStatus(Integer pkid);
 
 }

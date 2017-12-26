@@ -51,11 +51,20 @@
         select * from tb_contract where work_num=#{workNum}  limit 1;
     </select>
 
-    <select id="getTbContratListByDate" parameterType="java.util.Map" resultType="String">
+    <select id="getTbContratListByDate" parameterType="java.util.Map" resultType="com.trasen.imis.model.TbContract">
         <![CDATA[SELECT
-        group_concat(`name`)
+        con.*,per.dep_name
         FROM
-        tb_contract where str_to_date(end_date, '%Y-%m-%d') > str_to_date(#{dateStrat}, '%Y-%m-%d') and
-        str_to_date(end_date, '%Y-%m-%d') < str_to_date(#{dateEnd}, '%Y-%m-%d')]]>
+        tb_contract con left join tb_personnel per on per.work_num=con.work_num where (Datediff(con.end_date,#{dateStrat})>0 and
+        Datediff(con.end_date,#{dateEnd})<0) or Datediff(con.entry_date,#{dateEntry})>0 and con.send_status=0 ]]>
     </select>
+
+    <select id="TbContratCount" parameterType="String" resultType="Integer">
+      select count(*) from tb_contract where work_num=#{workNum} and is_vaild=1 and status=1
+    </select>
+
+    <update id="updateSendStatus" parameterType="Integer">
+        update tb_contract set send_status=1 where pkid=#{pkid}
+    </update>
+
 </mapper>
