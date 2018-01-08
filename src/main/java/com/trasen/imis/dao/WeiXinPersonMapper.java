@@ -1,6 +1,7 @@
 package com.trasen.imis.dao;
 
 import com.trasen.imis.model.TbPersonnel;
+import com.trasen.imis.model.TbWeixinCustormer;
 import com.trasen.imis.model.WinXinPerson;
 
 import java.util.List;
@@ -24,4 +25,8 @@ public interface WeiXinPersonMapper {
     Integer checkWeixinOpenId(String code);
 
     Integer updateT_Weixin_user(TbPersonnel tbPersonnel);
+
+    TbWeixinCustormer selectWeixinCusByCode(String inviteCode);
+
+    int updateWeixinCusOpenId(TbWeixinCustormer tbWeixinCustormer);
 }

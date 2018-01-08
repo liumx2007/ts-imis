@@ -3,6 +3,7 @@ package com.trasen.imis.service;
 import com.trasen.imis.dao.TbPersonnelMapper;
 import com.trasen.imis.dao.WeiXinPersonMapper;
 import com.trasen.imis.model.TbPersonnel;
+import com.trasen.imis.model.TbWeixinCustormer;
 import com.trasen.imis.model.WinXinPerson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -51,6 +52,14 @@ public class WinXinPersonService {
 
     public int updateT_Weixin_user(TbPersonnel tbPersonnel){
         return weiXinPersonMapper.updateT_Weixin_user(tbPersonnel);
+    }
+
+    public TbWeixinCustormer selectWeixinCusByCode(String inviteCode){
+        return weiXinPersonMapper.selectWeixinCusByCode(inviteCode);
+    }
+
+    public int updateWeixinCusOpenId(TbWeixinCustormer tbWeixinCustormer){
+        return weiXinPersonMapper.updateWeixinCusOpenId(tbWeixinCustormer);
     }
 
 }

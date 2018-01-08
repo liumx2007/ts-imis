@@ -22,6 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by zhangxiahui on 17/6/13.
@@ -267,6 +269,43 @@ public class WeixinService {
                     return xml_tmt;
                 }
 
+                if(content.contains("-")){
+                    TextMessage tmt = new TextMessage();
+                    tmt.setToUserName(FromUserName);
+                    tmt.setFromUserName(ToUserName);
+                    tmt.setMsgType(MessageUtil.MESSAGG_TYPE_TEXT);
+                    tmt.setCreateTime(System.currentTimeMillis());
+                    String xml_tmt="";
+                    String[] weixinCusArr=content.split("-");
+                    Pattern pattern = Pattern.compile("-?[0-9]+.?[0-9]+");
+                    Matcher isNum = pattern.matcher(content);
+                    if(weixinCusArr[1].length()==4&&isNum.matches()){
+                       TbWeixinCustormer tbWeixinCustormer=winXinPersonService.selectWeixinCusByCode(content);
+                       if(tbWeixinCustormer!=null){
+                           tbWeixinCustormer.setOpenId(FromUserName);
+                           int updatCount=winXinPersonService.updateWeixinCusOpenId(tbWeixinCustormer);
+                           if(updatCount>0){
+                               tmt.setContent("恭喜您,加入创星！");
+                               xml_tmt = MessageUtil.textMessageToXml(tmt);
+                               logger.info("xml:" + xml_tmt);
+                           }else{
+                               tmt.setContent("加入创星失败,请联系管理员");
+                               xml_tmt = MessageUtil.textMessageToXml(tmt);
+                               logger.info("xml:" + xml_tmt);
+                           }
+                       }else{
+                           tmt.setContent("你输入的邀请码有误，请检查！");
+                           xml_tmt = MessageUtil.textMessageToXml(tmt);
+                           logger.info("xml:" + xml_tmt);
+                       }
+
+                    }else{
+                        tmt.setContent("你输入的邀请码有误，请联系管理员！");
+                        xml_tmt = MessageUtil.textMessageToXml(tmt);
+                        logger.info("xml:" + xml_tmt);
+                    }
+                    return  xml_tmt;
+                }
 
                 long v = new Date().getTime();
 

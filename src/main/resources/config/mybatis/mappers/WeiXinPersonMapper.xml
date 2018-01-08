@@ -77,4 +77,13 @@ WHERE
 	<update id="updateT_Weixin_user" parameterType="com.trasen.imis.model.TbPersonnel">
 		update tb_weixin_user set open_id=#{openId},binding_time=now() where work_num=#{workNum}
 	</update>
+
+	<update id="updateWeixinCusOpenId" parameterType="com.trasen.imis.model.TbWeixinCustormer">
+		update tb_weixin_customer set open_id=#{openId},updated=now() where pkid=#{pkid}
+	</update>
+
+	<select id="selectWeixinCusByCode" parameterType="String" resultType="com.trasen.imis.model.TbWeixinCustormer">
+		select * from tb_weixin_customer where invite_code=#{inviteCode} limit 1
+	</select>
+
 </mapper>
