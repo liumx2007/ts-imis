@@ -49,7 +49,7 @@ public class MenuTest {
         cb01.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5788f1ce93ff3255&redirect_uri=http%3A%2F%2Fbpmtest01.trasen.cn%2Fsrc%2Findex.html%23%2Fmobile&response_type=code&scope=snsapi_base&state=TS-IMIS#wechat_redirect");
 
         ViewButton cb04 = new ViewButton();
-        cb04.setName("公司考勤2");
+        cb04.setName("公司考勤测试");
         cb04.setType("view");
         cb04.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5788f1ce93ff3255&redirect_uri=http%3A%2F%2Fbpmtest01.trasen.cn%2Fsrc%2fapp%2fattence%2findex.html&response_type=code&scope=snsapi_base&state=TS-IMIS#wechat_redirect");
 
@@ -60,7 +60,7 @@ public class MenuTest {
         cb02.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5788f1ce93ff3255&redirect_uri=http%3A%2F%2Fbpmtest01.trasen.cn%2Fsrc%2Findex.html%3FattType%3D1%23%2Fmobile&response_type=code&scope=snsapi_base&state=TS-IMIS#wechat_redirect");
 
         ViewButton cb05 = new ViewButton();
-        cb05.setName("外出考勤2");
+        cb05.setName("外出考勤测试");
         cb05.setType("view");
         cb05.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5788f1ce93ff3255&redirect_uri=http%3A%2F%2Fbpmtest01.trasen.cn%2Fsrc%2fapp%2fattence%2findex.html%3FattType%3D1&response_type=code&scope=snsapi_base&state=TS-IMIS#wechat_redirect");
 
