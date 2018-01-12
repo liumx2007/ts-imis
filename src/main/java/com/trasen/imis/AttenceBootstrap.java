@@ -87,14 +87,14 @@ public class AttenceBootstrap  implements ApplicationListener<ApplicationEvent> 
 
 
                     //定时发送劳动合同任务
-                    String contractTime = PropertiesUtils.getProperty("contract_time");
+                   /* String contractTime = PropertiesUtils.getProperty("contract_time");
                     if (contractTime == null) {
                         contractTime = "08:00:00";
                     }
                     String endcontractTime = endDate + " " + contractTime.trim();
                     long contractDiffCount = DateUtils.dateDiff(startTime, endcontractTime, "yyyy-MM-dd HH:mm:ss", "m");
                     scheduler.scheduleAtFixedRate(weiXinPersonTask, contractDiffCount, 24 * 60, TimeUnit.MINUTES);
-                    logger.info("===========任务启动完成=========");
+                    logger.info("===========任务启动完成=========");*/
 
                     //定时增加考勤积分记录
                     String countJf_time = PropertiesUtils.getProperty("countJF_time");
