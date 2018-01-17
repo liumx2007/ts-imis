@@ -312,9 +312,9 @@ public class WeixinService {
                 if (content.contains("公司考勤")) {
                     String attenceUrl = PropertiesUtils.getProperty("attence_url");
                     if(attenceUrl==null){
-                        attenceUrl = "http://bpmtest01.trasen.cn/src/index.html";
+                        attenceUrl = "http://bpmtest01.trasen.cn/src/app/attence/index.html";
                     }
-                    attenceUrl =attenceUrl +"?v="+v+"#/mobile";
+                    attenceUrl =attenceUrl +"?v="+v;
                     TextMessage tm = new TextMessage();
                     tm.setToUserName(FromUserName);
                     tm.setFromUserName(ToUserName);
@@ -327,9 +327,9 @@ public class WeixinService {
                 if (content.contains("外出考勤")) {
                     String attenceUrl = PropertiesUtils.getProperty("attence_url");
                     if(attenceUrl==null){
-                        attenceUrl = "http://bpmtest01.trasen.cn/src/index.html";
+                        attenceUrl = "http://bpmtest01.trasen.cn/src/app/attence/index.html";
                     }
-                    attenceUrl = attenceUrl+"?attType=1&v="+v+"#/mobile";
+                    attenceUrl = attenceUrl+"?attType=1&v="+v;
                     TextMessage tm = new TextMessage();
                     tm.setToUserName(FromUserName);
                     tm.setFromUserName(ToUserName);
