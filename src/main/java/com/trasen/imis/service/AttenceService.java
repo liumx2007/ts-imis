@@ -156,7 +156,7 @@ public class AttenceService {
         if(!StringUtil.isEmpty(date)){
             Integer count = tbAttenceMapper.selectLackAttence(date);
             if(count==0){
-                String isHolidayDate = date.replace("-","");
+                //String isHolidayDate = date.replace("-","");
                 Date dateT = DateUtil.stringToDate(date);
                 String week = DateUtils.getWeek(dateT);
                 //获取已考勤的工号
@@ -187,7 +187,7 @@ public class AttenceService {
                             String outDate = rule.getOutDate();
                             if(outDate!=null&&outDate.indexOf(date)>0){
                                 type = 1;//在排除日期内为加班
-                            }else if(mobileAttenceService.isHoliday(isHolidayDate)
+                            }else if(mobileAttenceService.isHoliday(date)
                                     ||(rule.getWorkingDay()!=null&&rule.getWorkingDay().indexOf(week)==-1)){
                                 type = 1;//在法定节假日,或者非工作日时间算加班
                             }
