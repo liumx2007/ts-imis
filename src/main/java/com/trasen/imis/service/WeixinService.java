@@ -282,10 +282,18 @@ public class WeixinService {
                     if(weixinCusArr[1].length()==4&&isNum.matches()){
                        TbWeixinCustormer tbWeixinCustormer=winXinPersonService.selectWeixinCusByCode(content);
                        if(tbWeixinCustormer!=null){
+                           if(tbWeixinCustormer.getOpenId()!=null){
+                               tmt.setContent("您输入的邀请码已使用!");
+                               xml_tmt = MessageUtil.textMessageToXml(tmt);
+                               logger.info("xml:" + xml_tmt);
+                               return  xml_tmt;
+                           }
                            tbWeixinCustormer.setOpenId(FromUserName);
                            int updatCount=winXinPersonService.updateWeixinCusOpenId(tbWeixinCustormer);
                            if(updatCount>0){
-                               tmt.setContent("恭喜您,加入创星！");
+                               tmt.setContent(tbWeixinCustormer.getLinkMan()+"\n" +
+                                       tbWeixinCustormer.getName()+"\n" +
+                                       "您已绑定创星信息平台!");
                                xml_tmt = MessageUtil.textMessageToXml(tmt);
                                logger.info("xml:" + xml_tmt);
                            }else{
@@ -312,9 +320,9 @@ public class WeixinService {
                 if (content.contains("公司考勤")) {
                     String attenceUrl = PropertiesUtils.getProperty("attence_url");
                     if(attenceUrl==null){
-                        attenceUrl = "http://bpmtest01.trasen.cn/src/index.html";
+                        attenceUrl = "http://bpmtest01.trasen.cn/src/app/attence/index.html";
                     }
-                    attenceUrl =attenceUrl +"?v="+v+"#/mobile";
+                    attenceUrl =attenceUrl +"?v="+v;
                     TextMessage tm = new TextMessage();
                     tm.setToUserName(FromUserName);
                     tm.setFromUserName(ToUserName);
@@ -327,9 +335,9 @@ public class WeixinService {
                 if (content.contains("外出考勤")) {
                     String attenceUrl = PropertiesUtils.getProperty("attence_url");
                     if(attenceUrl==null){
-                        attenceUrl = "http://bpmtest01.trasen.cn/src/index.html";
+                        attenceUrl = "http://bpmtest01.trasen.cn/src/app/attence/index.html";
                     }
-                    attenceUrl = attenceUrl+"?attType=1&v="+v+"#/mobile";
+                    attenceUrl = attenceUrl+"?attType=1&v="+v;
                     TextMessage tm = new TextMessage();
                     tm.setToUserName(FromUserName);
                     tm.setFromUserName(ToUserName);
