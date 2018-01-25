@@ -327,4 +327,47 @@ public class PersonnelService {
     public List<Map<String,Object>> getPersonnelTags(){
         return tbTagPersonnelMapper.getPersonnelTags(VisitInfoHolder.getUid());
     }
+
+    public void batchUpdateDept(List<String> list,String depId,String depName){
+        Map<String,Object> mappram=new HashMap<String,Object>();
+        String tagCode = getTagCode(depId,null);
+        for (String workNum : list){
+            TbPersonnel oldPersonnel = tbPersonnelMapper.getPersonnelForWorkNum(workNum);
+            TbPersonnel tbPersonnel = new TbPersonnel();
+            tbPersonnel.setPerId(oldPersonnel.getPerId());
+            tbPersonnel.setWorkNum(oldPersonnel.getWorkNum());
+            tbPersonnel.setName(oldPersonnel.getName());
+            tbPersonnel.setSex(oldPersonnel.getSex());
+            tbPersonnel.setPhone(oldPersonnel.getPhone());
+            tbPersonnel.setOperator(VisitInfoHolder.getUserId());
+            tbPersonnel.setPosition(oldPersonnel.getPosition());
+            tbPersonnel.setEntryDate(oldPersonnel.getEntryDate());
+            tbPersonnel.setPicture(oldPersonnel.getPicture());
+
+            tbPersonnel.setDepId(depId);
+            tbPersonnel.setDepName(depName);
+            tbPersonnel.setPosition(oldPersonnel.getPosition());
+            tbPersonnel.setTagCode(tagCode);
+
+            //判断部门ID是否有修改
+            if(!oldPersonnel.getDepId().equals(tbPersonnel.getDepId())){
+                //如果部门ID有修改写入调岗记录
+                insertDeptLog(oldPersonnel,tbPersonnel);
+                tbPersonnel.setPerId(oldPersonnel.getPerId());
+                tbPersonnel.setOperator(VisitInfoHolder.getUserId());
+                tbPersonnel.setUpdated(new Date());
+                tbPersonnelMapper.updatePersonnel(tbPersonnel);
+                mappram.put("pkid",tbPersonnel.getPerId());
+                mappram.put("per_deptid",tbPersonnel.getDepId());
+                mappram.put("deptname",tbPersonnel.getName());
+                mappram.put("level",4);
+                mappram.put("type","person");
+                tbTreeMapper.updateTree(mappram);
+                updateWeixinUserTag(tbPersonnel);
+            }
+
+        }
+
+
+    }
 }

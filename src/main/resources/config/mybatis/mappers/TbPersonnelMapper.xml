@@ -63,7 +63,7 @@
 
     <update id="updatePersonnel" parameterType="com.trasen.imis.model.TbPersonnel">
         update tb_personnel set work_num = #{workNum},`name`=#{name},sex=#{sex},dep_id=#{depId},dep_name=#{depName},phone=#{phone},tag_code=#{tagCode},
-        operator=#{operator},`position`=#{position},updated=#{updated},entry_date = #{entryDate},picture = #{picture}
+        operator=#{operator},`position`=#{position},updated=now(),entry_date = #{entryDate},picture = #{picture}
         where per_id=#{perId}
     </update>
 

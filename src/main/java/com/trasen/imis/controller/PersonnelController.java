@@ -308,4 +308,32 @@ public class PersonnelController {
         return result;
     }
 
+    /**
+     * 人员批量调岗功能
+     * */
+    @ResponseBody
+    @RequestMapping(value="/batchUpdateDept", method = RequestMethod.POST)
+    public Result batchUpdateDept(@RequestBody Map<String, Object> params)  {
+        Result result=new Result();
+        result.setSuccess(false);
+        result.setMessage("调岗失败");
+        try {
+            //数据更新
+            if(params!=null&&params.get("list")!=null&&params.get("depId")!=null&&params.get("depName")!=null){
+                List<String> list = (List<String>)params.get("list");
+                String depId = params.get("depId").toString();
+                String depName = params.get("depName").toString();
+                personnelService.batchUpdateDept(list,depId,depName);
+                result.setSuccess(true);
+                result.setMessage("调岗成功");
+            }
+        }catch (Exception e) {
+            logger.error("人员批量调岗异常" + e.getMessage(), e);
+            result.setSuccess(false);
+            result.setMessage("调岗异常");
+        }
+        return  result;
+
+    }
+
 }
