@@ -3,8 +3,10 @@ package com.trasen.imis.service;
 import cn.trasen.core.feature.orm.mybatis.Page;
 import com.trasen.imis.common.AppCons;
 import com.trasen.imis.common.VisitInfoHolder;
+import com.trasen.imis.dao.RecordMapper;
 import com.trasen.imis.dao.TbJfRecordMapper;
 import com.trasen.imis.model.TbJfPerson;
+import com.trasen.imis.model.TbJfRank;
 import com.trasen.imis.model.TbJfRecord;
 import com.trasen.imis.utils.DateUtils;
 import org.apache.log4j.Logger;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,8 +29,19 @@ public class JfLevelService {
     @Autowired
     TbJfRecordMapper tbJfRecordMapper;
 
+    @Autowired
+    RecordMapper recordMapper;
+
     public List<TbJfPerson> queryJfPersonnel(Map<String,Object> param){
         List<TbJfPerson> list =  tbJfRecordMapper.queryJfPersonnel(param) ;
+
+        List<TbJfRank> rankList = recordMapper.getRecordRankList();
+        Map<String,Integer> prmScore = new HashMap<>();
+        Map<Integer,String> level = new HashMap<>();
+        for(TbJfRank rank : rankList){
+            prmScore.put(rank.getName()+rank.getType(),rank.getPrmScore()+20);
+            level.put(rank.getScore(),rank.getName()+rank.getType());
+        }
         for(TbJfPerson person : list){
             if(person.getScore()==null){
                 person.setScore(0);
@@ -35,6 +49,9 @@ public class JfLevelService {
             if(person.getRankName()==null){
                 person.setRankName("初级未转");
             }
+            person.setNextRank(prmScore.get(person.getRankName()));
+            person.setNextRankName(level.get(person.getNextRank()));
+
         }
         return list;
     }
