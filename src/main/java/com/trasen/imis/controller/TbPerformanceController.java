@@ -93,7 +93,7 @@ public class TbPerformanceController {
                     }
                     tbPerformanceService.savePerformance(performanceList);
 
-                    List<TbPerformance> list = tbPerformanceService.queryPerformance();
+                    List<TbPerformance> list = tbPerformanceService.queryPerformance(date);
 
                     result.setSuccess(true);
                     result.setStatusCode(1);
@@ -187,11 +187,11 @@ public class TbPerformanceController {
 
     @ResponseBody
     @RequestMapping(value="/queryPerformance", method = RequestMethod.POST)
-    public Result queryPerformance()  {
+    public Result queryPerformance(@RequestParam String date)  {
         Result result=new Result();
         result.setSuccess(false);
         try {
-            List<TbPerformance> list = tbPerformanceService.queryPerformance();
+            List<TbPerformance> list = tbPerformanceService.queryPerformance(date);
             result.setSuccess(true);
             result.setObject(list);
         }catch (Exception e) {

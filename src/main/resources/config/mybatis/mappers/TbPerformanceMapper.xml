@@ -22,8 +22,8 @@
         select * from tb_performance_jf
     </select>
 
-    <select id="queryPerformance" resultType="com.trasen.imis.model.TbPerformance" >
-        select * from tb_performance where status=0
+    <select id="queryPerformance" parameterType="String" resultType="com.trasen.imis.model.TbPerformance" >
+        select * from tb_performance where status=0 and import_date = #{date}
     </select>
 
     <select id="getJfRecord" parameterType="String" resultType="com.trasen.imis.model.TbJfRecord">

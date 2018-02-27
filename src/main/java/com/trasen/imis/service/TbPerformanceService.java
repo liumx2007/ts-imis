@@ -81,8 +81,8 @@ public class TbPerformanceService {
         return jf;
     }
 
-    public List<TbPerformance> queryPerformance(){
-        return tbPerformanceMapper.queryPerformance();
+    public List<TbPerformance> queryPerformance(String date){
+        return tbPerformanceMapper.queryPerformance(date);
     }
 
     public List<TbJfRecord> getJfRecordf(String date){

@@ -19,7 +19,7 @@ public interface TbPerformanceMapper {
 
     List<Map<String,Object>> getJF();
 
-    List<TbPerformance> queryPerformance();
+    List<TbPerformance> queryPerformance(String date);
 
     List<TbJfRecord> getJfRecord(String date);
 
