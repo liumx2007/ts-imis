@@ -118,7 +118,7 @@ public class JfLevelService {
 
                 Integer type = tbJfRecord.getType();
                 if(type!=null){
-                    if(type==AppCons.HR_ADD_SCORE||type==AppCons.XT_ADD_SCORE){
+                    if(type==AppCons.HR_ADD_SCORE||type==AppCons.XT_ADD_SCORE||type==AppCons.JX_ADD_SCORE){
                         tbJfRecord.setStatus(1);
                         tbJfRecordMapper.addJfRecord(tbJfRecord);
                         TbJfPerson tbJfPerson = new TbJfPerson();

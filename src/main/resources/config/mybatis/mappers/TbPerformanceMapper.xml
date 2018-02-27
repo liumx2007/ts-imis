@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trasen.imis.dao.TbPerformanceMapper">
+
+    <insert id="savePerformance" parameterType="Map">
+        insert into tb_performance (import_date,work_num,`name`,score,grade,status,created) values
+        <foreach collection="list" index="index" item="b" separator=",">
+            (#{b.importDate},#{b.workNum},#{b.name},#{b.score},#{b.grade},0,now())
+        </foreach>
+    </insert>
+
+    <select id="getPerformanceDate" parameterType="String" resultType="Integer">
+        select count(*) from tb_performance where import_date = #{importDate}
+    </select>
+
+    <update id="updatePerformanceJF" parameterType="Map">
+        update tb_performance_jf set `value` = #{value} where code = #{code}
+    </update>
+
+    <select id="getJF" resultType="Map">
+        select * from tb_performance_jf
+    </select>
+
+    <select id="queryPerformance" resultType="com.trasen.imis.model.TbPerformance" >
+        select * from tb_performance where status=0
+    </select>
+
+    <select id="getJfRecord" parameterType="String" resultType="com.trasen.imis.model.TbJfRecord">
+        select * from tb_jf_record where type=3 and DATE_FORMAT(created,"%Y%m") = #{date} and score >0
+    </select>
+
+
+    <select id="getPerformanceToDate" parameterType="String" resultType="com.trasen.imis.model.TbPerformance" >
+        select * from tb_performance where status=0 and import_date = #{date}
+    </select>
+
+
+    <select id="countPerforJF" parameterType="String" resultType="Integer">
+        select count(*) from tb_jf_record where type=4 and DATE_FORMAT(created,"%Y%m") = #{date}
+    </select>
+
+    <update id="updatePerformance" parameterType="Integer">
+        update tb_performance set status=1 where pkid=#{pkid}
+    </update>
+
+
+    <update id="updatePerformanceToTwo" parameterType="String">
+        update tb_performance set status=2 where import_date=#{date} and status=0
+    </update>
+
+
+
+
+
+
+
+
+
+</mapper>

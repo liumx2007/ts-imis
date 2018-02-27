@@ -47,6 +47,8 @@ public class AppCons {
     public static final int HR_ADD_SCORE = 1;
     /**系统加分*/
     public static final int XT_ADD_SCORE = 3;
+    /**系统加分*/
+    public static final int JX_ADD_SCORE = 4;
 
     public static final int DEPT_ADD_SCORE = 2;
 
