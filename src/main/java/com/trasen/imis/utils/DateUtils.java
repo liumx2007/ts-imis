@@ -553,6 +553,21 @@ public class DateUtils {
 		return time;
 	}
 
+	//获取本月上一月yyyyMM
+	public static String getYearMonth(String date){
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+			Calendar c = Calendar.getInstance();
+			c.setTime(sdf.parse(date));
+			c.add(Calendar.MONTH, 1);
+			SimpleDateFormat format =  new SimpleDateFormat("yyyyMM");
+			String time = format.format(c.getTime());
+			return time;
+		}catch (Exception e){
+			return null;
+		}
+	}
+
 	/**
 	 * 获取当月的 天数
 	 * */
@@ -600,6 +615,8 @@ public class DateUtils {
 		int days = DateUtils.getDaysByYearMonth(Integer.parseInt("201803".substring(0,4))
 				,Integer.parseInt("201805".substring(4,6)));
 		System.out.println(days);
+
+		System.out.println(DateUtils.getYearMonth("201802"));
 
 	}
 

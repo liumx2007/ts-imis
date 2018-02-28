@@ -217,7 +217,7 @@ public class TbPerformanceController {
                 return  result;
             }
 
-            List<TbJfRecord> tbJfRecordList = tbPerformanceService.getJfRecordf(date);
+            List<TbJfRecord> tbJfRecordList = tbPerformanceService.getJfRecordf(DateUtils.getYearMonth(date));
             if(tbJfRecordList==null||tbJfRecordList.size()<=0){
                 result.setSuccess(false);
                 result.setMessage("日期["+date+"]还未生成考勤积分!");
