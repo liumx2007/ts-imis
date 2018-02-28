@@ -77,11 +77,13 @@ public class JfRecordService {
                         String lateStr = "";
                         if(late>0){
                             lateStr = "迟到"+late+"次 ";
+                            num = num - late;
                         }
 
                         String leaveStr = "";
                         if(leave>0){
                             leaveStr = "请假"+leave+"次 ";
+                            num = num - leave;
                         }
 
                         String addWorkStr = "";
