@@ -83,7 +83,6 @@ public class JfRecordService {
                         String leaveStr = "";
                         if(leave>0){
                             leaveStr = "请假"+leave+"次 ";
-                            num = num - leave;
                         }
 
                         String addWorkStr = "";
