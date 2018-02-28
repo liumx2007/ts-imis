@@ -15,4 +15,6 @@ public interface JfRecordMapper {
     List<TbAttenceCount> getattcenCounttList(String count_date);
 
     int getSystemBonus(Map<String,String> param);
+
+    Integer getAddWorkNum(Map<String,Object> param);
 }

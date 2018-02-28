@@ -55,14 +55,25 @@ public class JfRecordService {
                             +tbAttenceCount.getMaritalLeave()+tbAttenceCount.getFuneralLeave()+tbAttenceCount.getAffairLeave()
                             +tbAttenceCount.getSickLeave()+tbAttenceCount.getOtherLeave();
 
+                    //加班
+                    Map<String,Object> addMap = new HashMap<>();
+                    addMap.put("workNum",tbAttenceCount.getWorkNum());
+                    addMap.put("date",count_date);
+                    Integer addWork = jfRecordMapper.getAddWorkNum(addMap);
+
 
                     int num = 0;
                     String remark = count_date.substring(0,4)+"年"+count_date.substring(4,6)+"月";
                     if((leave+late)==0){//全勤判断 请假+迟到=0
-                        num = days;
-                        remark = remark + "全勤，出勤"+num+"分。";
+                        if(addWork>0){//有加班情况
+                            num = days+addWork;
+                            remark = remark + "全勤，出勤"+num+"分(加班"+addWork+"天)。";
+                        }else{//无加班情况
+                            num = days;
+                            remark = remark + "全勤，出勤"+num+"分。";
+                        }
                     }else{
-                        num = fact;
+                        num = fact+addWork;
                         String lateStr = "";
                         if(late>0){
                             lateStr = "迟到"+late+"次 ";
@@ -72,7 +83,12 @@ public class JfRecordService {
                         if(leave>0){
                             leaveStr = "请假"+leave+"次 ";
                         }
-                        remark = remark + "缺勤，出勤"+num+"分（"+lateStr+leaveStr+"）。";
+
+                        String addWorkStr = "";
+                        if(addWork>0){
+                            addWorkStr = "加班"+addWork+"天";
+                        }
+                        remark = remark + "缺勤，出勤"+num+"分（"+lateStr+leaveStr+addWorkStr+"）。";
                     }
                     TbJfRecord tbJfRecord = new TbJfRecord();
                     tbJfRecord.setWorkNum(tbAttenceCount.getWorkNum());

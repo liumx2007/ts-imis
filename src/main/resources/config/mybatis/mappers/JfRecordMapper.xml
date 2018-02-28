@@ -10,4 +10,8 @@
         select count(*) from tb_jf_record where type=3 and work_num=#{workNum} and DATE_FORMAT(created,"%Y-%m-%d") like CONCAT(#{yearMonth},'%')
     </select>
 
+    <select id="getAddWorkNum" parameterType="Map" resultType="Integer">
+        select count(*) from tb_attence where type=1 and work_num=#{workNum} and DATE_FORMAT(created,"%Y%m") = #{date};
+    </select>
+
 </mapper>
